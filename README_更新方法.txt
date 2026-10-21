@@ -1,17 +1,14 @@
-Aries Studio v20 — GitHub Pages差し替え用
+Aries Studio v21：ホーム画面での表示名「AriesStudio」
 
-修正内容
-・「＋ SSを選ぶ」を「＋ 画像を選ぶ」に変更
-・「別のSSを選ぶ」「SSを追加」も「画像」に統一
-・スマホで画像選択前から横スクロール型の編集画面を表示
-・画像選択後もこれまでどおり写真を見ながら横メニューで調整
-・プライバシーポリシーと利用規約へのリンクはスマホでもアクセス可
-・既存のフィルター・Copyright・iPhone写真保存機能は維持
+変更点：iPhoneのホーム画面に追加するときの名称を「AriesStudio」に統一しました。
+画面内のAries Studioロゴ、編集機能、利用規約などはそのままです。
 
-反映方法
-1. ZIPを展開する
-2. index.html、privacy.html、terms.html をGitHubリポジトリ ss_tool の一番上（ルート）にアップロードする
-3. 古い同名ファイルを上書きして「Commit changes」を押す
-4. GitHub Pagesの公開が完了したら https://yuumocchii222526-cpu.github.io/ss_tool/?v=20 にアクセスする
+GitHub更新手順：
+1. ZIPを解凍
+2. index.html / privacy.html / terms.html をss_toolリポジトリの公開元フォルダに上書き
+3. Commit changes
+4. iPhoneのSafariでサイトを開き、共有→ホーム画面に追加
 
-注意：ZIPファイルだけをアップロードしたり、フォルダごと入れると既存のトップページは更新されません。
+※ すでにホーム画面へ追加したショートカットの名前は、自動では変更されません。
+   古いショートカットを取り除いてから追加し直してください。
+   追加する直前の画面で表示名を手動編集することもできます。
