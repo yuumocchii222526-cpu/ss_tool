@@ -79,12 +79,45 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
 .footer-nav{display:flex;flex-wrap:wrap;gap:12px 22px;margin-bottom:13px}
 .footer-nav a{color:#b7ceec;text-decoration:underline;text-underline-offset:3px}
 .footer-nav a:focus-visible{outline:2px solid var(--accent2);outline-offset:4px}
+
+/* iPhoneの写真アプリ向け保存シート。編集中の色・レイアウトは変更しない。 */
+.save-dialog{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(4,6,13,.82);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.save-dialog[hidden]{display:none!important}
+.save-card{width:min(100%,440px);max-height:min(90dvh,850px);overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid #4b4563;border-radius:20px;background:linear-gradient(150deg,#222538,#171b2b);box-shadow:0 20px 75px #000a;padding:20px;color:var(--text)}
+.save-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.save-head h2{font-size:18px;font-weight:750;color:#f7f1ff}.save-close{min-width:38px;min-height:38px;padding:7px;font-size:22px;line-height:1}
+.save-info{font-size:12px;line-height:1.8;color:#c4c4d7;margin:7px 0 13px}
+.save-preview{display:block;width:auto;max-width:100%;height:auto;max-height:min(31dvh,260px);object-fit:contain;margin:0 auto;border-radius:9px;border:1px solid #434860;box-shadow:0 7px 18px #0005;-webkit-touch-callout:default;user-select:auto;-webkit-user-select:auto}
+.save-preview-wrap{min-height:100px;display:flex;align-items:center;justify-content:center;border:1px solid #343b53;background:#101423;border-radius:12px;margin:10px 0 16px;padding:11px}
+.save-preview-wrap img[hidden]{display:none!important}
+.save-actions{display:grid;gap:10px}.save-actions .btn{min-height:46px;width:100%}
+.save-primary{font-size:14px}.save-help{margin:13px 0 0;color:#adb1c7;font-size:11px;line-height:1.75}
+.save-status{color:#c9b6f4;font-size:12px;margin:10px 0 0}
+.save-status.error{display:block;color:#ffbec5;margin-top:10px}
+@media(max-width:550px){.save-card{padding:16px}.save-preview{max-height:28dvh}}
+
+/* Copyright editor: mobile horizontal-tool panel; normal desktop card. */
+.copyright-settings{border-top:1px solid var(--stroke);padding-top:18px;margin-top:20px}
+.copyright-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.copyright-heading .tab-title{margin:0}
+.copyright-toggle{display:flex;align-items:center;gap:7px;color:#e9dff7;font-size:12px;white-space:nowrap}
+.copyright-toggle input{width:18px;height:18px;accent-color:#c8abff}
+.copyright-settings .field{margin-top:14px}
+.copyright-settings .field select{width:100%;border:1px solid #45485e;border-radius:9px;background:#121725;color:#f3ecff;padding:11px 12px;min-height:44px}
+.copyright-settings .copyright-slider{margin:17px 2px 14px}
+.copyright-position-title{margin:12px 0 8px}
+.copyright-positions{display:flex;gap:7px;flex-wrap:wrap}
+.copyright-positions .choice{padding:8px 11px}
+.copyright-coordinates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:15px}
+.copyright-coordinates .slider-control{margin-bottom:8px;min-width:0}
+.copyright-hint{font-size:11px;color:#9298ad;line-height:1.6;margin-top:12px}
+@media(max-width:800px){body.editor-ready .copyright-settings{border:0;padding:0;margin:0}body.editor-ready .copyright-coordinates{gap:15px}body.editor-ready .copyright-settings .copyright-slider{display:block;margin:16px 4px 8px}body.editor-ready #panel-finish .copyright-settings .slider-control{display:block}}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aries Studio</h1><p>FFXIV SCREENSHOT STUDIO</p></div></div>
-  <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" disabled>↓ <span>画像を保存</span></button></div>
+  <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aries Studio</h1></div></div>
+  <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" disabled>↗ <span>画像を保存</span></button></div>
 </header>
 <main class="shell">
   <section class="workspace" aria-label="画像プレビュー">
@@ -104,11 +137,39 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
     <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
-    <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div><label class="field"><span>署名テキスト（任意）</span><input id="signature" type="text" maxlength="42" placeholder="例：© Your Character" autocomplete="off"></label></div></section>
+    <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div>
+      <div id="copyrightControls" class="extra-tool-panel copyright-settings">
+        <div class="copyright-heading"><p class="tab-title">Copyright / 著作権表記</p><label class="copyright-toggle"><input id="copyrightEnabled" type="checkbox" checked><span>表示する</span></label></div>
+        <label class="field"><span>表示する文字</span><input id="copyrightText" type="text" maxlength="80" value="© SQUARE ENIX" autocomplete="off"></label>
+        <label class="field"><span>文字の種類</span><select id="copyrightFont"><option value="sans">ゴシック（標準）</option><option value="serif">明朝体</option><option value="rounded">丸ゴシック</option><option value="mono">等幅フォント</option></select></label>
+        <div class="slider-control copyright-slider"><div class="slider-top"><label for="copyrightSize">文字の大きさ</label><span class="slider-value" id="copyrightSizeValue">20</span></div><input id="copyrightSize" class="range" type="range" min="8" max="56" value="20" step="1"></div>
+        <p class="tab-title copyright-position-title">文字の位置</p>
+        <div class="copyright-positions" role="group" aria-label="著作権表記の位置"><button type="button" class="choice" data-copyright-pos="bottom-left">左下</button><button type="button" class="choice" data-copyright-pos="bottom-center">中央下</button><button type="button" class="choice" data-copyright-pos="bottom-right">右下</button><button type="button" class="choice" data-copyright-pos="top-left">左上</button><button type="button" class="choice" data-copyright-pos="top-right">右上</button></div>
+        <div class="copyright-coordinates">
+          <div class="slider-control"><div class="slider-top"><label for="copyrightX">横位置</label><span class="slider-value" id="copyrightXValue">22%</span></div><input id="copyrightX" class="range" type="range" min="0" max="100" value="22" step="1"></div>
+          <div class="slider-control"><div class="slider-top"><label for="copyrightY">縦位置</label><span class="slider-value" id="copyrightYValue">93%</span></div><input id="copyrightY" class="range" type="range" min="0" max="100" value="93" step="1"></div>
+        </div>
+        <p class="copyright-hint">文字は写真の上に表示され、保存画像にも反映されます。</p>
+      </div></section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
   </aside>
 </main>
 <footer class="footer"><nav class="footer-nav" aria-label="サイト情報"><a href="./index.html">ツールのトップへ</a><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav><div>© 2026 Aries Studio</div></footer>
+
+<div id="saveDialog" class="save-dialog" role="dialog" aria-modal="true" aria-labelledby="saveDialogTitle" hidden>
+  <div class="save-card">
+    <div class="save-head"><h2 id="saveDialogTitle">写真を保存</h2><button id="saveClose" class="btn ghost save-close" type="button" aria-label="閉じる">×</button></div>
+    <p class="save-info" id="saveInstructions">加工画像を準備しています…</p>
+    <div class="save-preview-wrap"><img id="savedPreview" class="save-preview" alt="保存する加工画像のプレビュー（長押しでも保存できます）" hidden><span id="saveWaiting" class="save-status" role="status">画像を作成中…</span></div>
+    <div class="save-actions" id="saveActions" hidden>
+      <button id="shareToPhotos" class="btn primary save-primary" type="button" hidden>↗ 写真アプリへ保存（共有）</button>
+      <a id="openSavedImage" class="btn" target="_blank" rel="noopener">画像を大きく開く</a>
+      <a id="downloadSavedImage" class="btn ghost" download>↓ PNGファイルとしてダウンロード</a>
+    </div>
+    <p id="saveStatus" class="save-status" role="status" hidden></p>
+    <p id="saveHelp" class="save-help">iPhoneでは共有画面にある「画像を保存」を選ぶと、写真アプリに追加できます。表示中の画像を長押しして「写真に追加」を選ぶ方法もあります。</p>
+  </div>
+</div>
 <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/avif,image/heic,image/heif" class="visually-hidden">
 <script>
 (() => {
@@ -127,8 +188,10 @@ const presets=[
  {id:'nostalgia',name:'レトロ',note:'少しくすんだ色味',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
 ];
 const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
-let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',signature='',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
+let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
+const COPYRIGHT_DEFAULT={enabled:true,text:'© SQUARE ENIX',size:20,font:'sans',x:22,y:93};
+let copyrightSettings={...COPYRIGHT_DEFAULT};
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
 const touchPoints=new Map();
 let pinchGesture=null;
@@ -150,7 +213,7 @@ function setupQuickTools(){
   const panel=$('panel-'+tab),wrap=$(wrapId),bar=document.createElement('div');
   bar.className='quick-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','調整項目');
   const entries=definitions.map(([key,label])=>({key,label,target:$('range-'+key).closest('.slider-control')}));
-  if(tab==='finish')entries.push({key:'crop',label:'トリミング',target:$('cropControls')},{key:'frame',label:'フレーム・署名',target:$('frameControls')});
+  if(tab==='finish')entries.push({key:'crop',label:'トリミング',target:$('cropControls')},{key:'frame',label:'フレーム',target:$('frameControls')},{key:'copyright',label:'Copyright',target:$('copyrightControls')});
   const buttons=[];
   for(const entry of entries){
    const b=document.createElement('button');b.type='button';b.className='quick-tool';b.textContent=entry.label;b.dataset.quickTool=entry.key;
@@ -305,7 +368,19 @@ if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.cre
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
 if(frame==='cinema'){const bar=Math.round(h*.072);c.fillStyle='#09090e';c.fillRect(0,0,w,bar);c.fillRect(0,h-bar,w,bar)}
-if(signature.trim()){const size=Math.max(10,Math.round(w*.018));c.save();c.font=`500 ${size}px sans-serif`;c.textAlign='right';c.textBaseline='bottom';c.shadowColor='#000c';c.shadowBlur=size*.4;c.fillStyle='rgba(255,255,255,.9)';const right=Math.max(10,w*.032);const bottom=frame==='cinema'?h*.086:Math.max(10,h*.036);c.fillText(signature.trim(),w-right,h-bottom,w*.65);c.restore()}
+
+if(copyrightSettings.enabled&&copyrightSettings.text.trim()){
+ const fontFamilies={sans:'-apple-system, BlinkMacSystemFont, Arial, sans-serif',serif:'Georgia, "Hiragino Mincho ProN", serif',rounded:'"Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", sans-serif',mono:'ui-monospace, Menlo, Consolas, monospace'};
+ const family=fontFamilies[copyrightSettings.font]||fontFamilies.sans;
+ const fontSize=Math.max(5,Math.round(w*copyrightSettings.size/1000));
+ const content=copyrightSettings.text.trim();
+ c.save();c.font=`500 ${fontSize}px ${family}`;c.textAlign='center';c.textBaseline='middle';
+ c.shadowColor='#000e';c.shadowBlur=fontSize*.23;c.shadowOffsetY=Math.max(1,fontSize*.045);c.fillStyle='rgba(255,255,255,.96)';
+ const halfWidth=Math.min(c.measureText(content).width,w*.96)/2;
+ const x=clamp(w*copyrightSettings.x/100,halfWidth+2,w-halfWidth-2);
+ const y=clamp(h*copyrightSettings.y/100,fontSize*.55+2,h-fontSize*.55-2);
+ c.fillText(content,x,y,w*.96);c.restore();
+}
 }
 function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions()}
 function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0)}
@@ -318,21 +393,119 @@ function selectTab(tab){
  if(image)updateDimensions();
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
-async function uploadFile(file){if(!file)return;setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
+async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready');$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
-async function saveImage(){if(!image)return;const btn=$('saveBtn');btn.disabled=true;const label=btn.innerHTML;btn.innerHTML='⌛ 保存用に加工中';setError('');await new Promise(resolve=>setTimeout(resolve,20));
-try{const out=makeCanvas(1,1);renderInto(out,5600,20000000);const isPNG=true;const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('export failed')),isPNG?'image/png':'image/jpeg',.96));const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename+'_aries_studio.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}catch(e){console.error(e);setError('保存に失敗しました。サイズが大きい場合は、画像を小さくしてお試しください。')}finally{btn.innerHTML=label;btn.disabled=false}}
-function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
-createControls();setupQuickTools();refreshControls();updateZoomUI();
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready');$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
+function clearSavedImage(){
+ saveFile=null;
+ if(saveURL){URL.revokeObjectURL(saveURL);saveURL=null}
+ $('savedPreview').hidden=true;$('savedPreview').removeAttribute('src');
+ $('openSavedImage').removeAttribute('href');$('downloadSavedImage').removeAttribute('href');
+ $('saveActions').hidden=true;$('shareToPhotos').hidden=true;
+}
+function closeSaveDialog(){
+ saveRequest++;$('saveDialog').hidden=true;clearSavedImage();
+ $('saveStatus').hidden=true;
+ if(image)$('saveBtn').disabled=false;
+ $('saveBtn').focus({preventScroll:true});
+}
+async function saveImage(){
+ if(!image||saveBusy)return;
+ const request=++saveRequest;
+ clearSavedImage();saveBusy=true;
+ $('saveDialog').hidden=false;
+ $('saveInstructions').textContent='加工画像を準備しています…';
+ $('saveWaiting').hidden=false;$('saveActions').hidden=true;$('saveStatus').hidden=true;
+ $('saveBtn').disabled=true;
+ $('saveClose').focus({preventScroll:true});
+ // モーダルを先に表示する。画像変換後の「共有」ボタンのタップから
+ // navigator.shareを直接実行するので、iOS Safariのユーザー操作制限に対応。
+ await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,16)));
+ try{
+  const out=makeCanvas(1,1);renderInto(out,5600,20000000);
+  const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('export failed')),'image/png'));
+  if(request!==saveRequest)return;
+  saveFile=new File([blob],filename+'_aries_studio.png',{type:'image/png'});
+  saveURL=URL.createObjectURL(blob);
+  $('savedPreview').src=saveURL;$('savedPreview').hidden=false;
+  $('openSavedImage').href=saveURL;
+  $('downloadSavedImage').href=saveURL;$('downloadSavedImage').download=saveFile.name;
+  let shareSupported=false;
+  try{shareSupported=typeof navigator.share==='function'&&typeof navigator.canShare==='function'&&navigator.canShare({files:[saveFile]})}catch(e){shareSupported=false}
+  $('shareToPhotos').hidden=!shareSupported;
+  $('saveActions').hidden=false;$('saveWaiting').hidden=true;
+  $('saveInstructions').textContent=shareSupported?'「写真アプリへ保存」を押して、共有画面の「画像を保存」を選んでね。':'画像を長押しして「写真に追加」を選ぶか、PNGをダウンロードしてね。';
+  $('saveHelp').textContent=shareSupported?'共有画面で「画像を保存」が見つからない場合は、下のプレビュー画像を長押しして保存できます。':'iPhoneでは表示中の画像を長押しすると「写真に追加」や「画像を保存」が使えます。';
+ }catch(e){
+  if(request!==saveRequest)return;
+  console.error(e);$('saveWaiting').hidden=true;
+  $('saveInstructions').textContent='画像を作成できませんでした。';
+  $('saveStatus').textContent='画像サイズが大きい場合は、別の画像でお試しください。';$('saveStatus').hidden=false;
+ }finally{
+  saveBusy=false;
+  if(image)$('saveBtn').disabled=false;
+ }
+}
+function shareImageToPhotos(){
+ if(!saveFile||typeof navigator.share!=='function')return;
+ $('saveStatus').hidden=true;
+ // クリックから待たずに呼び出すことがiOSで重要。
+ let sharePromise;
+ try{sharePromise=navigator.share({files:[saveFile]})}
+ catch(e){$('saveStatus').textContent='共有画面を開けませんでした。画像を長押しして保存してね。';$('saveStatus').hidden=false;return}
+ Promise.resolve(sharePromise).catch(e=>{
+  if(e&&e.name==='AbortError')return;
+  $('saveStatus').textContent='共有できませんでした。画像を長押しするか、PNGで保存してね。';$('saveStatus').hidden=false;
+ });
+}
+function updateCopyrightUI(){
+ $('copyrightEnabled').checked=copyrightSettings.enabled;
+ $('copyrightText').value=copyrightSettings.text;
+ $('copyrightFont').value=copyrightSettings.font;
+ for(const key of ['Size','X','Y']){
+  const field=key.toLowerCase(),input=$('copyright'+key);
+  input.value=copyrightSettings[field];
+  $('copyright'+key+'Value').textContent=copyrightSettings[field]+(key==='Size'?'':'%');
+  setSliderVisual(input);
+ }
+ const positions={
+  'bottom-left':[22,93],'bottom-center':[50,93],'bottom-right':[83,93],
+  'top-left':[22,7],'top-right':[83,7]
+ };
+ allButtons('[data-copyright-pos]').forEach(button=>{
+  const pos=positions[button.dataset.copyrightPos];
+  const selected=copyrightSettings.x===pos[0]&&copyrightSettings.y===pos[1];
+  button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));
+ });
+}
+function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
+createControls();setupQuickTools();refreshControls();updateCopyrightUI();updateZoomUI();
 const stage=$('stage');
 if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
 window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
 allButtons('[data-aspect]').forEach(b=>b.addEventListener('click',()=>{crop=b.dataset.aspect;panX=panY=0;resetView();updateChoices('aspect',crop);scheduleRender()}));
 allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.dataset.frame;updateChoices('frame',frame);scheduleRender()}));
-$('signature').addEventListener('input',e=>{signature=e.target.value;scheduleRender()});
+$('copyrightEnabled').addEventListener('change',e=>{copyrightSettings.enabled=e.target.checked;scheduleRender()});
+$('copyrightText').addEventListener('input',e=>{copyrightSettings.text=e.target.value;scheduleRender()});
+$('copyrightFont').addEventListener('change',e=>{copyrightSettings.font=e.target.value;scheduleRender()});
+for(const key of ['Size','X','Y']){
+ const field=key.toLowerCase();$('copyright'+key).addEventListener('input',e=>{
+  copyrightSettings[field]=Number(e.target.value);
+  updateCopyrightUI();scheduleRender();
+ });
+}
+const copyrightPositions={'bottom-left':[22,93],'bottom-center':[50,93],'bottom-right':[83,93],'top-left':[22,7],'top-right':[83,7]};
+allButtons('[data-copyright-pos]').forEach(button=>button.addEventListener('click',()=>{
+ const [x,y]=copyrightPositions[button.dataset.copyrightPos];copyrightSettings.x=x;copyrightSettings.y=y;
+ updateCopyrightUI();scheduleRender();
+}));
 const fileInput=$('fileInput');for(const id of ['startUpload','changeUpload','newPhotoBtn'])$(id).addEventListener('click',()=>fileInput.click());fileInput.addEventListener('change',e=>uploadFile(e.target.files?.[0]));
+$('saveClose').addEventListener('click',closeSaveDialog);
+$('saveDialog').addEventListener('click',e=>{if(e.target===$('saveDialog'))closeSaveDialog()});
+$('shareToPhotos').addEventListener('click',shareImageToPhotos);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('saveDialog').hidden){e.preventDefault();closeSaveDialog()}});
 $('saveBtn').addEventListener('click',saveImage);$('resetBtn').addEventListener('click',resetAll);$('lowerResetBtn').addEventListener('click',resetAll);$('zoomInBtn').addEventListener('click',()=>stepZoom(1.25));$('zoomOutBtn').addEventListener('click',()=>stepZoom(.8));$('zoomResetBtn').addEventListener('click',resetView);
 stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag-over')});stage.addEventListener('dragleave',e=>{if(!stage.contains(e.relatedTarget))stage.classList.remove('drag-over')});stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag-over');uploadFile(e.dataTransfer?.files?.[0])});
 const before=$('beforeBtn');const showBefore=e=>{if(!image)return;e.preventDefault();if(previewCache)displayOriginal()};const showAfter=e=>{if(!image)return;e.preventDefault();if(previewCache)displayResult()};before.addEventListener('pointerdown',e=>{before.setPointerCapture(e.pointerId);showBefore(e)});before.addEventListener('pointerup',showAfter);before.addEventListener('pointercancel',showAfter);before.addEventListener('lostpointercapture',showAfter);before.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')showBefore(e)});before.addEventListener('keyup',showAfter);
