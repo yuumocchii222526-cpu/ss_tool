@@ -13,9 +13,9 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
 .brand{display:flex;align-items:center;gap:12px;min-width:0}.logo{display:grid;place-items:center;width:42px;height:42px;border:1px solid #7c7199;border-radius:13px;background:linear-gradient(145deg,#3d3159,#1d3040);font-size:28px;color:#d4c0ff;line-height:1;box-shadow:0 6px 24px #a17fff15}.brand h1{font:700 21px/1.1 Georgia,serif;letter-spacing:.025em}.brand p{font-size:9px;letter-spacing:.21em;color:#b0b2d1;margin-top:6px}.head-actions{display:flex;align-items:center;gap:9px}.private-label{color:var(--muted);font-size:11px;margin-right:12px;white-space:nowrap}.private-label:before{content:'●';font-size:8px;color:var(--accent2);margin-right:6px}
 .btn{border:1px solid #3b4156;background:#24293a;color:#eeeaf8;border-radius:10px;padding:10px 14px;font-weight:700;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;justify-content:center;transition:background .15s,transform .15s}.btn:hover:not(:disabled){background:#30364b}.btn:active:not(:disabled){transform:scale(.98)}.btn.primary{background:linear-gradient(112deg,#d5bbff,#bdaaf6);color:#1d1731;border-color:transparent;box-shadow:0 6px 22px #bd9bf228}.btn.primary:hover:not(:disabled){background:linear-gradient(112deg,#dfccff,#d0bfff)}.btn.ghost{background:transparent}.btn.tiny{padding:7px 11px;font-size:12px;border-radius:8px}
 .shell{max-width:1620px;margin:auto;padding:30px clamp(16px,3.3vw,50px) 45px;display:grid;grid-template-columns:minmax(0,1fr) 354px;gap:26px;align-items:start}.section-eyebrow{font-size:11px;color:#b5adc9;letter-spacing:.19em;text-transform:uppercase;font-weight:700}.workspace-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin-bottom:18px}.workspace-title{font:500 clamp(25px,2.8vw,34px)/1.1 Georgia,serif;margin-top:7px}.workspace-sub{font-size:12px;color:var(--muted);margin-top:6px}.name{font-size:12px;color:#c8c6dc;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.stage{position:relative;min-height:490px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #32374f;border-radius:var(--radius);background-color:#131728;background-image:radial-gradient(circle at 50% 30%,#282b47,transparent 65%),linear-gradient(45deg,#ffffff04 25%,transparent 25%,transparent 75%,#ffffff04 75%),linear-gradient(45deg,#ffffff04 25%,transparent 25%,transparent 75%,#ffffff04 75%);background-size:auto,34px 34px,34px 34px;background-position:0 0,0 0,17px 17px;box-shadow:0 20px 55px #0406134d;isolation:isolate}.stage.drag-over{border-color:var(--accent2);box-shadow:inset 0 0 0 2px var(--accent2),0 20px 55px #0406134d}.stage canvas{display:block;max-width:100%;max-height:min(70vh,760px);width:auto;height:auto;box-shadow:0 15px 60px #0008;object-fit:contain;touch-action:none}.stage canvas[hidden]{display:none}.placeholder{display:grid;text-align:center;place-items:center;gap:0;max-width:360px;padding:42px 24px}.orb{width:110px;height:110px;margin-bottom:28px;border:1px solid #8676ac5c;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 17px #8472bb09,inset 0 0 45px #a890dc18;background:radial-gradient(circle at 35% 30%,#75609260,#22283b 72%);color:#d0b6fc;font:70px/1 Georgia,serif}.placeholder h2{font:500 24px/1.35 Georgia,"Yu Mincho",serif;margin-bottom:9px}.placeholder p{color:#b0b3ca;font-size:13px;line-height:1.9;margin-bottom:22px}.hint{margin-top:14px;color:#9296ad;font-size:11px}.stage-tools{position:absolute;top:14px;left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}.stage-tools>*{pointer-events:auto}.stage-chip{background:#111626bd;border:1px solid #7a819358;color:#e4e5f0;border-radius:8px;padding:7px 10px;font-size:11px;backdrop-filter:blur(10px)}.compare{position:absolute;right:15px;bottom:15px;user-select:none;touch-action:none}.stage-tip{position:absolute;left:15px;bottom:15px;background:#111626ba;border-radius:8px;padding:8px 11px;color:#dedbe8;font-size:11px;pointer-events:none}.below-stage{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;margin-top:13px;color:#a3a7bc;font-size:12px}.sub-actions{display:flex;gap:8px;flex-wrap:wrap}
+.stage{position:relative;min-height:490px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #32374f;border-radius:var(--radius);background-color:#131728;background-image:radial-gradient(circle at 50% 30%,#282b47,transparent 65%),linear-gradient(45deg,#ffffff04 25%,transparent 25%,transparent 75%,#ffffff04 75%),linear-gradient(45deg,#ffffff04 25%,transparent 25%,transparent 75%,#ffffff04 75%);background-size:auto,34px 34px,34px 34px;background-position:0 0,0 0,17px 17px;box-shadow:0 20px 55px #0406134d;isolation:isolate}.stage.drag-over{border-color:var(--accent2);box-shadow:inset 0 0 0 2px var(--accent2),0 20px 55px #0406134d}.stage canvas{display:block;max-width:100%;max-height:min(70vh,760px);width:auto;height:auto;box-shadow:0 15px 60px #0008;object-fit:contain;touch-action:none}.stage canvas[hidden]{display:none}.stage .brush-overlay{position:absolute;max-width:none;max-height:none;pointer-events:none;box-shadow:none;object-fit:fill;z-index:2}.stage .brush-overlay[hidden]{display:none}.placeholder{display:grid;text-align:center;place-items:center;gap:0;max-width:360px;padding:42px 24px}.orb{width:110px;height:110px;margin-bottom:28px;border:1px solid #8676ac5c;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 17px #8472bb09,inset 0 0 45px #a890dc18;background:radial-gradient(circle at 35% 30%,#75609260,#22283b 72%);color:#d0b6fc;font:70px/1 Georgia,serif}.placeholder h2{font:500 24px/1.35 Georgia,"Yu Mincho",serif;margin-bottom:9px}.placeholder p{color:#b0b3ca;font-size:13px;line-height:1.9;margin-bottom:22px}.hint{margin-top:14px;color:#9296ad;font-size:11px}.stage-tools{position:absolute;top:14px;left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none}.stage-tools>*{pointer-events:auto}.stage-chip{background:#111626bd;border:1px solid #7a819358;color:#e4e5f0;border-radius:8px;padding:7px 10px;font-size:11px;backdrop-filter:blur(10px)}.compare{position:absolute;right:15px;bottom:15px;user-select:none;touch-action:none}.stage-tip{position:absolute;left:15px;bottom:15px;background:#111626ba;border-radius:8px;padding:8px 11px;color:#dedbe8;font-size:11px;pointer-events:none}.below-stage{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;margin-top:13px;color:#a3a7bc;font-size:12px}.sub-actions{display:flex;gap:8px;flex-wrap:wrap}
 .sidebar{border:1px solid #32374c;border-radius:var(--radius);background:linear-gradient(160deg,#1a1e2e,#161b2a);box-shadow:0 14px 45px #05071436;overflow:hidden}.sidehead{padding:20px 20px 16px;border-bottom:1px solid var(--stroke);display:flex;align-items:center;justify-content:space-between}.sidehead strong{font-size:15px}.sidehead span{font-size:11px;color:#a2a5bd}.tabs{display:flex;padding:12px 12px 0;gap:5px}.tab{flex:1;border:0;border-radius:9px;padding:10px 4px;background:transparent;color:#a8adc3;font-size:12px;font-weight:700}.tab.active{background:#383148;color:#dfc8ff}.tabpanel{padding:18px 20px 22px;min-height:365px}.tab-title{font-size:12px;color:#b8b4d0;font-weight:700;letter-spacing:.04em;margin:0 0 13px}.tab-note{font-size:11px;color:#9298ad;margin-bottom:16px;line-height:1.7}.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.preset{padding:7px;text-align:left;border:1px solid #373c52;border-radius:12px;background:#222637;color:#f2edf9;transition:all .15s}.preset:hover{border-color:#7d729f}.preset.active{border-color:#c4aafc;box-shadow:inset 0 0 0 1px #c4aafc,0 0 0 2px #c4aafc15}.preset .swatch{height:65px;border-radius:7px;display:block;margin-bottom:8px;position:relative;overflow:hidden}.preset .swatch:after{content:'';position:absolute;left:44%;top:10%;width:45px;height:85px;transform:rotate(32deg);background:#fff3;filter:blur(20px);border-radius:50%}.preset strong{display:block;font-size:12px;padding:0 3px}.preset small{display:block;color:#aab0c2;font-size:10px;padding:2px 3px 4px}.fineprint{border-top:1px solid var(--stroke);padding:12px 19px;color:#878ba4;font-size:10px;line-height:1.7}
-.slider-control{margin:0 0 19px}.slider-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:12px;color:#e4e0ef}.slider-value{font-size:11px;color:#a5f0df;min-width:35px;text-align:right;font-variant-numeric:tabular-nums}.range{appearance:none;-webkit-appearance:none;width:100%;height:5px;margin:0;vertical-align:middle;border-radius:99px;outline:0;background:linear-gradient(90deg,#c5abfa var(--progress,50%),#3d4358 var(--progress,50%))}.range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%;box-shadow:0 1px 6px #0008}.range::-moz-range-thumb{width:11px;height:11px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%}.divide{border:0;border-top:1px solid var(--stroke);margin:20px 0}.aspect-options,.frame-options,.format-options{display:flex;flex-wrap:wrap;gap:6px}.choice{font-size:12px;border:1px solid #3e4358;border-radius:9px;color:#abb0c5;background:#252a3a;padding:9px 11px}.choice.active{color:#e7d8ff;border-color:#a38dc8;background:#433858}.field{display:block;margin:18px 0 0}.field span{font-size:12px;color:#e4e0ef;display:block;margin-bottom:8px}.field input{width:100%;border:1px solid #45485e;border-radius:9px;background:#121725;color:#f3ecff;padding:11px 12px;outline:0}.field input:focus{border-color:#bea8ef}.disclaimer{margin-top:16px;color:#8d93a8;font-size:11px;line-height:1.7}.error{display:none;margin-top:11px;border:1px solid #d86e7970;background:#70323c40;border-radius:9px;padding:11px;color:#ffbec5;font-size:12px}.error.show{display:block}.footer{max-width:1620px;margin:auto;padding:0 50px 30px;color:#777c92;font-size:11px;line-height:1.8}.mobile-save{display:none}
+.slider-control{margin:0 0 19px}.slider-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:12px;color:#e4e0ef}.slider-value{font-size:11px;color:#a5f0df;min-width:35px;text-align:right;font-variant-numeric:tabular-nums}.range{appearance:none;-webkit-appearance:none;width:100%;height:5px;margin:0;vertical-align:middle;border-radius:99px;outline:0;background:linear-gradient(90deg,#c5abfa var(--progress,50%),#3d4358 var(--progress,50%))}.range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%;box-shadow:0 1px 6px #0008}.range::-moz-range-thumb{width:11px;height:11px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%}.divide{border:0;border-top:1px solid var(--stroke);margin:20px 0}.aspect-options,.frame-options,.format-options{display:flex;flex-wrap:wrap;gap:6px}.choice{font-size:12px;border:1px solid #3e4358;border-radius:9px;color:#abb0c5;background:#252a3a;padding:9px 11px}.choice.active{color:#e7d8ff;border-color:#a38dc8;background:#433858}.field{display:block;margin:18px 0 0}.field span{font-size:12px;color:#e4e0ef;display:block;margin-bottom:8px}.field input{width:100%;border:1px solid #45485e;border-radius:9px;background:#121725;color:#f3ecff;padding:11px 12px;outline:0}.field input:focus{border-color:#bea8ef}.brush-enable{width:100%;margin:0 0 14px}.brush-enable.active{background:#364e51;border-color:#86cbbc;color:#d6fff4}.brush-modes{display:flex;gap:9px;margin-bottom:20px}.brush-modes .choice{flex:1}.brush-history{display:flex;gap:7px;flex-wrap:wrap}.brush-history .btn{flex:1}.brush-note{border:1px solid #445068;border-radius:10px;padding:11px 12px;background:#222c3d;color:#c9d4e6;font-size:11px;line-height:1.75;margin-bottom:17px}.brush-stat{font-size:11px;color:#a5b7c6;margin:12px 0 0}.disclaimer{margin-top:16px;color:#8d93a8;font-size:11px;line-height:1.7}.error{display:none;margin-top:11px;border:1px solid #d86e7970;background:#70323c40;border-radius:9px;padding:11px;color:#ffbec5;font-size:12px}.error.show{display:block}.footer{max-width:1620px;margin:auto;padding:0 50px 30px;color:#777c92;font-size:11px;line-height:1.8}.mobile-save{display:none}
 @media(min-width:1100px){.stage{min-height:580px}}@media(max-width:1000px){.shell{grid-template-columns:minmax(0,1fr);max-width:800px}.sidebar{width:100%}.tabpanel{min-height:0}.footer{padding:0 20px 25px}.stage{min-height:430px}}@media(max-width:550px){.topbar{height:70px;padding:0 15px}.brand{gap:9px}.logo{height:36px;width:36px;font-size:25px}.brand h1{font-size:19px}.brand p{font-size:8px;letter-spacing:.14em}.private-label{display:none}.head-actions{gap:6px}.head-actions .btn{padding:9px 10px;font-size:11px}.head-actions #resetBtn{display:none}.shell{padding:19px 12px 30px;gap:20px}.workspace-head{align-items:center}.workspace-title{font-size:29px}.workspace-sub{font-size:11px}.name{max-width:110px}.stage{min-height:360px;border-radius:13px}.stage canvas{max-height:64vh}.placeholder{padding:30px 20px}.orb{height:80px;width:80px;font-size:52px;margin-bottom:22px}.placeholder h2{font-size:22px}.placeholder p{font-size:12px}.sidehead{padding:16px 15px 12px}.tabpanel{padding:17px 16px 20px}.below-stage{font-size:11px}.preset .swatch{height:55px}.stage-tip{max-width:53%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
 </style>
@@ -30,7 +30,7 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
     <div class="workspace-head"><div><div class="section-eyebrow">✦ PHOTO ATELIER</div><h2 class="workspace-title">Your Eorzea, your light.</h2><p class="workspace-sub">エオルゼアの一瞬を、もっと好きな一枚に。</p></div><span id="imageName" class="name"></span></div>
     <div class="stage" id="stage">
       <div class="placeholder" id="placeholder"><div class="orb" aria-hidden="true">✧</div><h2>お気に入りのSSを、もっと素敵に。</h2><p>スクリーンショットを追加して、<br>光や色を自由にデザインしよう。</p><button id="startUpload" class="btn primary">＋ SSを選ぶ</button><div class="hint">PNG / JPG / WebP ・ ドラッグ＆ドロップ対応</div></div>
-      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas>
+      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas><canvas id="brushOverlay" class="brush-overlay" aria-hidden="true" hidden></canvas>
       <div class="stage-tools" id="stageTools" hidden><span id="dimensions" class="stage-chip"></span><button id="changeUpload" class="btn tiny">＋ 別のSSを選ぶ</button></div>
       <div id="dragTip" class="stage-tip" hidden>↔ ドラッグして構図を調整</div>
       <button id="beforeBtn" class="btn tiny compare" hidden aria-label="押している間、加工前の画像を表示">◉ 長押しで加工前</button>
@@ -40,10 +40,21 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="brush" aria-selected="false">ペン</button></nav>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><p class="tab-note">ワンタップで世界観をチェンジ。あとから細かく調整できるよ。</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><hr class="divide"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p><hr class="divide"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div><label class="field"><span>署名テキスト（任意）</span><input id="signature" type="text" maxlength="42" placeholder="例：© Your Character" autocomplete="off"></label></section>
+    <section class="tabpanel" id="panel-brush" role="tabpanel" hidden>
+      <p class="tab-title">なめらかペン</p>
+      <p class="tab-note">髪の毛・肌・輪郭など、気になるところを指やマウスでなぞって、部分的にやわらかく整えます。</p>
+      <button id="brushOnBtn" class="btn brush-enable" type="button" aria-pressed="false">✦ ペンをONにする</button>
+      <div class="brush-note">ペンがONのときは画像をなぞって補正します。トリミング位置を動かしたいときはペンをOFFにしてね。細い毛先や輪郭には小さめのペンがおすすめ。</div>
+      <div class="brush-modes" role="group" aria-label="ペンモード"><button class="choice active" type="button" data-brush-mode="smooth" aria-pressed="true">✦ なめらか</button><button class="choice" type="button" data-brush-mode="erase" aria-pressed="false">⌫ 消しゴム</button></div>
+      <div class="slider-control"><div class="slider-top"><label for="brushSize">ペンの太さ</label><span class="slider-value" id="brushSizeValue">5%</span></div><input type="range" class="range" id="brushSize" min="1" max="20" step="1" value="5"></div>
+      <div class="slider-control"><div class="slider-top"><label for="brushStrength">なめらかさ</label><span class="slider-value" id="brushStrengthValue">70%</span></div><input type="range" class="range" id="brushStrength" min="10" max="100" step="5" value="70"></div>
+      <div class="brush-history"><button id="brushUndo" class="btn tiny" type="button" disabled>↶ 戻す</button><button id="brushRedo" class="btn tiny" type="button" disabled>↷ やり直し</button><button id="brushClear" class="btn tiny" type="button" disabled>すべて消す</button></div>
+      <p class="brush-stat" id="brushStatus" aria-live="polite">まだペンの補正はありません</p>
+    </section>
     <div class="fineprint">非公式のファンメイドツールです。FINAL FANTASY XIV および SQUARE ENIX とは提携していません。アップロードした画像がサーバーに送信されることはありません。</div>
   </aside>
 </main>
@@ -66,7 +77,8 @@ const presets=[
 ];
 const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',signature='',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
-const canvas=$('preview');const ctx=canvas.getContext('2d',{willReadFrequently:false});
+let activeTab='presets',brushEnabled=false,brushMode='smooth',brushSize=5,brushStrength=70,brushStrokes=[],brushRedoStack=[],activeStroke=null,brushPointer=null;
+const canvas=$('preview');const ctx=canvas.getContext('2d',{willReadFrequently:false});const overlay=$('brushOverlay'),overlayCtx=overlay.getContext('2d');
 function clamp(x,min,max){return Math.min(max,Math.max(min,x))}
 function makeCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
 function setError(message){$('error').textContent=message;$('error').classList.toggle('show',!!message)}
@@ -79,7 +91,7 @@ function createControls(){const grid=$('presetGrid');for(const p of presets){con
 for(const [tab,defs] of Object.entries(sliderDefs)){const wrap=$(tab==='color'?'colorSliders':'finishSliders');for(const [key,name,min,max] of defs){const element=document.createElement('div');element.className='slider-control';const id='range-'+key;element.innerHTML=`<div class="slider-top"><label for="${id}"></label><span class="slider-value" id="val-${key}">0</span></div><input type="range" class="range" id="${id}" min="${min}" max="${max}" value="0" step="1">`;element.querySelector('label').textContent=name;const input=element.querySelector('input');input.addEventListener('input',()=>{state[key]=Number(input.value);$('val-'+key).textContent=state[key]>0&&min<0?'+'+state[key]:String(state[key]);setSliderVisual(input);selectedPreset='custom';refreshPresetUI();scheduleRender()});wrap.append(element);setSliderVisual(input)}}}
 function getCrop(){const w=image.naturalWidth,h=image.naturalHeight;if(crop==='original')return{sx:0,sy:0,sw:w,sh:h};const desired=Number(crop);let sw=w,sh=h;if(w/h>desired)sw=h*desired;else sh=w/desired;return{sx:clamp((w-sw)/2+(w-sw)*panX/2,0,w-sw),sy:clamp((h-sh)/2+(h-sh)*panY/2,0,h-sh),sw,sh}}
 function outputSize(maxSide=1400,maxPixels=1800000){const rect=getCrop();const fit=Math.min(1,maxSide/Math.max(rect.sw,rect.sh),Math.sqrt(maxPixels/(rect.sw*rect.sh)));return{w:Math.max(1,Math.round(rect.sw*fit)),h:Math.max(1,Math.round(rect.sh*fit))}}
-function updateDimensions(){if(!image)return;const orig=getCrop();$('dimensions').textContent=`${Math.round(orig.sw)} × ${Math.round(orig.sh)}`;const cropped=crop!=='original';$('dragTip').hidden=!cropped;canvas.style.cursor=cropped?'grab':'default';$('photoStatus').textContent= cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'スライダーで調整 · 長押しで加工前と比較'}
+function updateDimensions(){if(!image)return;const orig=getCrop();$('dimensions').textContent=`${Math.round(orig.sw)} × ${Math.round(orig.sh)}`;const cropped=crop!=='original';$('dragTip').hidden=!cropped||brushEnabled;canvas.style.cursor=brushEnabled?'crosshair':cropped?'grab':'default';$('photoStatus').textContent=brushEnabled?(brushMode==='erase'?'なぞって補正を消す':'髪や輪郭をなぞって、部分的になめらかに'):cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'スライダーで調整 · 長押しで加工前と比較'}
 // ブルーム / ソフトフォーカス用のぼかし処理。
 // CanvasRenderingContext2D.filter は一部の iOS / Safari 環境で
 // 効かないため、縮小画像のピクセルを直接ぼかしてから合成する。
@@ -157,6 +169,46 @@ function applySoftFocus(c,target,power){
  c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
  c.drawImage(soft,0,0,target.width,target.height);c.restore();
 }
+// ペンでなぞった部分だけを、境界が目立たない柔らかいマスクで合成する。
+// ストロークは画像全体での相対位置に保存しているので、切り抜きや書き出し解像度が
+// 変わっても位置が合う。低解像度の作業レイヤーでスマホのメモリ使用を抑える。
+function applyBrushSmoothing(c,target){
+ if(!brushStrokes.some(s=>s.mode==='smooth'))return;
+ const fit=Math.min(1,1600/Math.max(target.width,target.height),Math.sqrt(2000000/(target.width*target.height)));
+ const w=Math.max(1,Math.round(target.width*fit)),h=Math.max(1,Math.round(target.height*fit));
+ const mask=makeCanvas(w,h),m=mask.getContext('2d');
+ const {sx,sy,sw,sh}=getCrop(),min=Math.min(w,h);
+ function coords(pt){return {x:(pt[0]*image.naturalWidth-sx)*w/sw,y:(pt[1]*image.naturalHeight-sy)*h/sh}}
+ for(const stroke of brushStrokes){
+  if(!stroke.points.length)continue;
+  const radius=Math.max(1,min*stroke.size/200);
+  const strength=stroke.mode==='erase'?1:stroke.strength/100;
+  m.globalCompositeOperation=stroke.mode==='erase'?'destination-out':'source-over';
+  const paint=(x,y)=>{
+   if(x<-radius||y<-radius||x>w+radius||y>h+radius)return;
+   const gradient=m.createRadialGradient(x,y,0,x,y,radius);
+   gradient.addColorStop(0,`rgba(255,255,255,${strength})`);
+   gradient.addColorStop(.65,`rgba(255,255,255,${strength})`);
+   gradient.addColorStop(1,'rgba(255,255,255,0)');
+   m.fillStyle=gradient;m.beginPath();m.arc(x,y,radius,0,Math.PI*2);m.fill();
+  };
+  let prev=coords(stroke.points[0]);paint(prev.x,prev.y);
+  for(let i=1;i<stroke.points.length;i++){
+   const next=coords(stroke.points[i]);const d=Math.hypot(next.x-prev.x,next.y-prev.y);
+   const count=Math.min(300,Math.max(1,Math.ceil(d/Math.max(1,radius*.4))));
+   for(let k=1;k<=count;k++)paint(prev.x+(next.x-prev.x)*k/count,prev.y+(next.y-prev.y)*k/count);
+   prev=next;
+  }
+ }
+ m.globalCompositeOperation='source-over';
+ const layer=makeCanvas(w,h),l=layer.getContext('2d',{willReadFrequently:true});
+ l.imageSmoothingQuality='high';l.drawImage(target,0,0,w,h);
+ const pixel=l.getImageData(0,0,w,h);
+ const radius=Math.max(1,Math.round(Math.min(w,h)*.0035));
+ blurPixels(pixel.data,w,h,radius,2);l.putImageData(pixel,0,0);
+ l.globalCompositeOperation='destination-in';l.drawImage(mask,0,0);l.globalCompositeOperation='source-over';
+ c.save();c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';c.drawImage(layer,0,0,target.width,target.height);c.restore();
+}
 function renderInto(target,maxSide,maxPixels){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
 const img=c.getImageData(0,0,w,h),pixels=img.data;
 const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30;
@@ -171,25 +223,93 @@ r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);pixels[i]=r;pixels[i+1]=g;pix
 c.putImageData(img,0,0);
 applyBloom(c,target,state.bloom/100);
 applySoftFocus(c,target,state.softness/100);
+applyBrushSmoothing(c,target);
 if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.createRadialGradient(0,0,.12,0,0,.71);const opacity=state.vignette/100*.74;radial.addColorStop(0,'rgba(10,6,17,0)');radial.addColorStop(.46,'rgba(10,6,17,0)');radial.addColorStop(1,`rgba(9,6,17,${opacity})`);c.fillStyle=radial;c.fillRect(-.5,-.5,1,1);c.restore()}
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
 if(frame==='cinema'){const bar=Math.round(h*.072);c.fillStyle='#09090e';c.fillRect(0,0,w,bar);c.fillRect(0,h-bar,w,bar)}
 if(signature.trim()){const size=Math.max(10,Math.round(w*.018));c.save();c.font=`500 ${size}px sans-serif`;c.textAlign='right';c.textBaseline='bottom';c.shadowColor='#000c';c.shadowBlur=size*.4;c.fillStyle='rgba(255,255,255,.9)';const right=Math.max(10,w*.032);const bottom=frame==='cinema'?h*.086:Math.max(10,h*.036);c.fillText(signature.trim(),w-right,h-bottom,w*.65);c.restore()}
 }
-function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();updateDimensions()}
+function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();updateDimensions();requestAnimationFrame(syncBrushOverlay)}
 function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0)}
 function displayOriginal(){if(!image||!previewCache)return;const {sx,sy,sw,sh}=getCrop();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,sx,sy,sw,sh,0,0,canvas.width,canvas.height)}
 function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);previewJob=requestAnimationFrame(renderPreview)}
-function selectTab(tab){allButtons('.tab').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active))});allButtons('.tabpanel').forEach(p=>p.hidden=p.id!=='panel-'+tab)}
+function selectTab(tab){activeTab=tab;brushEnabled=tab==='brush';allButtons('.tab').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active))});allButtons('.tabpanel').forEach(p=>p.hidden=p.id!=='panel-'+tab);refreshBrushUI();if(image)updateDimensions();drawBrushOverlay()}
+function refreshBrushUI(){
+ $('brushOnBtn').textContent=brushEnabled?'✦ ペン ON（タップでOFF）':'✧ ペンをONにする';
+ $('brushOnBtn').classList.toggle('active',brushEnabled);
+ $('brushOnBtn').setAttribute('aria-pressed',String(brushEnabled));
+ allButtons('[data-brush-mode]').forEach(b=>{const active=b.dataset.brushMode===brushMode;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+ $('brushUndo').disabled=!brushStrokes.length;
+ $('brushRedo').disabled=!brushRedoStack.length;
+ $('brushClear').disabled=!brushStrokes.length;
+ $('brushStatus').textContent=brushStrokes.length?`補正操作 ${brushStrokes.length} 回 · PNG保存にも反映されます`:'まだペンの補正はありません';
+}
+function syncBrushOverlay(){
+ if(!image||canvas.hidden){overlay.hidden=true;return}
+ const r=canvas.getBoundingClientRect(),s=$('stage').getBoundingClientRect();
+ if(!r.width||!r.height)return;
+ overlay.hidden=false;
+ overlay.style.left=(r.left-s.left)+'px';overlay.style.top=(r.top-s.top)+'px';
+ overlay.style.width=r.width+'px';overlay.style.height=r.height+'px';
+ if(overlay.width!==canvas.width)overlay.width=canvas.width;
+ if(overlay.height!==canvas.height)overlay.height=canvas.height;
+ drawBrushOverlay();
+}
+function pointerAt(e){
+ const r=canvas.getBoundingClientRect();
+ const x=clamp((e.clientX-r.left)/r.width,0,1),y=clamp((e.clientY-r.top)/r.height,0,1);
+ const {sx,sy,sw,sh}=getCrop();
+ return {x:x*canvas.width,y:y*canvas.height,u:(sx+x*sw)/image.naturalWidth,v:(sy+y*sh)/image.naturalHeight};
+}
+function brushPointToCanvas(point){const {sx,sy,sw,sh}=getCrop();return {x:(point[0]*image.naturalWidth-sx)*canvas.width/sw,y:(point[1]*image.naturalHeight-sy)*canvas.height/sh}}
+function drawBrushOverlay(){
+ if(!overlay.width)return;
+ overlayCtx.clearRect(0,0,overlay.width,overlay.height);
+ if(!image||!brushEnabled)return;
+ const r=Math.min(overlay.width,overlay.height)*brushSize/200;
+ if(activeStroke&&activeStroke.points.length){
+  overlayCtx.save();overlayCtx.strokeStyle=brushMode==='erase'?'rgba(255,193,193,.6)':'rgba(161,234,220,.5)';
+  overlayCtx.lineWidth=2*r;overlayCtx.lineCap='round';overlayCtx.lineJoin='round';overlayCtx.beginPath();
+  const start=brushPointToCanvas(activeStroke.points[0]);overlayCtx.moveTo(start.x,start.y);
+  if(activeStroke.points.length===1)overlayCtx.lineTo(start.x+.01,start.y+.01);
+  for(const pt of activeStroke.points.slice(1)){const pos=brushPointToCanvas(pt);overlayCtx.lineTo(pos.x,pos.y)}
+  overlayCtx.stroke();overlayCtx.restore();
+ }
+ if(brushPointer){
+  overlayCtx.save();overlayCtx.strokeStyle=brushMode==='erase'?'#ffc7ce':'#bfffe9';
+  overlayCtx.fillStyle=brushMode==='erase'?'rgba(255,193,193,.12)':'rgba(161,234,220,.12)';
+  overlayCtx.lineWidth=Math.max(1,overlay.width/650);overlayCtx.beginPath();overlayCtx.arc(brushPointer.x,brushPointer.y,r,0,2*Math.PI);overlayCtx.fill();overlayCtx.stroke();overlayCtx.restore();
+ }
+}
+function addBrushPoint(p){
+ if(!activeStroke)return;
+ const prev=activeStroke.points[activeStroke.points.length-1];
+ if(prev){const prior=brushPointToCanvas(prev);if(Math.hypot(p.x-prior.x,p.y-prior.y)<Math.max(1,Math.min(canvas.width,canvas.height)*brushSize/700))return}
+ activeStroke.points.push([p.u,p.v]);
+}
+function finishBrushStroke(){
+ if(!activeStroke)return;
+ if(activeStroke.points.length){brushStrokes.push(activeStroke);brushRedoStack=[];scheduleRender()}
+ activeStroke=null;refreshBrushUI();drawBrushOverlay();
+}
+function undoBrush(){if(!brushStrokes.length)return;brushRedoStack.push(brushStrokes.pop());refreshBrushUI();scheduleRender()}
+function redoBrush(){if(!brushRedoStack.length)return;brushStrokes.push(brushRedoStack.pop());refreshBrushUI();scheduleRender()}
+function clearBrush(){if(!brushStrokes.length)return;brushStrokes=[];brushRedoStack=[];refreshBrushUI();scheduleRender()}
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;brushStrokes=[];brushRedoStack=[];activeStroke=null;brushPointer=null;refreshBrushUI();filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 async function saveImage(){if(!image)return;const btn=$('saveBtn');btn.disabled=true;const label=btn.innerHTML;btn.innerHTML='⌛ 保存用に加工中';setError('');await new Promise(resolve=>setTimeout(resolve,20));
 try{const out=makeCanvas(1,1);renderInto(out,5600,20000000);const isPNG=true;const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('export failed')),isPNG?'image/png':'image/jpeg',.96));const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename+'_aetherlight.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}catch(e){console.error(e);setError('保存に失敗しました。サイズが大きい場合は、画像を小さくしてお試しください。')}finally{btn.innerHTML=label;btn.disabled=false}}
-function resetAll(){state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender()}
-createControls();refreshControls();
+function resetAll(){brushStrokes=[];brushRedoStack=[];activeStroke=null;brushPointer=null;refreshBrushUI();state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender()}
+createControls();refreshControls();refreshBrushUI();
+$('brushOnBtn').addEventListener('click',()=>{brushEnabled=!brushEnabled;brushPointer=null;refreshBrushUI();if(image)updateDimensions();drawBrushOverlay()});
+allButtons('[data-brush-mode]').forEach(b=>b.addEventListener('click',()=>{brushMode=b.dataset.brushMode;brushPointer=null;refreshBrushUI();if(image)updateDimensions();drawBrushOverlay()}));
+for(const [id,key] of [['brushSize','brushSize'],['brushStrength','brushStrength']]){const input=$(id);setSliderVisual(input);input.addEventListener('input',()=>{if(key==='brushSize')brushSize=Number(input.value);else brushStrength=Number(input.value);$(id+'Value').textContent=input.value+'%';setSliderVisual(input);drawBrushOverlay()})}
+$('brushUndo').addEventListener('click',undoBrush);$('brushRedo').addEventListener('click',redoBrush);$('brushClear').addEventListener('click',clearBrush);
+if('ResizeObserver' in window)new ResizeObserver(()=>{if(image)syncBrushOverlay()}).observe(canvas);
+window.addEventListener('resize',()=>{if(image)syncBrushOverlay()});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
 allButtons('[data-aspect]').forEach(b=>b.addEventListener('click',()=>{crop=b.dataset.aspect;panX=panY=0;updateChoices('aspect',crop);scheduleRender()}));
 allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.dataset.frame;updateChoices('frame',frame);scheduleRender()}));
@@ -198,8 +318,37 @@ const fileInput=$('fileInput');for(const id of ['startUpload','changeUpload','ne
 $('saveBtn').addEventListener('click',saveImage);$('resetBtn').addEventListener('click',resetAll);$('lowerResetBtn').addEventListener('click',resetAll);
 const stage=$('stage');stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag-over')});stage.addEventListener('dragleave',e=>{if(!stage.contains(e.relatedTarget))stage.classList.remove('drag-over')});stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag-over');uploadFile(e.dataTransfer?.files?.[0])});
 const before=$('beforeBtn');const showBefore=e=>{if(!image)return;e.preventDefault();if(previewCache)displayOriginal()};const showAfter=e=>{if(!image)return;e.preventDefault();if(previewCache)displayResult()};before.addEventListener('pointerdown',e=>{before.setPointerCapture(e.pointerId);showBefore(e)});before.addEventListener('pointerup',showAfter);before.addEventListener('pointercancel',showAfter);before.addEventListener('lostpointercapture',showAfter);before.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')showBefore(e)});before.addEventListener('keyup',showAfter);
-let pointer=null;canvas.addEventListener('pointerdown',e=>{if(!image||crop==='original')return;pointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing'});canvas.addEventListener('pointermove',e=>{if(!pointer||e.pointerId!==pointer.id||!image)return;const current=getCrop();const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;const bounds=canvas.getBoundingClientRect();const extraX=image.naturalWidth-current.sw,extraY=image.naturalHeight-current.sh;if(extraX>0)panX=clamp(panX-2*(dx/bounds.width)*current.sw/extraX,-1,1);if(extraY>0)panY=clamp(panY-2*(dy/bounds.height)*current.sh/extraY,-1,1);pointer.x=e.clientX;pointer.y=e.clientY;scheduleRender()});function endPointer(){pointer=null;canvas.style.cursor=crop==='original'?'default':'grab'}canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&image){e.preventDefault();saveImage()}});
+let pointer=null;
+canvas.addEventListener('pointerdown',e=>{
+ if(!image||e.button!==0)return;
+ if(brushEnabled){e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=pointerAt(e);brushPointer=p;activeStroke={mode:brushMode,size:brushSize,strength:brushStrength,points:[[p.u,p.v]],pointerId:e.pointerId};drawBrushOverlay();return}
+ if(crop==='original')return;
+ pointer={id:e.pointerId,x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!image)return;
+ if(brushEnabled){const p=pointerAt(e);brushPointer=p;
+  if(activeStroke&&activeStroke.pointerId===e.pointerId)addBrushPoint(p);
+  drawBrushOverlay();return}
+ if(!pointer||e.pointerId!==pointer.id)return;
+ const current=getCrop();const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;
+ const bounds=canvas.getBoundingClientRect();const extraX=image.naturalWidth-current.sw,extraY=image.naturalHeight-current.sh;
+ if(extraX>0)panX=clamp(panX-2*(dx/bounds.width)*current.sw/extraX,-1,1);
+ if(extraY>0)panY=clamp(panY-2*(dy/bounds.height)*current.sh/extraY,-1,1);
+ pointer.x=e.clientX;pointer.y=e.clientY;scheduleRender();
+});
+function endPointer(e){
+ if(activeStroke&&e.pointerId===activeStroke.pointerId){finishBrushStroke();if(e.pointerType==='touch'){brushPointer=null;drawBrushOverlay()}}
+ if(pointer&&e.pointerId===pointer.id){pointer=null;canvas.style.cursor=brushEnabled?'crosshair':crop==='original'?'default':'grab'}
+}
+canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);
+canvas.addEventListener('pointerleave',()=>{if(activeStroke)return;brushPointer=null;drawBrushOverlay()});
+document.addEventListener('keydown',e=>{
+ if(!(e.ctrlKey||e.metaKey)||!image||['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;
+ if(e.key.toLowerCase()==='s'){e.preventDefault();saveImage()}
+ else if(e.key.toLowerCase()==='z'&&activeTab==='brush'){e.preventDefault();if(e.shiftKey)redoBrush();else undoBrush()}
+ else if(e.key.toLowerCase()==='y'&&activeTab==='brush'){e.preventDefault();redoBrush()}
+});
 })();
 </script>
 </body>
