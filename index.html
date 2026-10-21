@@ -337,6 +337,7 @@ $('brushOnBtn').addEventListener('click',()=>{brushEnabled=!brushEnabled;brushPo
 allButtons('[data-brush-mode]').forEach(b=>b.addEventListener('click',()=>{brushMode=b.dataset.brushMode;brushPointer=null;refreshBrushUI();if(image)updateDimensions();drawBrushOverlay()}));
 for(const [id,key] of [['brushSize','brushSize'],['brushStrength','brushStrength']]){const input=$(id);setSliderVisual(input);input.addEventListener('input',()=>{if(key==='brushSize')brushSize=Number(input.value);else brushStrength=Number(input.value);$(id+'Value').textContent=input.value+'%';setSliderVisual(input);drawBrushOverlay()})}
 $('brushUndo').addEventListener('click',undoBrush);$('brushRedo').addEventListener('click',redoBrush);$('brushClear').addEventListener('click',clearBrush);
+const stage=$('stage');
 if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
 window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
@@ -345,7 +346,7 @@ allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.da
 $('signature').addEventListener('input',e=>{signature=e.target.value;scheduleRender()});
 const fileInput=$('fileInput');for(const id of ['startUpload','changeUpload','newPhotoBtn'])$(id).addEventListener('click',()=>fileInput.click());fileInput.addEventListener('change',e=>uploadFile(e.target.files?.[0]));
 $('saveBtn').addEventListener('click',saveImage);$('resetBtn').addEventListener('click',resetAll);$('lowerResetBtn').addEventListener('click',resetAll);$('zoomInBtn').addEventListener('click',()=>stepZoom(1.25));$('zoomOutBtn').addEventListener('click',()=>stepZoom(.8));$('zoomResetBtn').addEventListener('click',resetView);
-const stage=$('stage');stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag-over')});stage.addEventListener('dragleave',e=>{if(!stage.contains(e.relatedTarget))stage.classList.remove('drag-over')});stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag-over');uploadFile(e.dataTransfer?.files?.[0])});
+stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag-over')});stage.addEventListener('dragleave',e=>{if(!stage.contains(e.relatedTarget))stage.classList.remove('drag-over')});stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag-over');uploadFile(e.dataTransfer?.files?.[0])});
 const before=$('beforeBtn');const showBefore=e=>{if(!image)return;e.preventDefault();if(previewCache)displayOriginal()};const showAfter=e=>{if(!image)return;e.preventDefault();if(previewCache)displayResult()};before.addEventListener('pointerdown',e=>{before.setPointerCapture(e.pointerId);showBefore(e)});before.addEventListener('pointerup',showAfter);before.addEventListener('pointercancel',showAfter);before.addEventListener('lostpointercapture',showAfter);before.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')showBefore(e)});before.addEventListener('keyup',showAfter);
 let pointer=null;
 canvas.addEventListener('wheel',e=>{
