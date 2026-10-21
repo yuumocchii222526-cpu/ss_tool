@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#111522" />
+<meta name="theme-color" content="#F3F1F7" />
 <meta name="apple-mobile-web-app-title" content="AriesStudio" />
 <meta name="application-name" content="AriesStudio" />
 <title>AriesStudio</title>
@@ -135,6 +135,78 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
   body.editor-ready .compact-legal{padding:4px 8px 6px}
 }
 @media(min-width:801px){.compact-legal{display:none}}
+
+/* v22 — Lavender Greige / Aries Studio. Presentation only: no editing logic changed. */
+:root{color-scheme:light;--bg:#F3F1F7;--panel:#FFFCFE;--panel2:#F6F2FA;--stroke:#E2DCEB;--text:#564E65;--muted:#83798F;--accent:#9180AA;--accent2:#8799BA;--danger:#AB6679}
+html{background:#F3F1F7}
+body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparent 95%),linear-gradient(165deg,#F7F5FA 0%,#F0EEF5 100%);color:var(--text)}
+.topbar{background:#FCFAFEED;border-color:#E5DEEC;box-shadow:0 5px 18px #65537708}
+.brand h1{color:#746682}
+.logo{background:linear-gradient(145deg,#EEE8F6,#E4DFF0);border-color:#D5C9E3;color:#8D7AA6;box-shadow:0 3px 12px #A894B31A}
+.brand p,.private-label,.workspace-sub{color:var(--muted)}
+.private-label:before{color:#92A2C1}
+.section-eyebrow{color:#988AAA}
+.name{color:#837790}
+.btn{background:#FAF8FC;color:#716680;border-color:#DED6E6;box-shadow:0 2px 8px #9683A50D}
+.btn:hover:not(:disabled){background:#F0EAF6;border-color:#CABBD9}
+.btn.primary{background:linear-gradient(112deg,#A397B6,#8D80A5);color:white;border-color:#988BAD;box-shadow:0 8px 19px #8A7BA029}
+.btn.primary:hover:not(:disabled){background:linear-gradient(112deg,#9585AA,#807195)}
+.btn.ghost{background:transparent;color:#716780}
+.stage{background-color:#F8F6FA;background-image:radial-gradient(circle at 50% 20%,#ECE5F4BB,transparent 70%),linear-gradient(45deg,#9F94AB09 25%,transparent 25%,transparent 75%,#9F94AB09 75%),linear-gradient(45deg,#9F94AB09 25%,transparent 25%,transparent 75%,#9F94AB09 75%);border-color:#E5DDEB;box-shadow:0 15px 45px #8675A51B}
+.stage.drag-over{border-color:#9B8CAB;box-shadow:inset 0 0 0 2px #9B8CAB,0 13px 35px #8474A520}
+.stage canvas{box-shadow:0 6px 26px #63587226}
+.orb{border-color:#CEC0E1;background:radial-gradient(circle at 35% 30%,#EEE6F9,#DCD4EB 77%);color:#8975AC;box-shadow:0 0 0 15px #AB97C210,inset 0 0 24px #FFFFFF99}
+.placeholder h2{color:#796B89}
+.placeholder p,.hint,.below-stage{color:#837B92}
+.stage-chip{background:#FFFCFEED;color:#746982;border-color:#E0D8E8;backdrop-filter:blur(10px)}
+.stage-tip{background:#FDF9F4E8;color:#7C7089}
+.sidebar{background:linear-gradient(155deg,#FFFDFF,#F8F5FB);border-color:#E5DEEC;box-shadow:0 12px 35px #85739F18}
+.sidehead{border-color:var(--stroke)}
+.sidehead strong{color:#716382}
+.sidehead span{color:#9489A1}
+.tab{color:#80758F}
+.tab.active{background:#EAE4F2;color:#6A5D7C}
+.tab-title{color:#867794}
+.tab-note,.copyright-hint{color:#8C8197}
+.preset{background:#FFFCFE;color:#6F637E;border-color:#E4DDE9}
+.preset:hover{border-color:#BBAACA}
+.preset.active{border-color:#9F8DB6;box-shadow:inset 0 0 0 1px #9F8DB6,0 0 0 2px #B6A4CD1E}
+.preset small{color:#94899F}
+.fineprint,.disclaimer,.footer{color:#8B8395}
+.slider-top,.field span{color:#665B75}
+.slider-value{color:#8573A2}
+.range{background:linear-gradient(90deg,#A493BA var(--progress,50%),#E6E0ED var(--progress,50%))}
+.range::-webkit-slider-thumb{-webkit-appearance:none;background:#FBF9FD;border-color:#A999BC;box-shadow:0 1px 6px #9F8BAC33}
+.range::-moz-range-thumb{background:#FBF9FD;border-color:#A999BC}
+.divide{border-color:#E3DCE9}
+.choice{background:#FBF9FD;color:#786C88;border-color:#E1D9E8}
+.choice.active{background:#EDE6F4;color:#655675;border-color:#B8A6CB}
+.field input,.copyright-settings .field select{border-color:#DBD3E4;background:#FFFDFF;color:#665A75}
+.field input:focus{border-color:#A794BE}
+.error{background:#FAEDEF;border-color:#E4BAC4;color:#955666}
+.footer-nav a,body.editor-ready .compact-legal a{color:#82749D}
+/* Save sheet retains a darker scrim; its contents use the same soft light theme. */
+.save-dialog{background:#2620348C}
+.save-card{background:linear-gradient(155deg,#FFFCFF,#F4F0F8);border-color:#D9CFE3;box-shadow:0 20px 65px #40304B3F;color:#645970}
+.save-head h2{color:#6D6080}
+.save-info,.save-help{color:#81758F}
+.save-preview-wrap{background:#EEEAF2;border-color:#E0D8E9}
+.save-preview{border-color:#DDD4E4;box-shadow:0 5px 18px #85749633}
+.save-status{color:#776596}
+.save-status.error{color:#A66375}
+.copyright-toggle{color:#70627E}
+.copyright-toggle input{accent-color:#9180AA}
+/* Mobile horizontal editor stays visible and readable in the pale palette. */
+@media(max-width:800px){
+ .tab{border-color:#DDD4E6;background:#FBF9FD;color:#796D88}
+ .tab.active{background:#E8E0EF;border-color:#B9A8CE;color:#675879}
+ body.editor-ready .tabs{border-color:#E5DEEC}
+ body.editor-ready .quick-tool{background:#FCFAFD;border-color:#E3DBEB;color:#756987}
+ body.editor-ready .quick-tool.active{background:#E9E1F1;border-color:#A997BF;color:#655675}
+ body.editor-ready .range{background:linear-gradient(90deg,#A493BA var(--progress,50%),#E6E0ED var(--progress,50%))}
+ body.editor-ready .compact-legal{border-color:#E4DDEB}
+}
+
 </style>
 </head>
 <body class="editor-ready">
