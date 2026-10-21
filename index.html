@@ -207,12 +207,30 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  body.editor-ready .compact-legal{border-color:#E4DDEB}
 }
 
+
+/* v23 — Keep the Aries Studio wordmark visually centered on every screen. */
+.topbar{position:relative}
+.topbar .brand{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);gap:0;white-space:nowrap;z-index:1}
+.topbar .brand h1{text-align:center}
+.topbar .brand .logo{position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);flex:0 0 auto}
+.topbar .head-actions{margin-left:auto;position:relative;z-index:2}
+@media(max-width:800px){
+ .topbar #resetBtn{display:none}
+ .topbar #saveBtn{width:42px;min-width:42px;height:42px;padding:0;gap:0;font-size:21px}
+ .topbar #saveBtn span{display:none}
+ .topbar .brand .logo{right:calc(100% + 9px)}
+}
+@media(max-width:360px){
+ .topbar .brand h1{font-size:17px}
+ .topbar .brand .logo{width:30px;height:30px;font-size:22px;right:calc(100% + 6px)}
+}
+
 </style>
 </head>
 <body class="editor-ready">
 <header class="topbar">
-  <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aries Studio</h1></div></div>
-  <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" disabled>↗ <span>画像を保存</span></button></div>
+  <div class="brand"><div><h1>Aries Studio</h1></div></div>
+  <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" aria-label="画像を保存" disabled>↗ <span>画像を保存</span></button></div>
 </header>
 <main class="shell">
   <section class="workspace" aria-label="画像プレビュー">
