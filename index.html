@@ -225,10 +225,20 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  .topbar .brand .logo{width:30px;height:30px;font-size:22px;right:calc(100% + 6px)}
 }
 
+/* v25 — Home control beside the centered title, no layout shift. */
+.topbar .home-btn{position:relative;z-index:3;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;color:var(--text);border:1px solid var(--stroke);background:var(--panel2);box-shadow:none}
+.topbar .home-btn[hidden]{display:none!important}
+.topbar .home-btn svg{flex:0 0 auto}
+.save-home-btn{margin-top:5px;border-color:var(--stroke);background:var(--panel2);color:var(--text)}
+@media(max-width:550px){
+ .topbar .home-btn{width:42px;min-width:42px;height:42px;padding:0;border-radius:12px}
+ .topbar .home-btn .home-btn-label{display:none}
+}
 </style>
 </head>
 <body class="editor-ready">
 <header class="topbar">
+  <button id="homeBtn" class="btn ghost home-btn" type="button" aria-label="ホームに戻る" title="ホームに戻る" hidden><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-7h6v7"/></svg><span class="home-btn-label">ホーム</span></button>
   <div class="brand"><div><h1>Aries Studio</h1></div></div>
   <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" aria-label="画像を保存" disabled>↗ <span>画像を保存</span></button></div>
 </header>
@@ -279,6 +289,7 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
       <button id="shareToPhotos" class="btn primary save-primary" type="button" hidden>↗ 写真アプリへ保存（共有）</button>
       <a id="openSavedImage" class="btn" target="_blank" rel="noopener">画像を大きく開く</a>
       <a id="downloadSavedImage" class="btn ghost" download>↓ PNGファイルとしてダウンロード</a>
+      <button id="saveHomeBtn" class="btn ghost save-home-btn" type="button">⌂ ホームに戻って次の画像を編集</button>
     </div>
     <p id="saveStatus" class="save-status" role="status" hidden></p>
     <p id="saveHelp" class="save-help">iPhoneでは共有画面にある「画像を保存」を選ぶと、写真アプリに追加できます。表示中の画像を長押しして「写真に追加」を選ぶ方法もあります。</p>
@@ -509,7 +520,7 @@ function selectTab(tab){
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
@@ -593,6 +604,28 @@ function updateCopyrightUI(){
   button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));
  });
 }
+// Return to the empty editor while preserving the horizontal mobile layout.
+// Do not navigate/reload: a second photo can be selected immediately.
+function returnHome(){
+ if(!image)return;
+ if(!window.confirm('ホームに戻りますか？\n現在の画像と編集内容を閉じます。保存していない変更は失われます。'))return;
+ if(!$('saveDialog').hidden)closeSaveDialog();
+ cancelAnimationFrame(previewJob);previewJob=0;
+ if(lastLoadedUrl){URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=null}
+ image=null;previewCache=null;filename='FF14_SS';
+ $('fileInput').value='';$('imageName').textContent='';
+ canvas.hidden=true;canvas.style.transform='';
+ canvas.width=1;canvas.height=1;
+ document.body.classList.remove('has-photo'); // keep editor-ready for horizontal menus
+ $('placeholder').hidden=false;
+ $('stageTools').hidden=true;$('beforeBtn').hidden=true;$('dragTip').hidden=true;
+ $('saveBtn').disabled=true;$('resetBtn').disabled=true;$('lowerResetBtn').disabled=true;
+ $('homeBtn').hidden=true;
+ $('photoStatus').textContent='画像をアップロードすると編集できます';
+ $('dimensions').textContent='';setError('');
+ resetAll();selectTab('presets');
+ window.scrollTo({top:0,behavior:'instant'});
+}
 function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
 createControls();setupQuickTools();refreshControls();updateCopyrightUI();updateZoomUI();
 const stage=$('stage');
@@ -620,6 +653,7 @@ $('saveClose').addEventListener('click',closeSaveDialog);
 $('saveDialog').addEventListener('click',e=>{if(e.target===$('saveDialog'))closeSaveDialog()});
 $('shareToPhotos').addEventListener('click',shareImageToPhotos);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('saveDialog').hidden){e.preventDefault();closeSaveDialog()}});
+$('homeBtn').addEventListener('click',returnHome);$('saveHomeBtn').addEventListener('click',returnHome);
 $('saveBtn').addEventListener('click',saveImage);$('resetBtn').addEventListener('click',resetAll);$('lowerResetBtn').addEventListener('click',resetAll);$('zoomInBtn').addEventListener('click',()=>stepZoom(1.25));$('zoomOutBtn').addEventListener('click',()=>stepZoom(.8));$('zoomResetBtn').addEventListener('click',resetView);
 stage.addEventListener('dragover',e=>{e.preventDefault();stage.classList.add('drag-over')});stage.addEventListener('dragleave',e=>{if(!stage.contains(e.relatedTarget))stage.classList.remove('drag-over')});stage.addEventListener('drop',e=>{e.preventDefault();stage.classList.remove('drag-over');uploadFile(e.dataTransfer?.files?.[0])});
 const before=$('beforeBtn');const showBefore=e=>{if(!image)return;e.preventDefault();if(previewCache)displayOriginal()};const showAfter=e=>{if(!image)return;e.preventDefault();if(previewCache)displayResult()};before.addEventListener('pointerdown',e=>{before.setPointerCapture(e.pointerId);showBefore(e)});before.addEventListener('pointerup',showAfter);before.addEventListener('pointercancel',showAfter);before.addEventListener('lostpointercapture',showAfter);before.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter')showBefore(e)});before.addEventListener('keyup',showAfter);
