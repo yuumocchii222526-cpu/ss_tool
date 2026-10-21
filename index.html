@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#111522" />
-<title>Aetherlight v10 — FF14 SS加工スタジオ</title>
+<title>Aries Studio — FF14 SS加工スタジオ</title>
 <style>
 :root{color-scheme:dark;--bg:#0d101a;--panel:#181c2b;--panel2:#1e2333;--stroke:#30364b;--text:#f4f2fc;--muted:#a2a8bb;--accent:#c8abff;--accent2:#a1eadc;--danger:#ffadad;--radius:18px}
 *{box-sizing:border-box}[hidden]{display:none!important}html{scroll-behavior:smooth}body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--text);background:radial-gradient(ellipse 50% 40% at 15% -10%,#222241aa,transparent 95%),var(--bg);min-height:100vh}
@@ -18,11 +18,15 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
 .slider-control{margin:0 0 19px}.slider-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;font-size:12px;color:#e4e0ef}.slider-value{font-size:11px;color:#a5f0df;min-width:35px;text-align:right;font-variant-numeric:tabular-nums}.range{appearance:none;-webkit-appearance:none;width:100%;height:5px;margin:0;vertical-align:middle;border-radius:99px;outline:0;background:linear-gradient(90deg,#c5abfa var(--progress,50%),#3d4358 var(--progress,50%))}.range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%;box-shadow:0 1px 6px #0008}.range::-moz-range-thumb{width:11px;height:11px;background:#f6edff;border:3px solid #bda4ef;border-radius:50%}.divide{border:0;border-top:1px solid var(--stroke);margin:20px 0}.aspect-options,.frame-options,.format-options{display:flex;flex-wrap:wrap;gap:6px}.choice{font-size:12px;border:1px solid #3e4358;border-radius:9px;color:#abb0c5;background:#252a3a;padding:9px 11px}.choice.active{color:#e7d8ff;border-color:#a38dc8;background:#433858}.field{display:block;margin:18px 0 0}.field span{font-size:12px;color:#e4e0ef;display:block;margin-bottom:8px}.field input{width:100%;border:1px solid #45485e;border-radius:9px;background:#121725;color:#f3ecff;padding:11px 12px;outline:0}.field input:focus{border-color:#bea8ef}.disclaimer{margin-top:16px;color:#8d93a8;font-size:11px;line-height:1.7}.error{display:none;margin-top:11px;border:1px solid #d86e7970;background:#70323c40;border-radius:9px;padding:11px;color:#ffbec5;font-size:12px}.error.show{display:block}.footer{max-width:1620px;margin:auto;padding:0 50px 30px;color:#777c92;font-size:11px;line-height:1.8}.mobile-save{display:none}
 @media(min-width:1100px){.stage{min-height:580px}}@media(max-width:1000px){.shell{grid-template-columns:minmax(0,1fr);max-width:800px}.sidebar{width:100%}.tabpanel{min-height:0}.footer{padding:0 20px 25px}.stage{min-height:430px}}@media(max-width:550px){.topbar{height:70px;padding:0 15px}.brand{gap:9px}.logo{height:36px;width:36px;font-size:25px}.brand h1{font-size:19px}.brand p{font-size:8px;letter-spacing:.14em}.private-label{display:none}.head-actions{gap:6px}.head-actions .btn{padding:9px 10px;font-size:11px}.head-actions #resetBtn{display:none}.shell{padding:19px 12px 30px;gap:20px}.workspace-head{align-items:center}.workspace-title{font-size:29px}.workspace-sub{font-size:11px}.name{max-width:110px}.stage{min-height:360px;border-radius:13px}.stage canvas{max-height:64vh}.placeholder{padding:30px 20px}.orb{height:80px;width:80px;font-size:52px;margin-bottom:22px}.placeholder h2{font-size:22px}.placeholder p{font-size:12px}.sidehead{padding:16px 15px 12px}.tabpanel{padding:17px 16px 20px}.below-stage{font-size:11px}.preset .swatch{height:55px}.stage-tip{max-width:53%}.zoom-controls .btn{padding:7px 9px}.zoom-label{min-width:52px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+/* Legal pages navigation: keep tool layout unchanged */
+.footer-nav{display:flex;flex-wrap:wrap;gap:12px 22px;margin-bottom:13px}
+.footer-nav a{color:#b7ceec;text-decoration:underline;text-underline-offset:3px}
+.footer-nav a:focus-visible{outline:2px solid var(--accent2);outline-offset:4px}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aetherlight</h1><p>FFXIV SCREENSHOT STUDIO</p></div></div>
+  <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aries Studio</h1><p>FFXIV SCREENSHOT STUDIO</p></div></div>
   <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" disabled>↓ <span>画像を保存</span></button></div>
 </header>
 <main class="shell">
@@ -41,20 +45,20 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
     <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
-    <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><p class="tab-note">ワンタップで世界観をチェンジ。血色感・透明感はMeitu風のオリジナル調整だよ。</p><div class="preset-grid" id="presetGrid"></div></section>
+    <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><p class="tab-note">ワンタップで世界観をチェンジ。血色感はMeitu風のオリジナル調整だよ。</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><hr class="divide"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p><hr class="divide"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div><label class="field"><span>署名テキスト（任意）</span><input id="signature" type="text" maxlength="42" placeholder="例：© Your Character" autocomplete="off"></label></section>
     <div class="fineprint">非公式のファンメイドツールです。FINAL FANTASY XIV および SQUARE ENIX とは提携していません。アップロードした画像がサーバーに送信されることはありません。</div>
   </aside>
 </main>
-<footer class="footer">Made for your moments in Eorzea ✦ Aetherlight · Local photo editor</footer>
+<footer class="footer"><nav class="footer-nav" aria-label="サイト情報"><a href="./index.html">ツールのトップへ</a><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav><div>Made for your moments in Eorzea ✦ Aries Studio · Local photo editor</div></footer>
 <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/avif,image/heic,image/heif" class="visually-hidden">
 <script>
 (() => {
 'use strict';
 const $=id=>document.getElementById(id);
-const keys=['brightness','contrast','saturation','warmth','tint','shadows','highlights','fade','bloom','softness','vignette','grain','complexion','translucency'];
-const DEFAULT={brightness:0,contrast:0,saturation:0,warmth:0,tint:0,shadows:0,highlights:0,fade:0,bloom:0,softness:0,vignette:0,grain:0,complexion:0,translucency:0};
+const keys=['brightness','contrast','saturation','warmth','tint','shadows','highlights','fade','bloom','softness','vignette','grain','complexion'];
+const DEFAULT={brightness:0,contrast:0,saturation:0,warmth:0,tint:0,shadows:0,highlights:0,fade:0,bloom:0,softness:0,vignette:0,grain:0,complexion:0};
 const presets=[
  {id:'original',name:'オリジナル',note:'加工なし',swatch:'linear-gradient(135deg,#a7bbca,#6e719d 50%,#d3acc2)',params:{}},
  {id:'eorzea',name:'ナチュラル',note:'自然な色味',swatch:'linear-gradient(135deg,#c6c7a2,#dd9e94 55%,#9389c4)',params:{brightness:9,contrast:-7,saturation:8,warmth:12,shadows:13,highlights:-10,bloom:22,softness:13,vignette:9}},
@@ -62,11 +66,10 @@ const presets=[
  {id:'sakura',name:'ピンク',note:'淡いピンク',swatch:'linear-gradient(135deg,#ffd9cd,#e2a8ca 60%,#9b9bcc)',params:{brightness:15,contrast:-19,saturation:-3,warmth:7,tint:22,highlights:-12,fade:19,bloom:33,softness:20}},
  {id:'starlit',name:'ダーク',note:'暗め・くっきり',swatch:'linear-gradient(135deg,#171e36,#6d518f 55%,#e3c3a0)',params:{brightness:-8,contrast:20,saturation:15,warmth:-7,tint:13,shadows:-10,highlights:12,bloom:43,vignette:36}},
  {id:'sunlit',name:'ウォーム',note:'明るく暖かい',swatch:'linear-gradient(135deg,#d3dfe1,#9adac0 55%,#ebd3a7)',params:{brightness:15,contrast:6,saturation:11,warmth:9,shadows:22,highlights:-19,bloom:15}},
- {id:'rosy',name:'血色感',note:'ほんのり頬色・あたたかさ',swatch:'linear-gradient(135deg,#fbd6c4,#e8a4a9 55%,#d2a9cd)',params:{brightness:9,contrast:-7,saturation:9,warmth:8,tint:9,shadows:12,highlights:-12,complexion:66,translucency:12,bloom:5,softness:5}},
- {id:'clear',name:'透明感',note:'透き通るような光と色',swatch:'linear-gradient(135deg,#e7edff,#b1deed 52%,#c8c5f5)',params:{brightness:13,contrast:-13,saturation:-6,warmth:-12,tint:3,shadows:19,highlights:-17,fade:4,complexion:0,translucency:74,bloom:5,softness:6}},
+ {id:'rosy',name:'血色感',note:'ほんのり頬色・あたたかさ',swatch:'linear-gradient(135deg,#fbd6c4,#e8a4a9 55%,#d2a9cd)',params:{brightness:9,contrast:-7,saturation:9,warmth:8,tint:9,shadows:12,highlights:-12,complexion:66,bloom:5,softness:5}},
  {id:'nostalgia',name:'レトロ',note:'少しくすんだ色味',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
 ];
-const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100],['translucency','透明感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
+const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',signature='',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
@@ -202,7 +205,7 @@ function applySoftFocus(c,target,power){
 }
 function renderInto(target,maxSide,maxPixels){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
 const img=c.getImageData(0,0,w,h),pixels=img.data;
-const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30,complexion=state.complexion/100,translucency=state.translucency/100;
+const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30,complexion=state.complexion/100;
 const cf=(259*(contrast+255))/(255*(259-contrast));
 for(let i=0;i<pixels.length;i+=4){let r=pixels[i],g=pixels[i+1],b=pixels[i+2];const lum=.2126*r+.7152*g+.0722*b,rel=lum/255;const tone=brightness+shadows*(1-rel)*(1-rel)+highlights*rel*rel;
 r+=tone+warmth*.7+tint;g+=tone+warmth*.08-tint*.65;b+=tone-warmth+tint*.15;
@@ -210,8 +213,6 @@ r=(r-128)*cf+128;g=(g-128)*cf+128;b=(b-128)*cf+128;
 const gray=.2126*r+.7152*g+.0722*b;r=gray+(r-gray)*saturation;g=gray+(g-gray)*saturation;b=gray+(b-gray)*saturation;
 // 血色感: warm-colored midtones receive a natural rosy boost, without painting everything pink.
 if(complexion){const warm=clamp((r-b+20)/92,0,1)*clamp((r-g+18)/75,0,1);const mid=clamp((lum-28)/80,0,1)*clamp((252-lum)/84,0,1);const glow=complexion*warm*mid;r+=glow*11;g+=glow*2;b+=glow*3;}
-// 透明感: gently lift shadows, cool highlights and soften yellow cast.
-if(translucency){const lift=translucency*(3+6*(1-rel));r+=lift*.6;g+=lift*.9;b+=lift*1.3;const yellow=clamp((r+b-g*2+10)/85,0,1);g+=translucency*yellow*1.5;}
 
 if(fade){r=r*(1-fade)+147*fade;g=g*(1-fade)+148*fade;b=b*(1-fade)+151*fade}
 if(grain){let n=(i+1)*1664525+1013904223;n^=n>>>13;n=(n*1664525+1013904223)|0;const noise=((n>>>0)/4294967295-.5)*2*grain;r+=noise;g+=noise;b+=noise}
@@ -240,7 +241,7 @@ async function uploadFile(file){if(!file)return;setError('');if(!file.type.start
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
 if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 async function saveImage(){if(!image)return;const btn=$('saveBtn');btn.disabled=true;const label=btn.innerHTML;btn.innerHTML='⌛ 保存用に加工中';setError('');await new Promise(resolve=>setTimeout(resolve,20));
-try{const out=makeCanvas(1,1);renderInto(out,5600,20000000);const isPNG=true;const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('export failed')),isPNG?'image/png':'image/jpeg',.96));const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename+'_aetherlight.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}catch(e){console.error(e);setError('保存に失敗しました。サイズが大きい場合は、画像を小さくしてお試しください。')}finally{btn.innerHTML=label;btn.disabled=false}}
+try{const out=makeCanvas(1,1);renderInto(out,5600,20000000);const isPNG=true;const blob=await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('export failed')),isPNG?'image/png':'image/jpeg',.96));const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename+'_aries_studio.png';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}catch(e){console.error(e);setError('保存に失敗しました。サイズが大きい場合は、画像を小さくしてお試しください。')}finally{btn.innerHTML=label;btn.disabled=false}}
 function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';signature='';$('signature').value='';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
 createControls();refreshControls();updateZoomUI();
 const stage=$('stage');
