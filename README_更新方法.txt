@@ -1,17 +1,17 @@
-Aries Studio v19 — Copyright専用版
+Aries Studio v20 — GitHub Pages差し替え用
 
-変更内容
-・「FFXIV SCREENSHOT STUDIO」の文字を非表示（v18の変更を維持）
-・自由入力の「署名テキスト」機能を削除
-・「仕上げ」→「Copyright」で © SQUARE ENIX を表示・調整可能
-・著作権表示の位置、サイズ、文字フォント、表示ON/OFF、文字内容を調整可能
-・スマホ横型編集UI、ブルーム・ソフトフォーカス、血色感フィルター、iPhone共有画面での保存は維持
-・Copyright表示はプレビューと保存・共有する画像に反映
+修正内容
+・「＋ SSを選ぶ」を「＋ 画像を選ぶ」に変更
+・「別のSSを選ぶ」「SSを追加」も「画像」に統一
+・スマホで画像選択前から横スクロール型の編集画面を表示
+・画像選択後もこれまでどおり写真を見ながら横メニューで調整
+・プライバシーポリシーと利用規約へのリンクはスマホでもアクセス可
+・既存のフィルター・Copyright・iPhone写真保存機能は維持
 
-GitHubへの反映
-1. ZIPを展開する。
-2. リポジトリ ss_tool のトップ（index.htmlがある場所）へ、index.html、privacy.html、terms.html を3ファイル上書きアップロードする。
-3. Commit changesを押し、GitHub Pagesの公開が反映されるのを待つ。
-4. 公開サイトを開き、SSを選んでから「仕上げ」→「Copyright」で調整する。
+反映方法
+1. ZIPを展開する
+2. index.html、privacy.html、terms.html をGitHubリポジトリ ss_tool の一番上（ルート）にアップロードする
+3. 古い同名ファイルを上書きして「Commit changes」を押す
+4. GitHub Pagesの公開が完了したら https://yuumocchii222526-cpu.github.io/ss_tool/?v=20 にアクセスする
 
-注意：実際の権利表記は公開時に著作権者の最新ガイドラインを確認してください。
+注意：ZIPファイルだけをアップロードしたり、フォルダごと入れると既存のトップページは更新されません。

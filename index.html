@@ -112,9 +112,30 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
 .copyright-coordinates .slider-control{margin-bottom:8px;min-width:0}
 .copyright-hint{font-size:11px;color:#9298ad;line-height:1.6;margin-top:12px}
 @media(max-width:800px){body.editor-ready .copyright-settings{border:0;padding:0;margin:0}body.editor-ready .copyright-coordinates{gap:15px}body.editor-ready .copyright-settings .copyright-slider{display:block;margin:16px 4px 8px}body.editor-ready #panel-finish .copyright-settings .slider-control{display:block}}
+
+/* v20: use the split horizontal editor even before the first photo is selected. */
+@media(max-width:800px){
+  body.editor-ready .shell{align-items:stretch}
+  body.editor-ready .workspace{width:100%;min-width:0}
+  body.editor-ready:not(.has-photo) .below-stage{display:none}
+  body.editor-ready:not(.has-photo) .stage{min-height:0}
+  body.editor-ready:not(.has-photo) .placeholder{padding:12px 8px;max-width:100%;gap:4px}
+  body.editor-ready:not(.has-photo) .placeholder .orb{width:68px;height:68px;font-size:45px;margin:0 auto 12px}
+  body.editor-ready:not(.has-photo) .placeholder .btn{min-height:48px;padding:11px 24px}
+  body.editor-ready:not(.has-photo) .placeholder .hint{margin-top:8px;font-size:10px}
+  body.editor-ready .compact-legal{display:flex;justify-content:center;gap:22px;padding:6px 12px 10px;border-top:1px solid var(--stroke);flex:0 0 auto}
+  body.editor-ready .compact-legal a{font-size:11px;color:#b7ceec;text-decoration:underline;text-underline-offset:3px}
+}
+@media(max-width:800px) and (max-height:650px){
+  body.editor-ready:not(.has-photo) .placeholder .orb{width:52px;height:52px;font-size:36px;margin-bottom:4px}
+  body.editor-ready:not(.has-photo) .placeholder{padding:7px 5px}
+  body.editor-ready:not(.has-photo) .placeholder .hint{margin-top:2px}
+  body.editor-ready .compact-legal{padding:4px 8px 6px}
+}
+@media(min-width:801px){.compact-legal{display:none}}
 </style>
 </head>
-<body>
+<body class="editor-ready">
 <header class="topbar">
   <div class="brand"><div class="logo" aria-hidden="true">✧</div><div><h1>Aries Studio</h1></div></div>
   <div class="head-actions"><span class="private-label">画像は端末内で処理</span><button id="resetBtn" class="btn ghost" disabled>↺ リセット</button><button id="saveBtn" class="btn primary" disabled>↗ <span>画像を保存</span></button></div>
@@ -123,13 +144,13 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
   <section class="workspace" aria-label="画像プレビュー">
     <div class="workspace-head"><div class="section-eyebrow">✦ PHOTO ATELIER</div><span id="imageName" class="name"></span></div>
     <div class="stage" id="stage">
-      <div class="placeholder" id="placeholder"><div class="orb" aria-hidden="true">✧</div><button id="startUpload" class="btn primary">＋ SSを選ぶ</button><div class="hint">PNG / JPG / WebP ・ ドラッグ＆ドロップ対応</div></div>
+      <div class="placeholder" id="placeholder"><div class="orb" aria-hidden="true">✧</div><button id="startUpload" class="btn primary">＋ 画像を選ぶ</button><div class="hint">PNG / JPG / WebP ・ ドラッグ＆ドロップ対応</div></div>
       <canvas id="preview" aria-label="加工プレビュー" hidden></canvas>
       <div id="dragTip" class="stage-tip" hidden>↔ ドラッグして構図を調整</div>
       <button id="beforeBtn" class="btn tiny compare" hidden aria-label="押している間、加工前の画像を表示">◉ 長押しで加工前</button>
     </div>
-      <div class="stage-tools" id="stageTools" hidden><div class="stage-meta"><span id="dimensions" class="stage-chip"></span><div class="zoom-controls" aria-label="ズーム操作"><button id="zoomOutBtn" class="btn tiny" type="button" aria-label="縮小">－</button><span id="zoomLabel" class="stage-chip zoom-label" aria-live="polite">100%</span><button id="zoomInBtn" class="btn tiny" type="button" aria-label="拡大">＋</button><button id="zoomResetBtn" class="btn tiny" type="button">100%</button></div></div><button id="changeUpload" class="btn tiny">＋ 別のSSを選ぶ</button></div>
-    <div class="below-stage"><span id="photoStatus">画像をアップロードすると編集できます</span><div class="sub-actions"><button class="btn tiny" id="lowerResetBtn" disabled>↺ 最初から</button><button class="btn tiny" id="newPhotoBtn">＋ SSを追加</button></div></div>
+      <div class="stage-tools" id="stageTools" hidden><div class="stage-meta"><span id="dimensions" class="stage-chip"></span><div class="zoom-controls" aria-label="ズーム操作"><button id="zoomOutBtn" class="btn tiny" type="button" aria-label="縮小">－</button><span id="zoomLabel" class="stage-chip zoom-label" aria-live="polite">100%</span><button id="zoomInBtn" class="btn tiny" type="button" aria-label="拡大">＋</button><button id="zoomResetBtn" class="btn tiny" type="button">100%</button></div></div><button id="changeUpload" class="btn tiny">＋ 別の画像を選ぶ</button></div>
+    <div class="below-stage"><span id="photoStatus">画像をアップロードすると編集できます</span><div class="sub-actions"><button class="btn tiny" id="lowerResetBtn" disabled>↺ 最初から</button><button class="btn tiny" id="newPhotoBtn">＋ 画像を追加</button></div></div>
     <div class="error" id="error" role="alert"></div>
   </section>
   <aside class="sidebar" aria-label="加工ツール">
@@ -152,6 +173,7 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allow
         <p class="copyright-hint">文字は写真の上に表示され、保存画像にも反映されます。</p>
       </div></section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
+    <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
   </aside>
 </main>
 <footer class="footer"><nav class="footer-nav" aria-label="サイト情報"><a href="./index.html">ツールのトップへ</a><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav><div>© 2026 Aries Studio</div></footer>
@@ -395,7 +417,7 @@ function selectTab(tab){
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready');$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
