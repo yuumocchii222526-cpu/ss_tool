@@ -56,14 +56,13 @@ const $=id=>document.getElementById(id);
 const keys=['brightness','contrast','saturation','warmth','tint','shadows','highlights','fade','bloom','softness','vignette','grain'];
 const DEFAULT={brightness:0,contrast:0,saturation:0,warmth:0,tint:0,shadows:0,highlights:0,fade:0,bloom:0,softness:0,vignette:0,grain:0};
 const presets=[
- {id:'original',name:'オリジナル',note:'そのままの美しさ',swatch:'linear-gradient(135deg,#a7bbca,#6e719d 50%,#d3acc2)',params:{}},
- {id:'eorzea',name:'エオルゼア',note:'やわらかな自然光',swatch:'linear-gradient(135deg,#c6c7a2,#dd9e94 55%,#9389c4)',params:{brightness:9,contrast:-7,saturation:8,warmth:12,shadows:13,highlights:-10,bloom:22,softness:13,vignette:9}},
- {id:'moon',name:'月夜の祈り',note:'透明感ある青い夜',swatch:'linear-gradient(135deg,#20394f,#5679a4 55%,#b7a3d9)',params:{brightness:3,contrast:9,saturation:-9,warmth:-28,tint:7,shadows:14,highlights:5,bloom:30,vignette:25}},
- {id:'sakura',name:'花霞',note:'淡い桜の夢',swatch:'linear-gradient(135deg,#ffd9cd,#e2a8ca 60%,#9b9bcc)',params:{brightness:15,contrast:-19,saturation:-3,warmth:7,tint:22,highlights:-12,fade:19,bloom:33,softness:20}},
- {id:'starlit',name:'星灯り',note:'幻想的な陰影',swatch:'linear-gradient(135deg,#171e36,#6d518f 55%,#e3c3a0)',params:{brightness:-8,contrast:20,saturation:15,warmth:-7,tint:13,shadows:-10,highlights:12,bloom:43,vignette:36}},
- {id:'sunlit',name:'陽だまり',note:'明るく澄んだ光',swatch:'linear-gradient(135deg,#d3dfe1,#9adac0 55%,#ebd3a7)',params:{brightness:15,contrast:6,saturation:11,warmth:9,shadows:22,highlights:-19,bloom:15}},
- {id:'golden',name:'黄金の刻',note:'夕暮れのぬくもり',swatch:'linear-gradient(135deg,#7b5a65,#df986b 55%,#f7d09a)',params:{brightness:5,contrast:11,saturation:20,warmth:33,tint:1,highlights:-7,bloom:29,vignette:20}},
- {id:'nostalgia',name:'追憶',note:'フィルムの記憶',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
+ {id:'original',name:'オリジナル',note:'加工なし',swatch:'linear-gradient(135deg,#a7bbca,#6e719d 50%,#d3acc2)',params:{}},
+ {id:'eorzea',name:'ナチュラル',note:'自然な色味',swatch:'linear-gradient(135deg,#c6c7a2,#dd9e94 55%,#9389c4)',params:{brightness:9,contrast:-7,saturation:8,warmth:12,shadows:13,highlights:-10,bloom:22,softness:13,vignette:9}},
+ {id:'moon',name:'ブルー',note:'青みのある色味',swatch:'linear-gradient(135deg,#20394f,#5679a4 55%,#b7a3d9)',params:{brightness:3,contrast:9,saturation:-9,warmth:-28,tint:7,shadows:14,highlights:5,bloom:30,vignette:25}},
+ {id:'sakura',name:'ピンク',note:'淡いピンク',swatch:'linear-gradient(135deg,#ffd9cd,#e2a8ca 60%,#9b9bcc)',params:{brightness:15,contrast:-19,saturation:-3,warmth:7,tint:22,highlights:-12,fade:19,bloom:33,softness:20}},
+ {id:'starlit',name:'ダーク',note:'暗め・くっきり',swatch:'linear-gradient(135deg,#171e36,#6d518f 55%,#e3c3a0)',params:{brightness:-8,contrast:20,saturation:15,warmth:-7,tint:13,shadows:-10,highlights:12,bloom:43,vignette:36}},
+ {id:'sunlit',name:'ウォーム',note:'明るく暖かい',swatch:'linear-gradient(135deg,#d3dfe1,#9adac0 55%,#ebd3a7)',params:{brightness:15,contrast:6,saturation:11,warmth:9,shadows:22,highlights:-19,bloom:15}},
+ {id:'nostalgia',name:'レトロ',note:'少しくすんだ色味',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
 ];
 const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',signature='',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
@@ -81,23 +80,97 @@ for(const [tab,defs] of Object.entries(sliderDefs)){const wrap=$(tab==='color'?'
 function getCrop(){const w=image.naturalWidth,h=image.naturalHeight;if(crop==='original')return{sx:0,sy:0,sw:w,sh:h};const desired=Number(crop);let sw=w,sh=h;if(w/h>desired)sw=h*desired;else sh=w/desired;return{sx:clamp((w-sw)/2+(w-sw)*panX/2,0,w-sw),sy:clamp((h-sh)/2+(h-sh)*panY/2,0,h-sh),sw,sh}}
 function outputSize(maxSide=1400,maxPixels=1800000){const rect=getCrop();const fit=Math.min(1,maxSide/Math.max(rect.sw,rect.sh),Math.sqrt(maxPixels/(rect.sw*rect.sh)));return{w:Math.max(1,Math.round(rect.sw*fit)),h:Math.max(1,Math.round(rect.sh*fit))}}
 function updateDimensions(){if(!image)return;const orig=getCrop();$('dimensions').textContent=`${Math.round(orig.sw)} × ${Math.round(orig.sh)}`;const cropped=crop!=='original';$('dragTip').hidden=!cropped;canvas.style.cursor=cropped?'grab':'default';$('photoStatus').textContent= cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'スライダーで調整 · 長押しで加工前と比較'}
+// ブルーム / ソフトフォーカス用のぼかし処理。
+// CanvasRenderingContext2D.filter は一部の iOS / Safari 環境で
+// 効かないため、縮小画像のピクセルを直接ぼかしてから合成する。
+function blurPixels(data,w,h,radius,passes=2){
+ radius=Math.max(1,Math.floor(radius));
+ const temp=new Uint8ClampedArray(data.length),window=radius*2+1;
+ for(let pass=0;pass<passes;pass++){
+  // horizontal: sliding window, O(width * height)
+  for(let y=0;y<h;y++){
+   const row=y*w*4;let r=0,g=0,b=0;
+   for(let k=-radius;k<=radius;k++){
+    const j=row+Math.min(w-1,Math.max(0,k))*4;
+    r+=data[j];g+=data[j+1];b+=data[j+2];
+   }
+   for(let x=0;x<w;x++){
+    const j=row+x*4;
+    temp[j]=r/window;temp[j+1]=g/window;temp[j+2]=b/window;temp[j+3]=255;
+    const remove=row+Math.max(0,x-radius)*4;
+    const add=row+Math.min(w-1,x+radius+1)*4;
+    r+=data[add]-data[remove];g+=data[add+1]-data[remove+1];b+=data[add+2]-data[remove+2];
+   }
+  }
+  // vertical: sliding window, O(width * height)
+  for(let x=0;x<w;x++){
+   let r=0,g=0,b=0;
+   for(let k=-radius;k<=radius;k++){
+    const j=(Math.min(h-1,Math.max(0,k))*w+x)*4;
+    r+=temp[j];g+=temp[j+1];b+=temp[j+2];
+   }
+   for(let y=0;y<h;y++){
+    const j=(y*w+x)*4;
+    data[j]=r/window;data[j+1]=g/window;data[j+2]=b/window;data[j+3]=255;
+    const remove=(Math.max(0,y-radius)*w+x)*4;
+    const add=(Math.min(h-1,y+radius+1)*w+x)*4;
+    r+=temp[add]-temp[remove];g+=temp[add+1]-temp[remove+1];b+=temp[add+2]-temp[remove+2];
+   }
+  }
+ }
+}
+function smallCopy(source,shrink=5){
+ const scale=Math.min(1,1/shrink,850/Math.max(source.width,source.height));
+ const w=Math.max(1,Math.round(source.width*scale)),h=Math.max(1,Math.round(source.height*scale));
+ const out=makeCanvas(w,h),context=out.getContext('2d',{willReadFrequently:true});
+ context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';
+ context.drawImage(source,0,0,w,h);
+ return out;
+}
+function applyBloom(c,target,power){
+ if(power<=0)return;
+ const glow=smallCopy(target,5),g=glow.getContext('2d',{willReadFrequently:true});
+ const frame=g.getImageData(0,0,glow.width,glow.height),p=frame.data;
+ // ハイライトだけを抽出し、暗い場所は光らせない。
+ for(let i=0;i<p.length;i+=4){
+  const r=p[i],green=p[i+1],b=p[i+2];
+  const luminance=.2126*r+.7152*green+.0722*b;
+  const peak=Math.max(r,green,b);
+  const light=Math.max(0,Math.min(1,((luminance*.68+peak*.32)-105)/125*1.45));
+  p[i]=r*light;p[i+1]=green*light;p[i+2]=b*light;p[i+3]=255;
+ }
+ const radius=Math.max(2,Math.round(Math.min(glow.width,glow.height)*(.016+power*.040)));
+ blurPixels(p,glow.width,glow.height,radius,2);
+ g.putImageData(frame,0,0);
+ c.save();c.globalCompositeOperation='screen';c.globalAlpha=Math.min(1,power*.94);
+ c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.drawImage(glow,0,0,target.width,target.height);c.restore();
+}
+function applySoftFocus(c,target,power){
+ if(power<=0)return;
+ const soft=smallCopy(target,4),s=soft.getContext('2d',{willReadFrequently:true});
+ const frame=s.getImageData(0,0,soft.width,soft.height);
+ const radius=Math.max(1,Math.round(Math.min(soft.width,soft.height)*(.006+power*.024)));
+ blurPixels(frame.data,soft.width,soft.height,radius,2);
+ s.putImageData(frame,0,0);
+ c.save();c.globalAlpha=Math.min(.92,power*.88);
+ c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.drawImage(soft,0,0,target.width,target.height);c.restore();
+}
 function renderInto(target,maxSide,maxPixels){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
 const img=c.getImageData(0,0,w,h),pixels=img.data;
 const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30;
 const cf=(259*(contrast+255))/(255*(259-contrast));
-let bloomPixels=null;
-if(state.bloom>0)bloomPixels=c.createImageData(w,h);
 for(let i=0;i<pixels.length;i+=4){let r=pixels[i],g=pixels[i+1],b=pixels[i+2];const lum=.2126*r+.7152*g+.0722*b,rel=lum/255;const tone=brightness+shadows*(1-rel)*(1-rel)+highlights*rel*rel;
 r+=tone+warmth*.7+tint;g+=tone+warmth*.08-tint*.65;b+=tone-warmth+tint*.15;
 r=(r-128)*cf+128;g=(g-128)*cf+128;b=(b-128)*cf+128;
 const gray=.2126*r+.7152*g+.0722*b;r=gray+(r-gray)*saturation;g=gray+(g-gray)*saturation;b=gray+(b-gray)*saturation;
 if(fade){r=r*(1-fade)+147*fade;g=g*(1-fade)+148*fade;b=b*(1-fade)+151*fade}
 if(grain){let n=(i+1)*1664525+1013904223;n^=n>>>13;n=(n*1664525+1013904223)|0;const noise=((n>>>0)/4294967295-.5)*2*grain;r+=noise;g+=noise;b+=noise}
-r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);pixels[i]=r;pixels[i+1]=g;pixels[i+2]=b;
-if(bloomPixels){const light=clamp((.2126*r+.7152*g+.0722*b-145)*2.2,0,255);bloomPixels.data[i]=r;bloomPixels.data[i+1]=g;bloomPixels.data[i+2]=b;bloomPixels.data[i+3]=light}}
+r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);pixels[i]=r;pixels[i+1]=g;pixels[i+2]=b;}
 c.putImageData(img,0,0);
-if(bloomPixels){const glow=makeCanvas(w,h);glow.getContext('2d').putImageData(bloomPixels,0,0);c.save();c.globalCompositeOperation='screen';c.globalAlpha=state.bloom/100*.72;c.filter=`blur(${Math.max(3,Math.round(Math.min(w,h)*.017))}px)`;c.drawImage(glow,0,0);c.restore()}
-if(state.softness){const soft=makeCanvas(w,h);soft.getContext('2d').drawImage(target,0,0);c.save();c.globalAlpha=state.softness/100*.48;c.filter=`blur(${Math.max(2,Math.round(Math.min(w,h)*.008))}px)`;c.drawImage(soft,0,0);c.restore()}
+applyBloom(c,target,state.bloom/100);
+applySoftFocus(c,target,state.softness/100);
 if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.createRadialGradient(0,0,.12,0,0,.71);const opacity=state.vignette/100*.74;radial.addColorStop(0,'rgba(10,6,17,0)');radial.addColorStop(.46,'rgba(10,6,17,0)');radial.addColorStop(1,`rgba(9,6,17,${opacity})`);c.fillStyle=radial;c.fillRect(-.5,-.5,1,1);c.restore()}
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
