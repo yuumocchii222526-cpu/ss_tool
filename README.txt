@@ -1,10 +1,11 @@
-AriesStudio v29  背景ぼかし削除版
+AriesStudio v30：消しゴム・Copyright編集を削除
 
-変更点
-- v28で追加した「背景ぼかし」「ピント位置」「AI奥行き解析」を削除
-- 「指で消す（無料）」と、血色感、ブルーム、ソフトフォーカス、iPhone保存、ホームボタン、Copyright設定は継続
-- プライバシーポリシーから使用しなくなったAIモデル配信関連の説明を除外
+変更内容
+・「指で消す」メニューおよび補修処理を削除
+・Copyright設定と写真への文字合成を削除
+・横スクロール編集、色調整、フィルター、ブルーム、ソフトフォーカス、ホームボタン、写真アプリへの保存は維持
+・ポリシーの古い消しゴム機能への言及を修正
 
-GitHubへの反映
-ZIPを解凍し、index.html / privacy.html / terms.html を ss_tool リポジトリの公開フォルダに上書きしてコミットしてください。
-公開後に https://yuumocchii222526-cpu.github.io/ss_tool/?v=29 で表示を確認してください。
+公開方法
+ZIPを展開し、index.html / privacy.html / terms.html をGitHubリポジトリ ss_tool のルートに上書きして Commit changes。公開処理が完了したら ?v=30 を付けて確認。
+※フッターの「© 2026 Aries Studio」はサイト自身の著作権表記で、画像に文字を入れる機能ではありません。
