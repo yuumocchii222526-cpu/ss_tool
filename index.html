@@ -234,6 +234,21 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  .topbar .home-btn{width:42px;min-width:42px;height:42px;padding:0;border-radius:12px}
  .topbar .home-btn .home-btn-label{display:none}
 }
+
+/* v26 — AI text removal prototype. UI only, no network or image modification. */
+.tab-beta{font-size:10px;opacity:.75;margin-left:3px;font-weight:500}
+.ai-head{margin-bottom:10px}.ai-head .tab-title{margin-bottom:6px}
+.ai-label{display:inline-block;font-size:10px;font-weight:600;color:#756487;background:#EEE9F4;border:1px solid #DBD0E7;border-radius:99px;padding:3px 9px;margin-left:7px;letter-spacing:0}
+.ai-example-group{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;margin-bottom:13px;padding-bottom:3px}
+.ai-example{flex:0 0 auto;border:1px solid #DCD3E6;background:#FBF8FD;color:#766888;border-radius:100px;padding:8px 11px;font-size:12px;cursor:pointer}
+.ai-example:hover,.ai-example:focus-visible{border-color:#A998C2;background:#F1ECF6}
+.ai-field{display:block;margin:5px 0 7px;color:#665775;font-size:13px;font-weight:700}
+.ai-prompt{width:100%;min-height:76px;resize:vertical;padding:11px 12px;border:1px solid #DDD3E7;border-radius:11px;background:#FEFCFF;color:#5C4C70;font:inherit;font-size:14px;line-height:1.6}
+.ai-prompt:focus-visible{outline:2px solid #B6A5CC;outline-offset:2px}
+.ai-action-row{display:flex;gap:8px;margin:10px 0 12px}.ai-action-row .btn{font-size:12px}
+.ai-review-result{margin:9px 0 12px;border:1px solid #D9D0E5;border-radius:11px;background:#F2EEF7;padding:10px 12px;font-size:12px;color:#62546F;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
+.ai-limit,.ai-rights{font-size:11px;line-height:1.65;color:#85778F;margin:8px 0}.ai-limit strong{color:#716081}.ai-rights a{color:#786695;text-underline-offset:2px}
+@media(max-width:800px){body.editor-ready #panel-ai{padding:10px 12px 18px}body.editor-ready #panel-ai .ai-head .tab-note{margin-bottom:8px}body.editor-ready #panel-ai .ai-example-group{margin-bottom:8px}body.editor-ready #panel-ai .ai-prompt{min-height:68px;max-height:120px}body.editor-ready #panel-ai .ai-action-row{margin:7px 0}}
 </style>
 </head>
 <body class="editor-ready">
@@ -257,7 +272,7 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="ai" aria-selected="false">AI文字消し <span class="tab-beta">試作</span></button></nav>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div>
@@ -274,6 +289,20 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
         </div>
         <p class="copyright-hint">文字は写真の上に表示され、保存画像にも反映されます。</p>
       </div></section>
+    <section class="tabpanel" id="panel-ai" role="tabpanel" hidden>
+      <div class="ai-head"><p class="tab-title">AI文字消し <span class="ai-label">画面の試作版</span></p><p class="tab-note">文章で消したい文字を指定する機能の準備画面です。現在は文字の自動検出・削除はできません。</p></div>
+      <div class="ai-example-group" role="group" aria-label="指示の例">
+        <button type="button" class="ai-example" data-ai-example="画像内の文字をすべて消して、背景を自然に補完して">全部の文字</button>
+        <button type="button" class="ai-example" data-ai-example="画像の右上にある文字だけ消して、背景を自然に補完して">右上の文字</button>
+        <button type="button" class="ai-example" data-ai-example="画像の中央にある文字だけ消して、背景を自然に補完して">中央の文字</button>
+      </div>
+      <label class="ai-field" for="aiPrompt">消したい文字の指示</label>
+      <textarea id="aiPrompt" class="ai-prompt" rows="3" maxlength="300" placeholder="例：右上の白い文字だけ消して、背景を自然にして"></textarea>
+      <div class="ai-action-row"><button id="aiReview" type="button" class="btn primary ai-review">指示内容を確認</button><button id="aiClear" type="button" class="btn ghost">クリア</button></div>
+      <div id="aiReviewResult" class="ai-review-result" role="status" aria-live="polite" hidden></div>
+      <p class="ai-limit"><strong>現在は試作版：</strong>この画面では指示の内容確認のみできます。画像をAIへ送信することも、文字を消すこともありません。実際の消去には将来のAI接続が必要です。</p>
+      <p class="ai-rights">著作権表示・クレジットなど、他者の権利を侵害する目的では使用しないでください。<a href="./terms.html">利用規約</a></p>
+    </section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
     <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
   </aside>
@@ -514,13 +543,13 @@ function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);prev
 function selectTab(tab){
  activeTab=tab;
  allButtons('.tab').forEach(b=>{const selected=b.dataset.tab===tab;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected))});
- allButtons('.tabpanel').forEach(p=>p.hidden=p.id!=='panel-'+tab);
+ allButtons('.tabpanel').forEach(p=>{p.hidden=p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
  if(image)updateDimensions();
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;clearAiPrompt();filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
@@ -607,6 +636,7 @@ function updateCopyrightUI(){
 // Return to the empty editor while preserving the horizontal mobile layout.
 // Do not navigate/reload: a second photo can be selected immediately.
 function returnHome(){
+ clearAiPrompt();
  if(!image)return;
  if(!window.confirm('ホームに戻りますか？\n現在の画像と編集内容を閉じます。保存していない変更は失われます。'))return;
  if(!$('saveDialog').hidden)closeSaveDialog();
@@ -632,6 +662,25 @@ const stage=$('stage');
 if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
 window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
+// The prototype deliberately does not call an AI API or change image pixels.
+function clearAiPrompt(){
+ $('aiPrompt').value='';$('aiReviewResult').hidden=true;$('aiReviewResult').textContent='';
+}
+allButtons('[data-ai-example]').forEach(button=>button.addEventListener('click',()=>{
+ $('aiPrompt').value=button.dataset.aiExample;
+ $('aiReviewResult').hidden=true;
+ $('aiPrompt').focus({preventScroll:true});
+}));
+$('aiClear').addEventListener('click',clearAiPrompt);
+$('aiPrompt').addEventListener('input',()=>{$('aiReviewResult').hidden=true});
+$('aiReview').addEventListener('click',()=>{
+ const prompt=$('aiPrompt').value.trim(),result=$('aiReviewResult');
+ result.hidden=false;
+ if(!image){result.textContent='まず上の「画像を選ぶ」から写真を読み込んでね。';return}
+ if(!prompt){result.textContent='消したい文字の場所や内容を入力してね。';$('aiPrompt').focus({preventScroll:true});return}
+ result.textContent='入力内容を確認しました：\n「'+prompt+'」\n\n※ これは処理内容の確認用プレビューです。現時点では文字の検出・消去は実行されていません。';
+});
+
 allButtons('[data-aspect]').forEach(b=>b.addEventListener('click',()=>{crop=b.dataset.aspect;panX=panY=0;resetView();updateChoices('aspect',crop);scheduleRender()}));
 allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.dataset.frame;updateChoices('frame',frame);scheduleRender()}));
 $('copyrightEnabled').addEventListener('change',e=>{copyrightSettings.enabled=e.target.checked;scheduleRender()});
