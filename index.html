@@ -235,20 +235,32 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  .topbar .home-btn .home-btn-label{display:none}
 }
 
-/* v26 — AI text removal prototype. UI only, no network or image modification. */
-.tab-beta{font-size:10px;opacity:.75;margin-left:3px;font-weight:500}
-.ai-head{margin-bottom:10px}.ai-head .tab-title{margin-bottom:6px}
-.ai-label{display:inline-block;font-size:10px;font-weight:600;color:#756487;background:#EEE9F4;border:1px solid #DBD0E7;border-radius:99px;padding:3px 9px;margin-left:7px;letter-spacing:0}
-.ai-example-group{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;white-space:nowrap;margin-bottom:13px;padding-bottom:3px}
-.ai-example{flex:0 0 auto;border:1px solid #DCD3E6;background:#FBF8FD;color:#766888;border-radius:100px;padding:8px 11px;font-size:12px;cursor:pointer}
-.ai-example:hover,.ai-example:focus-visible{border-color:#A998C2;background:#F1ECF6}
-.ai-field{display:block;margin:5px 0 7px;color:#665775;font-size:13px;font-weight:700}
-.ai-prompt{width:100%;min-height:76px;resize:vertical;padding:11px 12px;border:1px solid #DDD3E7;border-radius:11px;background:#FEFCFF;color:#5C4C70;font:inherit;font-size:14px;line-height:1.6}
-.ai-prompt:focus-visible{outline:2px solid #B6A5CC;outline-offset:2px}
-.ai-action-row{display:flex;gap:8px;margin:10px 0 12px}.ai-action-row .btn{font-size:12px}
-.ai-review-result{margin:9px 0 12px;border:1px solid #D9D0E5;border-radius:11px;background:#F2EEF7;padding:10px 12px;font-size:12px;color:#62546F;line-height:1.8;overflow-wrap:anywhere;white-space:pre-wrap}
-.ai-limit,.ai-rights{font-size:11px;line-height:1.65;color:#85778F;margin:8px 0}.ai-limit strong{color:#716081}.ai-rights a{color:#786695;text-underline-offset:2px}
-@media(max-width:800px){body.editor-ready #panel-ai{padding:10px 12px 18px}body.editor-ready #panel-ai .ai-head .tab-note{margin-bottom:8px}body.editor-ready #panel-ai .ai-example-group{margin-bottom:8px}body.editor-ready #panel-ai .ai-prompt{min-height:68px;max-height:120px}body.editor-ready #panel-ai .ai-action-row{margin:7px 0}}
+/* v28 — light lavender depth-of-field editor */
+.depth-actions{display:flex;gap:7px;flex-wrap:wrap;margin:5px 0 11px}
+.depth-actions .btn{flex:1 1 auto;white-space:normal;min-height:38px}
+.depth-actions .btn.active{background:#DED5EB;border-color:#9C8AB5;color:#554568}
+.depth-control{margin:8px 4px 12px}
+.depth-status{font-size:12px;line-height:1.65;color:#6E5E83;min-height:24px;margin:7px 1px}
+.depth-note{font-size:11px;color:#887E93;line-height:1.6;margin:4px 1px}
+.depth-focus-marker{position:absolute;z-index:5;pointer-events:none;transform:translate(-50%,-50%);width:30px;height:30px;line-height:26px;border:2px solid white;box-shadow:0 0 0 1px #715C94,0 1px 8px #4C3865A0;border-radius:50%;text-align:center;font-size:20px;font-weight:300;color:white;background:#8D70BC8A}
+.depth-focus-marker[hidden]{display:none}
+@media(max-width:800px){body.editor-ready #panel-depth{padding:9px 13px 14px}.depth-actions .btn{padding:8px 9px;min-height:34px}.depth-control{margin:5px 4px 9px}.depth-status{margin:4px 1px}.depth-note{line-height:1.45}}
+
+/* v27 — local finger retouch brush */
+/* 指で消す: プレビューの上にだけ一時ストロークを重ねる */
+.erase-overlay{position:absolute;z-index:2;pointer-events:none;max-width:none!important;max-height:none!important;box-shadow:none!important;object-fit:fill!important;transform:none!important;touch-action:none}
+.erase-panel-note{font-size:12px;color:#82758e;line-height:1.6;margin-bottom:10px}
+.erase-mode-row,.erase-button-row{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}
+.erase-mode-row .btn{flex:1}.erase-mode-row .btn.active{background:#ddd3e9;border-color:#9e8eb8;color:#59496f}
+.erase-mode-row .btn:focus-visible,.erase-button-row .btn:focus-visible{outline:2px solid #9e8eb8}
+.erase-size-control{margin:14px 0 8px}.erase-size-control input{width:100%}
+.erase-feedback{color:#675c79;font-size:12px;line-height:1.65;margin:9px 0;min-height:1.6em}
+.erase-limit{color:#8b8196;font-size:11px;line-height:1.7;margin:9px 0}.erase-limit a{color:#786695}
+.erase-button-row .btn{font-size:12px;flex:1}
+body.erase-active #preview{cursor:crosshair}
+body.erase-moving #preview{cursor:grab}
+@media(max-width:800px){body.editor-ready #panel-erase{padding:9px 14px 15px}.erase-panel-note{margin-bottom:5px;line-height:1.45}.erase-mode-row,.erase-button-row{margin:6px 0}.erase-size-control{margin:5px 0 2px}.erase-limit{margin:5px 0}}
+
 </style>
 </head>
 <body class="editor-ready">
@@ -262,17 +274,18 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
     <div class="workspace-head"><div class="section-eyebrow">✦ PHOTO ATELIER</div><span id="imageName" class="name"></span></div>
     <div class="stage" id="stage">
       <div class="placeholder" id="placeholder"><div class="orb" aria-hidden="true">✧</div><button id="startUpload" class="btn primary">＋ 画像を選ぶ</button><div class="hint">PNG / JPG / WebP ・ ドラッグ＆ドロップ対応</div></div>
-      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas>
+      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas><canvas id="eraseOverlay" class="erase-overlay" aria-hidden="true" hidden></canvas>
       <div id="dragTip" class="stage-tip" hidden>↔ ドラッグして構図を調整</div>
       <button id="beforeBtn" class="btn tiny compare" hidden aria-label="押している間、加工前の画像を表示">◉ 長押しで加工前</button>
     </div>
+      <span id="depthFocusMarker" class="depth-focus-marker" hidden aria-hidden="true">＋</span>
       <div class="stage-tools" id="stageTools" hidden><div class="stage-meta"><span id="dimensions" class="stage-chip"></span><div class="zoom-controls" aria-label="ズーム操作"><button id="zoomOutBtn" class="btn tiny" type="button" aria-label="縮小">－</button><span id="zoomLabel" class="stage-chip zoom-label" aria-live="polite">100%</span><button id="zoomInBtn" class="btn tiny" type="button" aria-label="拡大">＋</button><button id="zoomResetBtn" class="btn tiny" type="button">100%</button></div></div><button id="changeUpload" class="btn tiny">＋ 別の画像を選ぶ</button></div>
     <div class="below-stage"><span id="photoStatus">画像をアップロードすると編集できます</span><div class="sub-actions"><button class="btn tiny" id="lowerResetBtn" disabled>↺ 最初から</button><button class="btn tiny" id="newPhotoBtn">＋ 画像を追加</button></div></div>
     <div class="error" id="error" role="alert"></div>
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="ai" aria-selected="false">AI文字消し <span class="tab-beta">試作</span></button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="depth" aria-selected="false">背景ぼかし</button><button class="tab" role="tab" data-tab="erase" aria-selected="false">指で消す</button></nav>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div>
@@ -289,19 +302,22 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
         </div>
         <p class="copyright-hint">文字は写真の上に表示され、保存画像にも反映されます。</p>
       </div></section>
-    <section class="tabpanel" id="panel-ai" role="tabpanel" hidden>
-      <div class="ai-head"><p class="tab-title">AI文字消し <span class="ai-label">画面の試作版</span></p><p class="tab-note">文章で消したい文字を指定する機能の準備画面です。現在は文字の自動検出・削除はできません。</p></div>
-      <div class="ai-example-group" role="group" aria-label="指示の例">
-        <button type="button" class="ai-example" data-ai-example="画像内の文字をすべて消して、背景を自然に補完して">全部の文字</button>
-        <button type="button" class="ai-example" data-ai-example="画像の右上にある文字だけ消して、背景を自然に補完して">右上の文字</button>
-        <button type="button" class="ai-example" data-ai-example="画像の中央にある文字だけ消して、背景を自然に補完して">中央の文字</button>
-      </div>
-      <label class="ai-field" for="aiPrompt">消したい文字の指示</label>
-      <textarea id="aiPrompt" class="ai-prompt" rows="3" maxlength="300" placeholder="例：右上の白い文字だけ消して、背景を自然にして"></textarea>
-      <div class="ai-action-row"><button id="aiReview" type="button" class="btn primary ai-review">指示内容を確認</button><button id="aiClear" type="button" class="btn ghost">クリア</button></div>
-      <div id="aiReviewResult" class="ai-review-result" role="status" aria-live="polite" hidden></div>
-      <p class="ai-limit"><strong>現在は試作版：</strong>この画面では指示の内容確認のみできます。画像をAIへ送信することも、文字を消すこともありません。実際の消去には将来のAI接続が必要です。</p>
-      <p class="ai-rights">著作権表示・クレジットなど、他者の権利を侵害する目的では使用しないでください。<a href="./terms.html">利用規約</a></p>
+    <section class="tabpanel" id="panel-depth" role="tabpanel" hidden>
+      <p class="tab-title">背景ぼかし・被写界深度</p>
+      <div class="slider-control depth-control"><div class="slider-top"><label for="depthBlur">背景のぼかし量</label><span class="slider-value" id="depthBlurValue">0%</span></div><input class="range" id="depthBlur" type="range" min="0" max="100" value="0" step="1"></div>
+      <div class="depth-actions"><button id="depthPickFocus" class="btn tiny" type="button" disabled>◎ ピント位置をタップ</button><button id="depthManual" class="btn tiny active" type="button" aria-pressed="true">手動ピント</button><button id="depthAnalyze" class="btn tiny" type="button" disabled>✧ AIで奥行きを解析</button></div>
+      <div class="slider-control depth-control" id="depthRadiusControl"><div class="slider-top"><label for="depthRadius">ピントが合う範囲</label><span class="slider-value" id="depthRadiusValue">35%</span></div><input class="range" id="depthRadius" type="range" min="15" max="75" value="35" step="1"></div>
+      <p id="depthStatus" class="depth-status" role="status" aria-live="polite">画像を選んで、ぼかし量を設定してね。まずは無料の手動ピントで使えるよ。</p>
+      <p class="depth-note">「ピント位置をタップ」で人物にピントを合わせてね。AI解析は初回にモデルをダウンロードするため、Wi-Fi推奨。画像自体は送信しないよ。奥行き推定はFF14のSSで誤判定する場合があります。</p>
+    </section>
+    <section class="tabpanel" id="panel-erase" role="tabpanel" hidden>
+      <p class="tab-title">指で消す（無料）</p>
+      <p class="erase-panel-note">文字や小物を指でなぞると、周囲の画像を使って補修するよ。模様の多い背景では跡が残ることもあるよ。</p>
+      <div class="erase-mode-row" role="group" aria-label="消しゴムの操作"><button id="eraseDrawBtn" class="btn active" type="button" aria-pressed="true">✎ なぞって消す</button><button id="eraseMoveBtn" class="btn" type="button" aria-pressed="false">✥ 画像を移動</button></div>
+      <div class="erase-size-control slider-control"><div class="slider-top"><label for="eraseSize">ブラシの太さ</label><span class="slider-value" id="eraseSizeValue">3%</span></div><input class="range" type="range" id="eraseSize" min="1" max="12" step="1" value="3"></div>
+      <div class="erase-button-row"><button id="eraseUndo" class="btn tiny" type="button" disabled>↶ 戻す</button><button id="eraseRedo" class="btn tiny" type="button" disabled>↷ やり直し</button><button id="eraseClear" class="btn tiny" type="button" disabled>すべて解除</button></div>
+      <p id="eraseFeedback" class="erase-feedback" role="status" aria-live="polite">画像を選んで、消したい場所をなぞってね。</p>
+      <p class="erase-limit">拡大中も1本指で消せるよ。2本指で拡大・移動できるほか、「画像を移動」に切り替えれば1本指でも動かせるよ。<strong>画像は外部サーバーに送信されません。</strong> 他者の権利を侵害するための加工はしないでね。<a href="./terms.html">利用規約</a></p>
     </section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
     <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
@@ -344,11 +360,19 @@ const presets=[
 const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
+// Manual focus works immediately. Optional depth AI runs locally after its model download.
+let depthBlur=0,depthRadius=35,depthFocusX=.5,depthFocusY=.5,depthPickMode=false;
+let depthMode='manual',depthMap=null,depthEstimator=null,depthLoading=false,depthLoadSequence=0;
+
 const COPYRIGHT_DEFAULT={enabled:true,text:'© SQUARE ENIX',size:20,font:'sans',x:22,y:93};
 let copyrightSettings={...COPYRIGHT_DEFAULT};
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
 const touchPoints=new Map();
 let pinchGesture=null;
+// 元画像は変更しない。補修した箇所だけ透明レイヤーに保持して、保存時に重ねる。
+let repairLayer=null,repairCtx=null,repairBase=null,repairBaseCtx=null;
+let repairHistory=[],repairRedo=[],repairStroke=null,erasePointer=null,eraseMode='draw',eraseSize=3;
+const eraseOverlay=$('eraseOverlay'),eraseOverlayCtx=eraseOverlay.getContext('2d');
 const canvas=$('preview');const ctx=canvas.getContext('2d',{willReadFrequently:false});
 function clamp(x,min,max){return Math.min(max,Math.max(min,x))}
 function makeCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
@@ -397,8 +421,8 @@ function updateZoomUI(){
  $('zoomResetBtn').disabled=!hasImage||(Math.abs(viewZoom-1)<.001&&Math.abs(viewOffsetX)<.5&&Math.abs(viewOffsetY)<.5);
 }
 function applyViewTransform(){
- if(canvas.hidden||!image){canvas.style.transform='';updateZoomUI();return}
- clampViewState();canvas.style.transform=`translate(${viewOffsetX}px,${viewOffsetY}px) scale(${viewZoom})`;updateZoomUI();
+ if(canvas.hidden||!image){canvas.style.transform='';updateZoomUI();updateDepthMarker();return}
+ clampViewState();canvas.style.transform=`translate(${viewOffsetX}px,${viewOffsetY}px) scale(${viewZoom})`;updateZoomUI();requestAnimationFrame(()=>{syncEraseOverlay();updateDepthMarker()});
 }
 function setViewZoom(next){
  if(!image)return;const prev=viewZoom;viewZoom=clamp(next,1,6);
@@ -412,13 +436,131 @@ function beginPinch(){
  const pts=visibleTouchPoints();if(pts.length<2)return;const [a,b]=pts;
  pinchGesture={startZoom:viewZoom,startOffsetX:viewOffsetX,startOffsetY:viewOffsetY,startDistance:Math.max(1,Math.hypot(b.x-a.x,b.y-a.y)),startMidX:(a.x+b.x)/2,startMidY:(a.y+b.y)/2};
 }
+function updateDepthUI(){
+ $('depthBlur').value=depthBlur;$('depthBlurValue').textContent=depthBlur+'%';setSliderVisual($('depthBlur'));
+ $('depthRadius').value=depthRadius;$('depthRadiusValue').textContent=depthRadius+'%';setSliderVisual($('depthRadius'));
+ $('depthPickFocus').disabled=!image;$('depthAnalyze').disabled=!image||depthLoading;
+ $('depthPickFocus').classList.toggle('active',depthPickMode);
+ $('depthPickFocus').setAttribute('aria-pressed',String(depthPickMode));
+ $('depthManual').classList.toggle('active',depthMode==='manual');
+ $('depthManual').setAttribute('aria-pressed',String(depthMode==='manual'));
+ $('depthAnalyze').classList.toggle('active',depthMode==='ai'&&!!depthMap);
+ $('depthAnalyze').setAttribute('aria-pressed',String(depthMode==='ai'&&!!depthMap));
+ $('depthRadiusControl').hidden=depthMode==='ai'&&!!depthMap;
+ updateDepthMarker();
+}
+function updateDepthMarker(){
+ const el=$('depthFocusMarker');
+ if(!image||activeTab!=='depth'||!depthPickMode||canvas.hidden){el.hidden=true;return}
+ const {sx,sy,sw,sh}=getCrop(),r=canvas.getBoundingClientRect(),s=$('stage').getBoundingClientRect();
+ const x=(depthFocusX*image.naturalWidth-sx)/sw,y=(depthFocusY*image.naturalHeight-sy)/sh;
+ if(x<0||x>1||y<0||y>1){el.hidden=true;return}
+ el.style.left=(r.left-s.left+x*r.width)+'px';el.style.top=(r.top-s.top+y*r.height)+'px';el.hidden=false;
+}
+function depthAt(u,v){
+ if(!depthMap)return .5;
+ const x=Math.round(clamp(u,0,1)*(depthMap.w-1)),y=Math.round(clamp(v,0,1)*(depthMap.h-1));
+ return depthMap.data[y*depthMap.w+x];
+}
+function applyDepthBlur(c,target,power){
+ if(power<=0)return;
+ const w=target.width,h=target.height;
+ // Work on a modest layer to avoid large allocations on iPhones, then upscale.
+ const ratio=Math.min(1,840/Math.max(w,h),Math.sqrt(560000/(w*h)));
+ const bw=Math.max(1,Math.round(w*ratio)),bh=Math.max(1,Math.round(h*ratio));
+ const blurCanvas=makeCanvas(bw,bh),bc=blurCanvas.getContext('2d',{willReadFrequently:true});
+ bc.imageSmoothingQuality='high';bc.drawImage(target,0,0,bw,bh);
+ const data=bc.getImageData(0,0,bw,bh),pixels=data.data;
+ const strength=power/100;
+ const radius=Math.max(1,Math.round(Math.min(bw,bh)*(.003+strength*.038)));
+ blurPixels(pixels,bw,bh,radius,2);
+ const {sx,sy,sw,sh}=getCrop(),imageW=image.naturalWidth,imageH=image.naturalHeight;
+ const focusDepth=depthAt(depthFocusX,depthFocusY);
+ const aspect=bw/bh,focusRadius=depthRadius/100;
+ for(let y=0;y<bh;y++){
+  const v=(sy+(y+.5)/bh*sh)/imageH;
+  for(let x=0;x<bw;x++){
+   const u=(sx+(x+.5)/bw*sw)/imageW;
+   let weight;
+   if(depthMode==='ai'&&depthMap){
+    // Depth Anything uses greater relative-depth intensity for nearer objects.
+    // Preserve the selected plane of focus and foreground; blur more distant regions.
+    const distance=focusDepth-depthAt(u,v);
+    weight=clamp((distance-.025)/.28,0,1);
+    weight=weight*weight*(3-2*weight);
+   }else{
+    const d=Math.hypot((u-depthFocusX)*aspect,(v-depthFocusY));
+    const t=clamp((d-focusRadius*.46)/(focusRadius*.95),0,1);
+    weight=t*t*(3-2*t);
+   }
+   pixels[(y*bw+x)*4+3]=Math.round(255*weight*clamp(.08+strength*.92,0,1));
+  }
+ }
+ bc.putImageData(data,0,0);
+ c.save();c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';c.drawImage(blurCanvas,0,0,w,h);c.restore();
+}
+async function analyzeDepthOnDevice(){
+ if(!image||depthLoading)return;
+ const workingImage=image,seq=++depthLoadSequence;
+ depthLoading=true;depthPickMode=false;updateDepthUI();
+ $('depthStatus').textContent='モデルを読み込み中… 初回はダウンロードが必要です。画面を閉じずにお待ちください。';
+ try{
+  // Import only after opt-in. Model weights are downloaded, NOT the user's photo.
+  if(!depthEstimator){
+   const {pipeline,env}=await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');
+   env.allowLocalModels=false;
+   depthEstimator=await pipeline('depth-estimation','onnx-community/depth-anything-v2-small',{
+     device:'wasm',
+     progress_callback:progress=>{
+      if(seq!==depthLoadSequence)return;
+      if(progress?.status==='progress'&&Number.isFinite(progress.progress))
+       $('depthStatus').textContent='奥行き解析用モデルをダウンロード中… '+Math.round(progress.progress)+'%';
+     }
+   });
+  }
+  if(seq!==depthLoadSequence||image!==workingImage)return;
+  $('depthStatus').textContent='画像の奥行きを端末内で推定中…';
+  const sample=makeCanvas(1,1),limit=640,factor=Math.min(1,limit/Math.max(workingImage.naturalWidth,workingImage.naturalHeight));
+  sample.width=Math.max(1,Math.round(workingImage.naturalWidth*factor));sample.height=Math.max(1,Math.round(workingImage.naturalHeight*factor));
+  sample.getContext('2d').drawImage(workingImage,0,0,sample.width,sample.height);
+  const result=await depthEstimator(sample.toDataURL('image/jpeg',.82));
+  if(seq!==depthLoadSequence||image!==workingImage)return;
+  const tensor=result.predicted_depth;
+  if(!tensor||!tensor.data||!tensor.dims)throw new Error('No depth data');
+  const dims=tensor.dims,w=dims[dims.length-1],h=dims[dims.length-2];
+  if(w*h!==tensor.data.length)throw new Error('Invalid depth dimensions');
+  // Robust normalization so outlier pixels do not destroy the blur gradient.
+  const vals=Array.from(tensor.data).filter(Number.isFinite);
+  if(!vals.length)throw new Error('Empty depth map');
+  const sampleVals=[];const step=Math.max(1,Math.floor(vals.length/8000));
+  for(let i=0;i<vals.length;i+=step)sampleVals.push(vals[i]);
+  sampleVals.sort((a,b)=>a-b);
+  const low=sampleVals[Math.floor(sampleVals.length*.025)],high=sampleVals[Math.floor(sampleVals.length*.975)];
+  const span=Math.max(1e-5,high-low);
+  const normalized=new Float32Array(tensor.data.length);
+  for(let i=0;i<normalized.length;i++)normalized[i]=clamp((tensor.data[i]-low)/span,0,1);
+  depthMap={w,h,data:normalized};depthMode='ai';
+  if(depthBlur===0)depthBlur=45;
+  $('depthStatus').textContent='奥行き解析できたよ。被写体をタップするとその深度にピントが合うよ。';
+  updateDepthUI();scheduleRender();
+ }catch(err){
+  console.error('Depth estimation failed',err);
+  if(seq===depthLoadSequence){depthMode='manual';$('depthStatus').textContent='この環境ではAI解析できませんでした。無料の手動ピントはそのまま使えるよ。';}
+ }finally{if(seq===depthLoadSequence){depthLoading=false;updateDepthUI();}}
+}
+function resetDepth(){
+ depthLoadSequence++;depthLoading=false;depthMap=null;depthBlur=0;depthRadius=35;
+ depthFocusX=.5;depthFocusY=.5;depthMode='manual';depthPickMode=false;
+ if($('depthStatus'))$('depthStatus').textContent='ピントを合わせたい場所をタップして、ぼかし量を調整してね。';
+ updateDepthUI();
+}
 function updateDimensions(){
  if(!image)return;
  const orig=getCrop(),cropped=crop!=='original',zoomed=viewZoom>1.001;
  $('dimensions').textContent=`${Math.round(orig.sw)} × ${Math.round(orig.sh)}`;
  $('dragTip').hidden=!cropped||zoomed;
- canvas.style.cursor=(zoomed||cropped)?'grab':'default';
- $('photoStatus').textContent=zoomed?'拡大中はドラッグで移動 · 2本指で拡大縮小 · 100%で戻す':(cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'フィルターと色味を調整 · 2本指で拡大縮小');
+ canvas.style.cursor=(activeTab==='depth'&&depthPickMode)?'crosshair':(activeTab==='erase'&&eraseMode==='draw')?'crosshair':(zoomed||cropped)?'grab':'default';
+ $('photoStatus').textContent=(activeTab==='depth'&&depthPickMode)?'ピントを合わせたいところをタップ':(activeTab==='erase'&&eraseMode==='draw')?'指でなぞって不要物を補修 · 2本指で拡大・移動':zoomed?'拡大中はドラッグで移動 · 2本指で拡大縮小 · 100%で戻す':(cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'フィルターと色味を調整 · 2本指で拡大縮小');
 }
 // ブルーム / ソフトフォーカス用のぼかし処理。
 // CanvasRenderingContext2D.filter は一部の iOS / Safari 環境で
@@ -501,7 +643,129 @@ function applySoftFocus(c,target,power){
  c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
  c.drawImage(soft,0,0,target.width,target.height);c.restore();
 }
+// 端末内の簡易補修。筆跡の近くから境界色が近い領域を探し、補修ピクセルを重ねる。
+// 複雑な模様・大きな物体では自然にならないことがある (AI補完ではない)。
+function prepareRepair(){
+ const scale=Math.min(1,2000/Math.max(image.naturalWidth,image.naturalHeight),Math.sqrt(2500000/(image.naturalWidth*image.naturalHeight)));
+ const w=Math.max(1,Math.round(image.naturalWidth*scale)),h=Math.max(1,Math.round(image.naturalHeight*scale));
+ repairLayer=makeCanvas(w,h);repairCtx=repairLayer.getContext('2d',{willReadFrequently:true});
+ repairBase=makeCanvas(w,h);repairBaseCtx=repairBase.getContext('2d',{willReadFrequently:true});
+ repairBaseCtx.drawImage(image,0,0,w,h);
+ repairHistory=[];repairRedo=[];repairStroke=null;erasePointer=null;updateRepairUI();
+}
+function clearRepairData(){repairLayer=null;repairCtx=null;repairBase=null;repairBaseCtx=null;repairHistory=[];repairRedo=[];repairStroke=null;erasePointer=null;eraseOverlay.hidden=true;updateRepairUI()}
+function hasRepair(){return repairHistory.length>0||repairRedo.length>0}
+function updateRepairUI(){
+ $('eraseUndo').disabled=!repairHistory.length;$('eraseRedo').disabled=!repairRedo.length;$('eraseClear').disabled=!repairHistory.length;
+ $('eraseDrawBtn').classList.toggle('active',eraseMode==='draw');$('eraseMoveBtn').classList.toggle('active',eraseMode==='move');
+ $('eraseDrawBtn').setAttribute('aria-pressed',String(eraseMode==='draw'));$('eraseMoveBtn').setAttribute('aria-pressed',String(eraseMode==='move'));
+ document.body.classList.toggle('erase-active',activeTab==='erase'&&eraseMode==='draw');
+ document.body.classList.toggle('erase-moving',activeTab==='erase'&&eraseMode==='move');
+}
+function sourcePointFromPointer(e){
+ const r=canvas.getBoundingClientRect(),fx=clamp((e.clientX-r.left)/r.width,0,1),fy=clamp((e.clientY-r.top)/r.height,0,1),c=getCrop();
+ return {u:(c.sx+fx*c.sw)/image.naturalWidth,v:(c.sy+fy*c.sh)/image.naturalHeight};
+}
+function syncEraseOverlay(){
+ if(!image||canvas.hidden||activeTab!=='erase'){eraseOverlay.hidden=true;return}
+ const b=canvas.getBoundingClientRect(),r=$('stage').getBoundingClientRect();
+ if(!b.width||!b.height)return;
+ eraseOverlay.hidden=false;eraseOverlay.style.left=(b.left-r.left)+'px';eraseOverlay.style.top=(b.top-r.top)+'px';
+ eraseOverlay.style.width=b.width+'px';eraseOverlay.style.height=b.height+'px';
+ if(eraseOverlay.width!==canvas.width)eraseOverlay.width=canvas.width;
+ if(eraseOverlay.height!==canvas.height)eraseOverlay.height=canvas.height;
+ drawEraseOverlay();
+}
+function erasePointToPreview(p){const c=getCrop();return {x:(p.u*image.naturalWidth-c.sx)*canvas.width/c.sw,y:(p.v*image.naturalHeight-c.sy)*canvas.height/c.sh}}
+function drawEraseOverlay(){
+ eraseOverlayCtx.clearRect(0,0,eraseOverlay.width,eraseOverlay.height);
+ if(!image||activeTab!=='erase'||eraseMode!=='draw')return;
+ const cropRect=getCrop(),radius=Math.min(image.naturalWidth,image.naturalHeight)*eraseSize/200*canvas.width/cropRect.sw;
+ if(repairStroke&&repairStroke.points.length){
+  eraseOverlayCtx.save();eraseOverlayCtx.lineCap='round';eraseOverlayCtx.lineJoin='round';eraseOverlayCtx.strokeStyle='rgba(178,119,180,.46)';eraseOverlayCtx.lineWidth=radius*2;
+  eraseOverlayCtx.beginPath();const first=erasePointToPreview(repairStroke.points[0]);eraseOverlayCtx.moveTo(first.x,first.y);
+  if(repairStroke.points.length===1)eraseOverlayCtx.lineTo(first.x+.01,first.y+.01);
+  for(const p of repairStroke.points.slice(1)){const c=erasePointToPreview(p);eraseOverlayCtx.lineTo(c.x,c.y)}
+  eraseOverlayCtx.stroke();eraseOverlayCtx.restore();
+ }
+ if(erasePointer){const p=erasePointToPreview(erasePointer);eraseOverlayCtx.beginPath();eraseOverlayCtx.arc(p.x,p.y,radius,0,Math.PI*2);eraseOverlayCtx.strokeStyle='#92699e';eraseOverlayCtx.lineWidth=Math.max(1,canvas.width/800);eraseOverlayCtx.stroke()}
+}
+function applyRepairStroke(stroke){
+ if(!image||!repairLayer||!stroke.points.length)return false;
+ const W=repairLayer.width,H=repairLayer.height,rad=Math.max(2,Math.round(Math.min(W,H)*stroke.size/200));
+ const pts=stroke.points.map(p=>({x:p.u*W,y:p.v*H}));
+ const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y));
+ const x=Math.max(0,Math.floor(minX-rad-5)),y=Math.max(0,Math.floor(minY-rad-5));
+ const right=Math.min(W,Math.ceil(maxX+rad+5)),bottom=Math.min(H,Math.ceil(maxY+rad+5));
+ const w=right-x,h=bottom-y;if(w<1||h<1)return false;
+ // 処理対象だけのマスク。少し広めの筆で文字全体を覆って使う想定。
+ const maskCanvas=makeCanvas(w,h),m=maskCanvas.getContext('2d',{willReadFrequently:true});
+ m.strokeStyle='#fff';m.fillStyle='#fff';m.lineCap='round';m.lineJoin='round';m.lineWidth=rad*2;
+ m.beginPath();m.moveTo(pts[0].x-x,pts[0].y-y);
+ for(const p of pts.slice(1))m.lineTo(p.x-x,p.y-y);
+ if(pts.length>1)m.stroke();else{m.beginPath();m.arc(pts[0].x-x,pts[0].y-y,rad,0,Math.PI*2);m.fill()}
+ const maskImage=m.getImageData(0,0,w,h).data;
+ const mask=new Uint8Array(w*h);let count=0;
+ for(let i=0;i<mask.length;i++){mask[i]=maskImage[i*4+3]>90?1:0;count+=mask[i]}
+ if(!count)return false;
+ // 色と模様の候補を、筆跡の少し外から探す。元画像+以前の補修が探索対象。
+ const pad=Math.min(220,Math.max(24,rad*5));
+ const bx=Math.max(0,x-pad),by=Math.max(0,y-pad),bw=Math.min(W-bx,x+w+pad-bx),bh=Math.min(H-by,y+h+pad-by);
+ const sample=makeCanvas(bw,bh),g=sample.getContext('2d',{willReadFrequently:true});
+ g.drawImage(repairBase,bx,by,bw,bh,0,0,bw,bh);g.drawImage(repairLayer,bx,by,bw,bh,0,0,bw,bh);
+ const pixels=g.getImageData(0,0,bw,bh).data;
+ const offsets=[];for(const distance of [2.2,3.2,4.3])for(const [ux,uy] of [[1,0],[-1,0],[0,1],[0,-1],[.7,.7],[-.7,.7],[.7,-.7],[-.7,-.7]])offsets.push([Math.round(ux*rad*distance),Math.round(uy*rad*distance)]);
+ const boundary=[];
+ const stride=Math.max(2,Math.ceil(Math.sqrt(count/250)));
+ for(let yy=1;yy<h-1;yy+=stride)for(let xx=1;xx<w-1;xx+=stride){
+  const i=yy*w+xx;if(mask[i]||!(mask[i-1]||mask[i+1]||mask[i-w]||mask[i+w]))continue;
+  boundary.push([xx+x-bx,yy+y-by]);
+ }
+ // 境界が近い候補を優先。候補が少ないときは画像の外を参照しないものを選ぶ。
+ let best=null,bestScore=Infinity;
+ for(const [dx,dy] of offsets){
+  let score=0,n=0;
+  for(const [xx,yy] of boundary){const tx=xx+dx,ty=yy+dy;if(tx<0||ty<0||tx>=bw||ty>=bh)continue;
+   const relX=tx+bx-x,relY=ty+by-y;if(relX>=0&&relX<w&&relY>=0&&relY<h&&mask[relY*w+relX])continue;
+   const a=(yy*bw+xx)*4,b=(ty*bw+tx)*4;
+   const dr=pixels[a]-pixels[b],dg=pixels[a+1]-pixels[b+1],db=pixels[a+2]-pixels[b+2];score+=dr*dr+dg*dg+db*db;n++;
+  }
+  if(n<Math.max(2,boundary.length*.45))continue;
+  const candidate=score/n+Math.hypot(dx,dy)*.03;
+  if(candidate<bestScore){bestScore=candidate;best=[dx,dy]}
+ }
+ const [shiftX,shiftY]=best||[0,-Math.max(2,rad*3)];
+ const before=repairCtx.getImageData(x,y,w,h),out=repairCtx.getImageData(x,y,w,h);
+ const dest=out.data;
+ // 半透明の境界で馴染ませる。すべて元画像上の透明レイヤーにのみ記録。
+ for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){
+  const i=yy*w+xx;if(!mask[i])continue;
+  let px=xx+x-bx+shiftX,py=yy+y-by+shiftY;
+  px=clamp(px,0,bw-1);py=clamp(py,0,bh-1);
+  const j=(py*bw+px)*4,k=i*4;
+  let edge=0;
+  if(xx===0||yy===0||xx===w-1||yy===h-1||!mask[i-1]||!mask[i+1]||!mask[i-w]||!mask[i+w])edge=.62;
+  // 既存のレイヤーは上書きされるため、作業中の色を再合成して保持する。
+  dest[k]=pixels[j];dest[k+1]=pixels[j+1];dest[k+2]=pixels[j+2];dest[k+3]=Math.round(255*(1-edge));
+ }
+ repairCtx.putImageData(out,x,y);
+ repairHistory.push({x,y,before,after:repairCtx.getImageData(x,y,w,h)});
+ if(repairHistory.length>12)repairHistory.shift();repairRedo=[];
+ updateRepairUI();scheduleRender();return true;
+}
+function finishRepairStroke(cancelled=false){
+ if(!repairStroke)return;
+ const stroke=repairStroke;repairStroke=null;erasePointer=null;drawEraseOverlay();
+ if(cancelled)return;
+ $('eraseFeedback').textContent='補修しています…';
+ try{const ok=applyRepairStroke(stroke);$('eraseFeedback').textContent=ok?'補修したよ。気になるところはもう一度なぞってね。':'補修できなかったよ。別の場所を試してね。'}
+ catch(error){console.error(error);$('eraseFeedback').textContent='補修に失敗しました。ブラシを細くしてもう一度試してね。'}
+}
+function undoRepair(){const op=repairHistory.pop();if(!op)return;repairCtx.putImageData(op.before,op.x,op.y);repairRedo.push(op);updateRepairUI();scheduleRender();$('eraseFeedback').textContent='1回戻したよ。'}
+function redoRepair(){const op=repairRedo.pop();if(!op)return;repairCtx.putImageData(op.after,op.x,op.y);repairHistory.push(op);updateRepairUI();scheduleRender();$('eraseFeedback').textContent='やり直したよ。'}
+function clearRepairs(){if(!repairHistory.length)return;if(!confirm('これまでの消しゴム補修をすべて解除しますか？'))return;repairCtx.clearRect(0,0,repairLayer.width,repairLayer.height);repairHistory=[];repairRedo=[];updateRepairUI();scheduleRender();$('eraseFeedback').textContent='すべての補修を解除したよ。'}
 function renderInto(target,maxSide,maxPixels){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
+if(repairLayer&&hasRepair()){const ratio=repairLayer.width/image.naturalWidth;c.drawImage(repairLayer,sx*ratio,sy*ratio,sw*ratio,sh*ratio,0,0,w,h)}
 const img=c.getImageData(0,0,w,h),pixels=img.data;
 const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30,complexion=state.complexion/100;
 const cf=(259*(contrast+255))/(255*(259-contrast));
@@ -518,6 +782,7 @@ r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);pixels[i]=r;pixels[i+1]=g;pix
 c.putImageData(img,0,0);
 applyBloom(c,target,state.bloom/100);
 applySoftFocus(c,target,state.softness/100);
+applyDepthBlur(c,target,depthBlur);
 if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.createRadialGradient(0,0,.12,0,0,.71);const opacity=state.vignette/100*.74;radial.addColorStop(0,'rgba(10,6,17,0)');radial.addColorStop(.46,'rgba(10,6,17,0)');radial.addColorStop(1,`rgba(9,6,17,${opacity})`);c.fillStyle=radial;c.fillRect(-.5,-.5,1,1);c.restore()}
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
@@ -536,7 +801,7 @@ if(copyrightSettings.enabled&&copyrightSettings.text.trim()){
  c.fillText(content,x,y,w*.96);c.restore();
 }
 }
-function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions()}
+function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions();requestAnimationFrame(syncEraseOverlay)}
 function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0)}
 function displayOriginal(){if(!image||!previewCache)return;const {sx,sy,sw,sh}=getCrop();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,sx,sy,sw,sh,0,0,canvas.width,canvas.height)}
 function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);previewJob=requestAnimationFrame(renderPreview)}
@@ -544,12 +809,13 @@ function selectTab(tab){
  activeTab=tab;
  allButtons('.tab').forEach(b=>{const selected=b.dataset.tab===tab;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected))});
  allButtons('.tabpanel').forEach(p=>{p.hidden=p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
- if(image)updateDimensions();
+ if(tab!=='depth')depthPickMode=false;
+ if(image)updateDimensions();updateRepairUI();syncEraseOverlay();updateDepthUI();
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;clearAiPrompt();filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;resetDepth();viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;prepareRepair();filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
@@ -636,13 +902,12 @@ function updateCopyrightUI(){
 // Return to the empty editor while preserving the horizontal mobile layout.
 // Do not navigate/reload: a second photo can be selected immediately.
 function returnHome(){
- clearAiPrompt();
  if(!image)return;
  if(!window.confirm('ホームに戻りますか？\n現在の画像と編集内容を閉じます。保存していない変更は失われます。'))return;
  if(!$('saveDialog').hidden)closeSaveDialog();
  cancelAnimationFrame(previewJob);previewJob=0;
  if(lastLoadedUrl){URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=null}
- image=null;previewCache=null;filename='FF14_SS';
+ image=null;previewCache=null;filename='FF14_SS';clearRepairData();resetDepth();
  $('fileInput').value='';$('imageName').textContent='';
  canvas.hidden=true;canvas.style.transform='';
  canvas.width=1;canvas.height=1;
@@ -656,30 +921,25 @@ function returnHome(){
  resetAll();selectTab('presets');
  window.scrollTo({top:0,behavior:'instant'});
 }
-function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
-createControls();setupQuickTools();refreshControls();updateCopyrightUI();updateZoomUI();
+function resetAll(){resetDepth();if(repairCtx){repairCtx.clearRect(0,0,repairLayer.width,repairLayer.height);repairHistory=[];repairRedo=[];repairStroke=null;updateRepairUI()}viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';copyrightSettings={...COPYRIGHT_DEFAULT};updateCopyrightUI();updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
+createControls();setupQuickTools();refreshControls();updateCopyrightUI();updateZoomUI();updateDepthUI();
+$('depthBlur').addEventListener('input',e=>{depthBlur=Number(e.target.value);updateDepthUI();scheduleRender()});
+$('depthRadius').addEventListener('input',e=>{depthRadius=Number(e.target.value);updateDepthUI();scheduleRender()});
+$('depthPickFocus').addEventListener('click',()=>{if(!image)return;depthPickMode=!depthPickMode;updateDepthUI();updateDimensions();
+ $('depthStatus').textContent=depthPickMode?'写真の被写体をタップしてピントを合わせてね。':'ピント位置の指定を終了したよ。';});
+$('depthManual').addEventListener('click',()=>{depthMode='manual';depthPickMode=false;updateDepthUI();scheduleRender();$('depthStatus').textContent='手動ピントで背景をぼかすよ。人物を中心に指定してね。';});
+$('depthAnalyze').addEventListener('click',()=>{if(depthMap){depthMode='ai';if(depthBlur===0)depthBlur=45;updateDepthUI();scheduleRender();$('depthStatus').textContent='AIの奥行き推定を使用中。タップでピント位置を選べるよ。';}else analyzeDepthOnDevice()});
+
 const stage=$('stage');
-if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
-window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});
+if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions();updateDepthMarker()}});ro.observe(canvas);ro.observe(stage)}
+window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions();updateDepthMarker()}});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
-// The prototype deliberately does not call an AI API or change image pixels.
-function clearAiPrompt(){
- $('aiPrompt').value='';$('aiReviewResult').hidden=true;$('aiReviewResult').textContent='';
-}
-allButtons('[data-ai-example]').forEach(button=>button.addEventListener('click',()=>{
- $('aiPrompt').value=button.dataset.aiExample;
- $('aiReviewResult').hidden=true;
- $('aiPrompt').focus({preventScroll:true});
-}));
-$('aiClear').addEventListener('click',clearAiPrompt);
-$('aiPrompt').addEventListener('input',()=>{$('aiReviewResult').hidden=true});
-$('aiReview').addEventListener('click',()=>{
- const prompt=$('aiPrompt').value.trim(),result=$('aiReviewResult');
- result.hidden=false;
- if(!image){result.textContent='まず上の「画像を選ぶ」から写真を読み込んでね。';return}
- if(!prompt){result.textContent='消したい文字の場所や内容を入力してね。';$('aiPrompt').focus({preventScroll:true});return}
- result.textContent='入力内容を確認しました：\n「'+prompt+'」\n\n※ これは処理内容の確認用プレビューです。現時点では文字の検出・消去は実行されていません。';
-});
+// 指で消す機能は端末内処理。背景の奥行きAIはユーザーの操作時のみモデルを取得。
+$('eraseDrawBtn').addEventListener('click',()=>{eraseMode='draw';repairStroke=null;erasePointer=null;updateRepairUI();updateDimensions();drawEraseOverlay()});
+$('eraseMoveBtn').addEventListener('click',()=>{eraseMode='move';repairStroke=null;erasePointer=null;updateRepairUI();updateDimensions();drawEraseOverlay()});
+$('eraseSize').addEventListener('input',e=>{eraseSize=Number(e.target.value);$('eraseSizeValue').textContent=eraseSize+'%';setSliderVisual(e.target);drawEraseOverlay()});
+$('eraseUndo').addEventListener('click',undoRepair);$('eraseRedo').addEventListener('click',redoRepair);$('eraseClear').addEventListener('click',clearRepairs);
+setSliderVisual($('eraseSize'));updateRepairUI();
 
 allButtons('[data-aspect]').forEach(b=>b.addEventListener('click',()=>{crop=b.dataset.aspect;panX=panY=0;resetView();updateChoices('aspect',crop);scheduleRender()}));
 allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.dataset.frame;updateChoices('frame',frame);scheduleRender()}));
@@ -715,7 +975,22 @@ canvas.addEventListener('pointerdown',e=>{
  if(!image||e.button!==0)return;
  if(e.pointerType==='touch'){
   touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(touchPoints.size>=2){pointer=null;beginPinch();canvas.setPointerCapture(e.pointerId);return;}
+  if(touchPoints.size>=2){pointer=null;finishRepairStroke(true);beginPinch();canvas.setPointerCapture(e.pointerId);return;}
+ }
+ if(activeTab==='depth'&&depthPickMode){
+  e.preventDefault();
+  const r=canvas.getBoundingClientRect(),cropRect=getCrop();
+  const x=clamp((e.clientX-r.left)/r.width,0,1),y=clamp((e.clientY-r.top)/r.height,0,1);
+  depthFocusX=(cropRect.sx+x*cropRect.sw)/image.naturalWidth;
+  depthFocusY=(cropRect.sy+y*cropRect.sh)/image.naturalHeight;
+  depthPickMode=false;
+  if(touchPoints.has(e.pointerId))touchPoints.delete(e.pointerId);
+  $('depthStatus').textContent='ピント位置を設定したよ。背景のぼかし量を調整してね。';
+  updateDepthUI();updateDimensions();scheduleRender();return;
+ }
+ if(activeTab==='erase'&&eraseMode==='draw'){
+  e.preventDefault();canvas.setPointerCapture(e.pointerId);
+  const p=sourcePointFromPointer(e);repairStroke={id:e.pointerId,size:eraseSize,points:[p]};erasePointer=p;drawEraseOverlay();return;
  }
  if(viewZoom>1.001){pointer={id:e.pointerId,x:e.clientX,y:e.clientY,mode:'view'};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';return}
  if(crop==='original')return;
@@ -733,6 +1008,13 @@ canvas.addEventListener('pointermove',e=>{
    applyViewTransform();updateDimensions();
   }return;
  }
+ if(activeTab==='erase'&&eraseMode==='draw'){
+  if(repairStroke&&repairStroke.id===e.pointerId){
+   const p=sourcePointFromPointer(e),prev=repairStroke.points[repairStroke.points.length-1];
+   if(Math.hypot((p.u-prev.u)*image.naturalWidth,(p.v-prev.v)*image.naturalHeight)>Math.max(1,Math.min(image.naturalWidth,image.naturalHeight)*eraseSize/600))repairStroke.points.push(p);
+   erasePointer=p;drawEraseOverlay();
+  }return;
+ }
  if(!pointer||e.pointerId!==pointer.id)return;
  const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;
  if(pointer.mode==='view'){
@@ -744,6 +1026,7 @@ canvas.addEventListener('pointermove',e=>{
  pointer.x=e.clientX;pointer.y=e.clientY;scheduleRender();
 });
 function endPointer(e){
+ if(repairStroke&&repairStroke.id===e.pointerId)finishRepairStroke(e.type==='pointercancel');
  if(touchPoints.has(e.pointerId)){touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinchGesture=null;}
  if(pointer&&e.pointerId===pointer.id){pointer=null;canvas.style.cursor=(viewZoom>1.001||crop!=='original')?'grab':'default';}
 }
