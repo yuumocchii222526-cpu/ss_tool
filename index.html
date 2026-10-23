@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-aries-build="34">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -216,6 +216,21 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  .topbar .home-btn .home-btn-label{display:none}
 }
 
+
+/* v34 — independent high-quality slider; not inside the auto-hidden tab panels. */
+#qualityDock[hidden]{display:none!important}
+.quality-dock{display:flex;flex-direction:column;justify-content:center;gap:12px;padding:24px 20px;min-height:172px;min-width:0;overflow-y:auto;background:transparent}
+.quality-dock-title{display:flex;align-items:center;justify-content:space-between;color:var(--text);font-size:14px}
+.quality-version{font-size:10px;color:var(--muted);font-weight:400;margin-left:6px}.quality-dock-title output{font-variant-numeric:tabular-nums;color:#8270A0;font-weight:700;font-size:15px}
+.quality-dock input[type=range]{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;min-width:0;width:100%;height:30px;min-height:30px;flex:0 0 30px;touch-action:pan-x;cursor:pointer}
+.quality-dock .range{background:linear-gradient(90deg,#A493BA var(--progress,0%),#E6E0ED var(--progress,0%))}
+.quality-scale{display:flex;justify-content:space-between;color:#8F849C;font-size:11px;line-height:1.3;margin-top:-7px}
+.quality-dock-help{font-size:11px;line-height:1.5;color:var(--muted);margin:0}
+@media(max-width:800px){
+ body.editor-ready #qualityDock:not([hidden]){display:flex!important;flex:1 1 auto;min-height:0;max-height:100%;justify-content:flex-start;gap:11px;padding:18px 16px 12px;overflow:auto}
+ body.editor-ready #qualityDock .quality-range{min-height:36px;height:36px;flex-basis:36px}
+ body.editor-ready #qualityDock .quality-dock-title{font-size:14px}
+}
 </style>
 </head>
 <body class="editor-ready">
@@ -240,9 +255,15 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
     <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
+    <section id="qualityDock" class="quality-dock" role="tabpanel" aria-label="高画質の調整" hidden>
+      <div class="quality-dock-title"><strong>高画質化 <small class="quality-version">v34</small></strong><output id="val-enhance" for="range-enhance">0</output></div>
+      <input id="range-enhance" class="range quality-range" type="range" min="0" max="100" step="1" value="0" aria-label="高画質化の強さ">
+      <div class="quality-scale" aria-hidden="true"><span>補正なし</span><span>自然</span><span>くっきり</span></div>
+      <p class="quality-dock-help">スライダーを右へ動かして調整できます。細部は画像を拡大して確認してね。</p>
+    </section>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
-    <section class="tabpanel" id="panel-quality" role="tabpanel" hidden><p class="tab-title">HIGH QUALITY</p><p class="tab-note">無料で使える軽めの高画質化です。輪郭や細部を少しだけくっきり見せたいときに使ってね。</p><div id="qualitySliders"></div></section>
+    
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div></section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
     <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
@@ -284,7 +305,7 @@ const presets=[
  {id:'rosy',name:'血色感',note:'ほんのり頬色・あたたかさ',swatch:'linear-gradient(135deg,#fbd6c4,#e8a4a9 55%,#d2a9cd)',params:{brightness:9,contrast:-7,saturation:9,warmth:8,tint:9,shadows:12,highlights:-12,complexion:66,bloom:5,softness:5}},
  {id:'nostalgia',name:'レトロ',note:'少しくすんだ色味',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
 ];
-const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],quality:[['enhance','高画質化',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
+const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
@@ -303,7 +324,7 @@ function createControls(){const grid=$('presetGrid');for(const p of presets){con
 for(const [tab,defs] of Object.entries(sliderDefs)){const wrap=$(tab+'Sliders');for(const [key,name,min,max] of defs){const element=document.createElement('div');element.className='slider-control';const id='range-'+key;element.innerHTML=`<div class="slider-top"><label for="${id}"></label><span class="slider-value" id="val-${key}">0</span></div><input type="range" class="range" id="${id}" min="${min}" max="${max}" value="0" step="1">`;element.querySelector('label').textContent=name;const input=element.querySelector('input');input.addEventListener('input',()=>{state[key]=Number(input.value);$('val-'+key).textContent=state[key]>0&&min<0?'+'+state[key]:String(state[key]);setSliderVisual(input);selectedPreset='custom';refreshPresetUI();scheduleRender()});wrap.append(element);setSliderVisual(input)}}}
 // Horizontal per-adjustment picker on phones: photo stays visible while a single slider changes.
 function setupQuickTools(){
- const groups=[['color','colorSliders',sliderDefs.color],['quality','qualitySliders',sliderDefs.quality],['finish','finishSliders',sliderDefs.finish]];
+ const groups=[['color','colorSliders',sliderDefs.color],['finish','finishSliders',sliderDefs.finish]];
  for(const [tab,wrapId,definitions] of groups){
   const panel=$('panel-'+tab),wrap=$(wrapId),bar=document.createElement('div');
   bar.className='quick-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','調整項目');
@@ -496,7 +517,15 @@ function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);prev
 function selectTab(tab){
  activeTab=tab;
  allButtons('.tab').forEach(b=>{const selected=b.dataset.tab===tab;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected))});
- allButtons('.tabpanel').forEach(p=>{p.hidden=p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
+ // The quality pane is separate from the tab panels: avoid hidden/overflow conflicts on iOS.
+ const qualityActive=tab==='quality';
+ const qualityDock=$('qualityDock');
+ qualityDock.hidden=!qualityActive;
+ allButtons('.tabpanel').forEach(p=>{p.hidden=qualityActive||p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
+ if(qualityActive){
+   refreshControls();
+   qualityDock.scrollTop=0;
+ }
  if(image)updateDimensions();
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
@@ -590,6 +619,15 @@ function returnHome(){
 }
 function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
 createControls();setupQuickTools();refreshControls();updateZoomUI();
+// High-quality control is a permanent element, not a generated tab slider.
+// It works even before a photo is selected; new photos keep the same editing UI.
+$('range-enhance').addEventListener('input', e=>{
+ const value=clamp(Number(e.target.value)||0,0,100);
+ state.enhance=value;
+ $('val-enhance').textContent=String(value);
+ setSliderVisual(e.target);
+ selectedPreset='custom';refreshPresetUI();scheduleRender();
+});
 const stage=$('stage');
 if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
 window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});

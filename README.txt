@@ -1,11 +1,9 @@
-AriesStudio v31 — 淡色フィルター版
+AriesStudio v34 — 高画質スライダー表示修正版
 
-【変更内容】
-・フィルター「ナチュラル」を削除
-・淡めのフィルター3種を追加：ミルキー／ライラック／ピーチミルク
-・新フィルターはブルームとソフトフォーカスを加えず、色・明るさ中心のやさしい仕上がりに調整
-・既存の横スクロール編集、画像保存、ホームボタン、利用規約とポリシーは維持
+修正：高画質ボタンをタップすると、専用の調整欄（0〜100）が直下に開く構造へ変更。
+以前の自動生成・表示切り替えと分離し、スライダーの非表示問題を回避しました。
+表示値と加工結果は連動し、保存画像にも反映されます。
 
-【GitHubへの反映】
-ZIPを展開して index.html / privacy.html / terms.html をリポジトリ ss_tool のルートに上書きしてください。Commit changes 後、公開ページを開き直してください。
-公開URL: https://yuumocchii222526-cpu.github.io/ss_tool/?v=31
+GitHub Pages: ZIPを展開して index.html、privacy.html、terms.html を ss_tool のルートに上書きし Commit changes。
+公開後、https://yuumocchii222526-cpu.github.io/ss_tool/?v=34 を確認してください。
+追加したばかりのホーム画面アイコンから開く場合、以前のページが残ることがあるためSafariでURLを開いて確認してください。
