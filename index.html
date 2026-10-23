@@ -239,9 +239,10 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
+    <section class="tabpanel" id="panel-quality" role="tabpanel" hidden><p class="tab-title">HIGH QUALITY</p><p class="tab-note">無料で使える軽めの高画質化です。輪郭や細部を少しだけくっきり見せたいときに使ってね。</p><div id="qualitySliders"></div></section>
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div></section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
     <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
@@ -269,8 +270,8 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
 (() => {
 'use strict';
 const $=id=>document.getElementById(id);
-const keys=['brightness','contrast','saturation','warmth','tint','shadows','highlights','fade','bloom','softness','vignette','grain','complexion'];
-const DEFAULT={brightness:0,contrast:0,saturation:0,warmth:0,tint:0,shadows:0,highlights:0,fade:0,bloom:0,softness:0,vignette:0,grain:0,complexion:0};
+const keys=['brightness','contrast','saturation','warmth','tint','shadows','highlights','fade','enhance','bloom','softness','vignette','grain','complexion'];
+const DEFAULT={brightness:0,contrast:0,saturation:0,warmth:0,tint:0,shadows:0,highlights:0,fade:0,enhance:0,bloom:0,softness:0,vignette:0,grain:0,complexion:0};
 const presets=[
  {id:'original',name:'オリジナル',note:'加工なし',swatch:'linear-gradient(135deg,#a7bbca,#6e719d 50%,#d3acc2)',params:{}},
  {id:'milky',name:'ミルキー',note:'やさしい淡色',swatch:'linear-gradient(135deg,#f7efed,#eae6f2 54%,#dcdceb)',params:{brightness:10,contrast:-16,saturation:-13,warmth:2,shadows:12,highlights:-13,fade:12}},
@@ -283,7 +284,7 @@ const presets=[
  {id:'rosy',name:'血色感',note:'ほんのり頬色・あたたかさ',swatch:'linear-gradient(135deg,#fbd6c4,#e8a4a9 55%,#d2a9cd)',params:{brightness:9,contrast:-7,saturation:9,warmth:8,tint:9,shadows:12,highlights:-12,complexion:66,bloom:5,softness:5}},
  {id:'nostalgia',name:'レトロ',note:'少しくすんだ色味',swatch:'linear-gradient(135deg,#7b8677,#b09d8a 55%,#c8ae9e)',params:{brightness:3,contrast:-11,saturation:-27,warmth:20,fade:23,grain:27,vignette:20}}
 ];
-const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
+const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],quality:[['enhance','高画質化',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
@@ -299,10 +300,10 @@ function refreshPresetUI(){allButtons('.preset').forEach(btn=>{const active=btn.
 function refreshControls(){for(const k of keys){const el=$('range-'+k);if(!el)continue;el.value=state[k];setSliderVisual(el);$('val-'+k).textContent=state[k]>0&&Number(el.min)<0?'+'+state[k]:String(state[k])}}
 function setSliderVisual(el){const min=Number(el.min),max=Number(el.max);el.style.setProperty('--progress',((Number(el.value)-min)/(max-min)*100)+'%')}
 function createControls(){const grid=$('presetGrid');for(const p of presets){const btn=document.createElement('button');btn.className='preset'+(p.id==='original'?' active':'');btn.dataset.preset=p.id;btn.type='button';btn.setAttribute('aria-pressed',String(p.id==='original'));btn.innerHTML='<span class="swatch"></span><strong></strong><small></small>';btn.querySelector('.swatch').style.background=p.swatch;btn.querySelector('strong').textContent=p.name;btn.querySelector('small').textContent=p.note;btn.addEventListener('click',()=>setPreset(p.id));grid.append(btn)}
-for(const [tab,defs] of Object.entries(sliderDefs)){const wrap=$(tab==='color'?'colorSliders':'finishSliders');for(const [key,name,min,max] of defs){const element=document.createElement('div');element.className='slider-control';const id='range-'+key;element.innerHTML=`<div class="slider-top"><label for="${id}"></label><span class="slider-value" id="val-${key}">0</span></div><input type="range" class="range" id="${id}" min="${min}" max="${max}" value="0" step="1">`;element.querySelector('label').textContent=name;const input=element.querySelector('input');input.addEventListener('input',()=>{state[key]=Number(input.value);$('val-'+key).textContent=state[key]>0&&min<0?'+'+state[key]:String(state[key]);setSliderVisual(input);selectedPreset='custom';refreshPresetUI();scheduleRender()});wrap.append(element);setSliderVisual(input)}}}
+for(const [tab,defs] of Object.entries(sliderDefs)){const wrap=$(tab+'Sliders');for(const [key,name,min,max] of defs){const element=document.createElement('div');element.className='slider-control';const id='range-'+key;element.innerHTML=`<div class="slider-top"><label for="${id}"></label><span class="slider-value" id="val-${key}">0</span></div><input type="range" class="range" id="${id}" min="${min}" max="${max}" value="0" step="1">`;element.querySelector('label').textContent=name;const input=element.querySelector('input');input.addEventListener('input',()=>{state[key]=Number(input.value);$('val-'+key).textContent=state[key]>0&&min<0?'+'+state[key]:String(state[key]);setSliderVisual(input);selectedPreset='custom';refreshPresetUI();scheduleRender()});wrap.append(element);setSliderVisual(input)}}}
 // Horizontal per-adjustment picker on phones: photo stays visible while a single slider changes.
 function setupQuickTools(){
- const groups=[['color','colorSliders',sliderDefs.color],['finish','finishSliders',sliderDefs.finish]];
+ const groups=[['color','colorSliders',sliderDefs.color],['quality','qualitySliders',sliderDefs.quality],['finish','finishSliders',sliderDefs.finish]];
  for(const [tab,wrapId,definitions] of groups){
   const panel=$('panel-'+tab),wrap=$(wrapId),bar=document.createElement('div');
   bar.className='quick-tools';bar.setAttribute('role','group');bar.setAttribute('aria-label','調整項目');
@@ -407,6 +408,29 @@ function smallCopy(source,shrink=5){
  context.drawImage(source,0,0,w,h);
  return out;
 }
+function applyEnhance(c,target,power){
+ if(power<=0)return;
+ const eased=Math.pow(clamp(power,0,1),1.2);
+ if(eased<=0)return;
+ const w=target.width,h=target.height;
+ const frame=c.getImageData(0,0,w,h),data=frame.data;
+ const original=new Uint8ClampedArray(data);
+ const blurred=new Uint8ClampedArray(original);
+ const radius=Math.max(1,Math.round(Math.min(w,h)*(.0008+eased*.0022)));
+ blurPixels(blurred,w,h,radius,1);
+ const amount=.45+eased*.95;
+ const microContrast=1+eased*.08;
+ for(let i=0;i<data.length;i+=4){
+  let r=original[i]  +(original[i]  -blurred[i])  *amount;
+  let g=original[i+1]+(original[i+1]-blurred[i+1])*amount;
+  let b=original[i+2]+(original[i+2]-blurred[i+2])*amount;
+  r=(r-128)*microContrast+128;
+  g=(g-128)*microContrast+128;
+  b=(b-128)*microContrast+128;
+  data[i]=clamp(r,0,255);data[i+1]=clamp(g,0,255);data[i+2]=clamp(b,0,255);data[i+3]=original[i+3];
+ }
+ c.putImageData(frame,0,0);
+}
 function applyBloom(c,target,power){
  if(power<=0)return;
  const eased=Math.pow(clamp(power,0,1),2.25);
@@ -456,6 +480,7 @@ if(fade){r=r*(1-fade)+147*fade;g=g*(1-fade)+148*fade;b=b*(1-fade)+151*fade}
 if(grain){let n=(i+1)*1664525+1013904223;n^=n>>>13;n=(n*1664525+1013904223)|0;const noise=((n>>>0)/4294967295-.5)*2*grain;r+=noise;g+=noise;b+=noise}
 r=clamp(r,0,255);g=clamp(g,0,255);b=clamp(b,0,255);pixels[i]=r;pixels[i+1]=g;pixels[i+2]=b;}
 c.putImageData(img,0,0);
+applyEnhance(c,target,state.enhance/100);
 applyBloom(c,target,state.bloom/100);
 applySoftFocus(c,target,state.softness/100);
 if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.createRadialGradient(0,0,.12,0,0,.71);const opacity=state.vignette/100*.74;radial.addColorStop(0,'rgba(10,6,17,0)');radial.addColorStop(.46,'rgba(10,6,17,0)');radial.addColorStop(1,`rgba(9,6,17,${opacity})`);c.fillStyle=radial;c.fillRect(-.5,-.5,1,1);c.restore()}
