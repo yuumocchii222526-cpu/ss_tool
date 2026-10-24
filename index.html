@@ -231,6 +231,27 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  body.editor-ready #qualityDock .quality-range{min-height:36px;height:36px;flex-basis:36px}
  body.editor-ready #qualityDock .quality-dock-title{font-size:14px}
 }
+
+
+/* v35 — photo logo overlay (separate from site branding). */
+#logoDock[hidden]{display:none!important}
+.logo-dock{display:flex;flex-direction:column;gap:12px;padding:16px 20px;overflow-y:auto;overscroll-behavior:contain;min-height:0}
+.logo-dock h2{font-size:14px;line-height:1.4;color:var(--text);margin:0}
+.logo-dock .logo-help{font-size:11px;line-height:1.55;color:var(--muted);margin:0}
+.logo-dock .logo-upload{max-width:100%;width:max-content;min-height:41px;color:#fff;background:#9180AA;border-color:#9180AA}
+.logo-dock .logo-upload:hover{background:#80709A}
+.logo-dock .logo-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;font-weight:600}
+.logo-dock .logo-row output{color:#817098;font-variant-numeric:tabular-nums;font-weight:700}
+.logo-dock .logo-slider{display:block;width:100%;height:29px;min-height:29px;touch-action:pan-x}
+.logo-dock .logo-actions{display:flex;flex-wrap:wrap;gap:7px}
+.logo-dock .logo-actions .btn{min-width:0;padding:8px 10px;font-size:11px}
+.logo-dock .logo-actions .btn.active{background:#DED5E9;border-color:#9E8FB5;color:#5D506E}
+.logo-dock .logo-note{font-size:11px;color:var(--muted);line-height:1.6}
+@media(max-width:800px){
+ body.editor-ready #logoDock:not([hidden]){display:flex!important;flex:1 1 auto;min-height:0;padding:12px 15px 16px;gap:9px;overflow:auto;-webkit-overflow-scrolling:touch}
+ body.editor-ready #logoDock .logo-slider{height:33px;min-height:33px}
+ body.editor-ready #logoDock .logo-upload{min-height:38px}
+}
 </style>
 </head>
 <body class="editor-ready">
@@ -254,12 +275,34 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="logo" aria-selected="false">ロゴ追加</button></nav>
     <section id="qualityDock" class="quality-dock" role="tabpanel" aria-label="高画質の調整" hidden>
       <div class="quality-dock-title"><strong>高画質化 <small class="quality-version">v34</small></strong><output id="val-enhance" for="range-enhance">0</output></div>
       <input id="range-enhance" class="range quality-range" type="range" min="0" max="100" step="1" value="0" aria-label="高画質化の強さ">
       <div class="quality-scale" aria-hidden="true"><span>補正なし</span><span>自然</span><span>くっきり</span></div>
       <p class="quality-dock-help">スライダーを右へ動かして調整できます。細部は画像を拡大して確認してね。</p>
+    </section>
+
+    <section id="logoDock" class="logo-dock" role="tabpanel" aria-label="画像にロゴを追加" hidden>
+      <h2>写真にロゴを追加</h2>
+      <p class="logo-help">PNG / JPG / WebPのロゴ画像を重ねられるよ。背景が透明なPNGがおすすめ。</p>
+      <button id="chooseLogoBtn" class="btn logo-upload" type="button">＋ ロゴ画像を選ぶ</button>
+      <span id="logoStatus" class="logo-note" role="status">ロゴはまだ選ばれていません</span>
+      <div id="logoAdjustments" hidden>
+        <div class="logo-row"><label for="logoSize">ロゴの大きさ</label><output id="logoSizeValue" for="logoSize">28%</output></div>
+        <input id="logoSize" class="range logo-slider" type="range" min="5" max="80" value="28" step="1">
+        <div class="logo-row"><label for="logoOpacity">透明度</label><output id="logoOpacityValue" for="logoOpacity">100%</output></div>
+        <input id="logoOpacity" class="range logo-slider" type="range" min="10" max="100" value="100" step="1">
+        <div class="logo-actions" role="group" aria-label="ロゴの配置">
+          <button type="button" class="btn tiny" data-logo-pos="tl">左上</button>
+          <button type="button" class="btn tiny" data-logo-pos="tr">右上</button>
+          <button type="button" class="btn tiny" data-logo-pos="bl">左下</button>
+          <button type="button" class="btn tiny" data-logo-pos="br">右下</button>
+          <button type="button" class="btn tiny" data-logo-pos="center">中央</button>
+          <button id="removeLogoBtn" type="button" class="btn tiny ghost">ロゴを削除</button>
+        </div>
+        <p class="logo-note">写真のロゴを1本指でドラッグして動かせるよ。拡大したいときは2本指または画像下の＋－を使ってね。</p>
+      </div>
     </section>
     <section class="tabpanel" id="panel-presets" role="tabpanel"><p class="tab-title">MOOD PRESETS</p><div class="preset-grid" id="presetGrid"></div></section>
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
@@ -286,6 +329,7 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
     <p id="saveHelp" class="save-help">iPhoneでは共有画面にある「画像を保存」を選ぶと、写真アプリに追加できます。表示中の画像を長押しして「写真に追加」を選ぶ方法もあります。</p>
   </div>
 </div>
+<input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp" class="visually-hidden" aria-label="ロゴ画像を選択">
 <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/avif,image/heic,image/heif" class="visually-hidden">
 <script>
 (() => {
@@ -308,6 +352,7 @@ const presets=[
 const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コントラスト',-100,100],['saturation','彩度',-100,100],['warmth','色温度（青 ↔ 暖色）',-100,100],['tint','色かぶり（緑 ↔ ピンク）',-100,100],['shadows','シャドウ',-100,100],['highlights','ハイライト',-100,100],['fade','フェード',0,100],['complexion','血色感',0,100]],finish:[['bloom','ブルーム（光のにじみ）',0,100],['softness','ソフトフォーカス',0,100],['vignette','周辺減光',0,100],['grain','フィルム粒子',0,100]]};
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
+let logoImage=null,logoURL=null,logoSize=.28,logoOpacity=1,logoX=.80,logoY=.86,logoPointer=null;
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
 const touchPoints=new Map();
 let pinchGesture=null;
@@ -486,7 +531,60 @@ function applySoftFocus(c,target,power){
  c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
  c.drawImage(soft,0,0,target.width,target.height);c.restore();
 }
-function renderInto(target,maxSide,maxPixels){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
+
+function logoRect(w,h){
+ if(!logoImage)return null;
+ const width=Math.min(w*.8,Math.max(w*.05,w*logoSize));
+ const height=width*logoImage.naturalHeight/logoImage.naturalWidth;
+ const scale=Math.min(1,w/Math.max(1,width),h/Math.max(1,height));
+ const rw=width*scale,rh=height*scale;
+ return {x:clamp(w*logoX-rw/2,0,Math.max(0,w-rw)),y:clamp(h*logoY-rh/2,0,Math.max(0,h-rh)),w:rw,h:rh};
+}
+function paintLogo(c,w,h,showSelection=false){
+ if(!logoImage)return;
+ const r=logoRect(w,h);if(!r)return;
+ c.save();c.globalAlpha=logoOpacity;c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+ c.drawImage(logoImage,r.x,r.y,r.w,r.h);c.restore();
+ if(showSelection&&activeTab==='logo'){
+  c.save();c.lineWidth=Math.max(1,Math.min(w,h)/700);c.strokeStyle='rgba(255,255,255,.95)';
+  c.setLineDash([Math.max(4,w/140),Math.max(4,w/140)]);c.strokeRect(r.x,r.y,r.w,r.h);c.restore();
+ }
+}
+function refreshLogoUI(){
+ $('logoAdjustments').hidden=!logoImage;
+ $('logoStatus').textContent=logoImage?'ロゴを配置中。写真の上でドラッグして移動できます':'ロゴはまだ選ばれていません';
+ $('logoSize').value=String(Math.round(logoSize*100));$('logoOpacity').value=String(Math.round(logoOpacity*100));
+ $('logoSizeValue').textContent=Math.round(logoSize*100)+'%';$('logoOpacityValue').textContent=Math.round(logoOpacity*100)+'%';
+ setSliderVisual($('logoSize'));setSliderVisual($('logoOpacity'));
+}
+function repaintWithLogo(){if(image&&previewCache)displayResult()}
+function clearLogo(){
+ logoImage=null;logoPointer=null;
+ if(logoURL){URL.revokeObjectURL(logoURL);logoURL=null}
+ logoSize=.28;logoOpacity=1;logoX=.80;logoY=.86;
+ $('logoFileInput').value='';refreshLogoUI();repaintWithLogo();
+}
+async function loadLogoFile(file){
+ if(!file)return;
+ if(!/image\/(png|jpeg|webp)/.test(file.type)&&!/\.(png|jpe?g|webp)$/i.test(file.name)){
+  $('logoStatus').textContent='PNG・JPG・WebPの画像を選んでね';return;
+ }
+ const url=URL.createObjectURL(file),photo=new Image();
+ try{
+  photo.src=url;await photo.decode();
+  if(!photo.naturalWidth||!photo.naturalHeight)throw Error('invalid logo');
+  if(logoURL)URL.revokeObjectURL(logoURL);
+  logoURL=url;logoImage=photo;logoSize=.28;logoOpacity=1;logoX=.80;logoY=.86;
+  refreshLogoUI();repaintWithLogo();
+ }catch(e){URL.revokeObjectURL(url);$('logoStatus').textContent='このロゴ画像は読み込めませんでした。PNGを試してね。'}
+ finally{$('logoFileInput').value=''}
+}
+function pointerToCanvas(e){
+ const r=canvas.getBoundingClientRect();
+ return {x:(e.clientX-r.left)/r.width*canvas.width,y:(e.clientY-r.top)/r.height*canvas.height};
+}
+
+function renderInto(target,maxSide,maxPixels,withLogo=true){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
 const img=c.getImageData(0,0,w,h),pixels=img.data;
 const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30,complexion=state.complexion/100;
 const cf=(259*(contrast+255))/(255*(259-contrast));
@@ -508,10 +606,10 @@ if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.cre
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
 if(frame==='cinema'){const bar=Math.round(h*.072);c.fillStyle='#09090e';c.fillRect(0,0,w,bar);c.fillRect(0,h-bar,w,bar)}
-
+if(withLogo)paintLogo(c,w,h);
 }
-function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions();}
-function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0)}
+function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000,false)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions();}
+function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0);paintLogo(ctx,canvas.width,canvas.height,true)}
 function displayOriginal(){if(!image||!previewCache)return;const {sx,sy,sw,sh}=getCrop();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,sx,sy,sw,sh,0,0,canvas.width,canvas.height)}
 function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);previewJob=requestAnimationFrame(renderPreview)}
 function selectTab(tab){
@@ -519,19 +617,22 @@ function selectTab(tab){
  allButtons('.tab').forEach(b=>{const selected=b.dataset.tab===tab;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected))});
  // The quality pane is separate from the tab panels: avoid hidden/overflow conflicts on iOS.
  const qualityActive=tab==='quality';
+ const logoActive=tab==='logo';
  const qualityDock=$('qualityDock');
  qualityDock.hidden=!qualityActive;
- allButtons('.tabpanel').forEach(p=>{p.hidden=qualityActive||p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
+ $('logoDock').hidden=!logoActive;
+ allButtons('.tabpanel').forEach(p=>{p.hidden=qualityActive||logoActive||p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
+ if(logoActive){refreshLogoUI();$('logoDock').scrollTop=0}
  if(qualityActive){
    refreshControls();
    qualityDock.scrollTop=0;
  }
- if(image)updateDimensions();
+ if(image){updateDimensions();repaintWithLogo()}
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;clearLogo();image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
@@ -603,7 +704,7 @@ function returnHome(){
  if(!$('saveDialog').hidden)closeSaveDialog();
  cancelAnimationFrame(previewJob);previewJob=0;
  if(lastLoadedUrl){URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=null}
- image=null;previewCache=null;filename='FF14_SS';
+ image=null;previewCache=null;clearLogo();filename='FF14_SS';
  $('fileInput').value='';$('imageName').textContent='';
  canvas.hidden=true;canvas.style.transform='';
  canvas.width=1;canvas.height=1;
@@ -617,8 +718,23 @@ function returnHome(){
  resetAll();selectTab('presets');
  window.scrollTo({top:0,behavior:'instant'});
 }
-function resetAll(){viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
-createControls();setupQuickTools();refreshControls();updateZoomUI();
+function resetAll(){clearLogo();viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
+createControls();setupQuickTools();refreshControls();updateZoomUI();refreshLogoUI();
+$('chooseLogoBtn').addEventListener('click',()=>$('logoFileInput').click());
+$('logoFileInput').addEventListener('change',e=>loadLogoFile(e.target.files?.[0]));
+$('removeLogoBtn').addEventListener('click',clearLogo);
+for(const [id,prop] of [['logoSize','size'],['logoOpacity','opacity']]){
+ $(id).addEventListener('input',e=>{
+  const v=Number(e.target.value);if(prop==='size')logoSize=v/100;else logoOpacity=v/100;
+  refreshLogoUI();repaintWithLogo();
+ });
+}
+allButtons('[data-logo-pos]').forEach(btn=>btn.addEventListener('click',()=>{
+ const pos=btn.dataset.logoPos;
+ ({tl:[.15,.16],tr:[.85,.16],bl:[.15,.84],br:[.85,.84],center:[.5,.5]});
+ const coords={tl:[.15,.16],tr:[.85,.16],bl:[.15,.84],br:[.85,.84],center:[.5,.5]}[pos];
+ if(!coords)return;[logoX,logoY]=coords;repaintWithLogo();
+}));
 // High-quality control is a permanent element, not a generated tab slider.
 // It works even before a photo is selected; new photos keep the same editing UI.
 $('range-enhance').addEventListener('input', e=>{
@@ -653,7 +769,14 @@ canvas.addEventListener('pointerdown',e=>{
  if(!image||e.button!==0)return;
  if(e.pointerType==='touch'){
   touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(touchPoints.size>=2){pointer=null;beginPinch();canvas.setPointerCapture(e.pointerId);return;}
+  if(touchPoints.size>=2){pointer=null;logoPointer=null;beginPinch();canvas.setPointerCapture(e.pointerId);return;}
+ }
+ if(activeTab==='logo'&&logoImage&&touchPoints.size<2){
+  const p=pointerToCanvas(e),r=logoRect(canvas.width,canvas.height);
+  const pad=Math.max(6,Math.min(canvas.width,canvas.height)*.015);
+  if(p.x>=r.x-pad&&p.x<=r.x+r.w+pad&&p.y>=r.y-pad&&p.y<=r.y+r.h+pad){
+   e.preventDefault();logoPointer={id:e.pointerId,x:p.x,y:p.y};canvas.setPointerCapture(e.pointerId);return;
+  }
  }
  if(viewZoom>1.001){pointer={id:e.pointerId,x:e.clientX,y:e.clientY,mode:'view'};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';return}
  if(crop==='original')return;
@@ -671,6 +794,12 @@ canvas.addEventListener('pointermove',e=>{
    applyViewTransform();updateDimensions();
   }return;
  }
+ if(logoPointer&&logoPointer.id===e.pointerId){
+  e.preventDefault();const p=pointerToCanvas(e);
+  logoX=clamp(logoX+(p.x-logoPointer.x)/canvas.width,0,1);
+  logoY=clamp(logoY+(p.y-logoPointer.y)/canvas.height,0,1);
+  logoPointer.x=p.x;logoPointer.y=p.y;repaintWithLogo();return;
+ }
  if(!pointer||e.pointerId!==pointer.id)return;
  const dx=e.clientX-pointer.x,dy=e.clientY-pointer.y;
  if(pointer.mode==='view'){
@@ -682,6 +811,7 @@ canvas.addEventListener('pointermove',e=>{
  pointer.x=e.clientX;pointer.y=e.clientY;scheduleRender();
 });
 function endPointer(e){
+ if(logoPointer?.id===e.pointerId)logoPointer=null;
  if(touchPoints.has(e.pointerId)){touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinchGesture=null;}
  if(pointer&&e.pointerId===pointer.id){pointer=null;canvas.style.cursor=(viewZoom>1.001||crop!=='original')?'grab':'default';}
 }
