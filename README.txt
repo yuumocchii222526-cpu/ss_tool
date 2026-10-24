@@ -1,13 +1,23 @@
-AriesStudio v35 — 写真にロゴを追加
+AriesStudio v36 — FFXIVロゴ内蔵版
 
-・編集メニューに「ロゴ追加」追加
-・端末内のロゴ画像（PNG/JPG/WebP）を読み込み、写真へ合成
-・ドラッグ移動、大きさ、透明度、5か所へのワンタップ配置、削除
-・写真のプレビュー・PNG保存・iPhoneの共有保存へ反映
-・読み込んだロゴは外部に送信しません
-・背景の透明なPNGがおすすめです。参考のスクショをそのまま選ぶと背景も一緒に重なります。
-・既存の高画質スライダーなどの加工機能は維持
+変更内容
+・編集メニュー「ロゴ追加」に「FINAL FANTASY XIV」の内蔵ロゴを追加
+・「このロゴを追加」を押すだけで写真に重ねられます
+・送られた参考画像の文字部分を切り出し、背景を透明化したPNGをHTMLに内蔵
+・元の© SQUARE ENIX表記もロゴ画像に含みます
+・サイズ、透明度、配置、ドラッグ移動、保存機能はv35から継続
+・ご自身のロゴ画像もこれまで通りアップロード可能
+・画像やロゴの合成はブラウザ内で完結
 
-GitHub Pages: ZIP内の index.html、privacy.html、terms.html を
-ss_tool リポジトリの直下に上書きして Commit changes。
-公開ページ: https://yuumocchii222526-cpu.github.io/ss_tool/?v=35
+重要: GitHubに上書きするファイル
+index.html
+privacy.html
+terms.html
+ffxiv_logo.png  ← 確認用（HTML内蔵のため、アップロード不要）
+
+HTML 3つをss_toolリポジトリの同じ階層にアップロードして
+Commit changesしてください。ZIPを丸ごとアップロードするだけでは動きません。
+
+FFXIV著作物利用条件: https://support.jp.square-enix.com/rule.php?id=5381&tag=authc
+利用・公開の際は条件を確認してください。権利者はSQUARE ENIXです。
+公開先: https://yuumocchii222526-cpu.github.io/ss_tool/?v=36
