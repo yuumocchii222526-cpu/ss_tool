@@ -217,7 +217,7 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
 }
 
 
-/* v34 — independent high-quality slider; not inside the auto-hidden tab panels. */
+/* v37 — independent high-quality slider; not inside the auto-hidden tab panels. */
 #qualityDock[hidden]{display:none!important}
 .quality-dock{display:flex;flex-direction:column;justify-content:center;gap:12px;padding:24px 20px;min-height:172px;min-width:0;overflow-y:auto;background:transparent}
 .quality-dock-title{display:flex;align-items:center;justify-content:space-between;color:var(--text);font-size:14px}
@@ -258,6 +258,24 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
  body.editor-ready #logoDock .logo-slider{height:33px;min-height:33px}
  body.editor-ready #logoDock .logo-upload{min-height:38px}
 }
+/* v27 — local finger retouch brush */
+/* 指で消す: プレビューの上にだけ一時ストロークを重ねる */
+.erase-overlay{position:absolute;z-index:2;pointer-events:none;max-width:none!important;max-height:none!important;box-shadow:none!important;object-fit:fill!important;transform:none!important;touch-action:none}
+.erase-panel-note{font-size:12px;color:#82758e;line-height:1.6;margin-bottom:10px}
+.erase-mode-row,.erase-button-row{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0}
+.erase-mode-row .btn{flex:1}.erase-mode-row .btn.active{background:#ddd3e9;border-color:#9e8eb8;color:#59496f}
+.erase-mode-row .btn:focus-visible,.erase-button-row .btn:focus-visible{outline:2px solid #9e8eb8}
+.erase-size-control{margin:14px 0 8px}.erase-size-control input{width:100%}
+.erase-feedback{color:#675c79;font-size:12px;line-height:1.65;margin:9px 0;min-height:1.6em}
+.erase-limit{color:#8b8196;font-size:11px;line-height:1.7;margin:9px 0}.erase-limit a{color:#786695}
+.erase-button-row .btn{font-size:12px;flex:1}
+body.erase-active #preview{cursor:crosshair}
+body.erase-moving #preview{cursor:grab}
+@media(max-width:800px){body.editor-ready #panel-erase{padding:9px 14px 15px}.erase-panel-note{margin-bottom:5px;line-height:1.45}.erase-mode-row,.erase-button-row{margin:6px 0}.erase-size-control{margin:5px 0 2px}.erase-limit{margin:5px 0}}
+
+
+/* v37 text overlay controls */
+.text-tool{display:flex;flex-direction:column;gap:12px;padding:16px 20px;overflow:auto}.text-tool label{font-size:12px;color:var(--text);font-weight:600}.text-tool textarea,.text-tool select{width:100%;border:1px solid var(--stroke);border-radius:10px;padding:10px;background:#fff;color:#50485c;font:inherit}.text-tool textarea{min-height:70px;resize:vertical}.text-tool .slider-control{margin:0}.text-tool-row{display:flex;gap:8px;align-items:center}.text-tool-row>*{flex:1;min-width:0}.text-list{display:flex;flex-direction:column;gap:6px}.text-list button{text-align:left;border:1px solid var(--stroke);background:#fff;border-radius:9px;padding:8px;color:var(--text)}.text-list button.active{background:#e8e0ef;border-color:#9e8eb8}.text-help{font-size:11px;color:var(--muted);line-height:1.6;margin:0}
 </style>
 </head>
 <body class="editor-ready">
@@ -271,7 +289,7 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
     <div class="workspace-head"><div class="section-eyebrow">✦ PHOTO ATELIER</div><span id="imageName" class="name"></span></div>
     <div class="stage" id="stage">
       <div class="placeholder" id="placeholder"><div class="orb" aria-hidden="true">✧</div><button id="startUpload" class="btn primary">＋ 画像を選ぶ</button><div class="hint">PNG / JPG / WebP ・ ドラッグ＆ドロップ対応</div></div>
-      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas>
+      <canvas id="preview" aria-label="加工プレビュー" hidden></canvas><canvas id="eraseOverlay" class="erase-overlay" aria-hidden="true" hidden></canvas>
       <div id="dragTip" class="stage-tip" hidden>↔ ドラッグして構図を調整</div>
       <button id="beforeBtn" class="btn tiny compare" hidden aria-label="押している間、加工前の画像を表示">◉ 長押しで加工前</button>
     </div>
@@ -281,9 +299,9 @@ body{background:radial-gradient(ellipse 68% 35% at 13% -5%,#EDE6F5 0%,transparen
   </section>
   <aside class="sidebar" aria-label="加工ツール">
     <div class="sidehead"><strong>✧ Editing room</strong><span id="presetInfo">PRESET / ORIGINAL</span></div>
-    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="logo" aria-selected="false">ロゴ追加</button></nav>
+    <nav class="tabs" role="tablist" aria-label="編集メニュー"><button class="tab active" role="tab" data-tab="presets" aria-selected="true">フィルター</button><button class="tab" role="tab" data-tab="color" aria-selected="false">色・明るさ</button><button class="tab" role="tab" data-tab="quality" aria-selected="false">高画質</button><button class="tab" role="tab" data-tab="finish" aria-selected="false">仕上げ</button><button class="tab" role="tab" data-tab="erase" aria-selected="false">消しゴム</button><button class="tab" role="tab" data-tab="text" aria-selected="false">文字入れ</button></nav>
     <section id="qualityDock" class="quality-dock" role="tabpanel" aria-label="高画質の調整" hidden>
-      <div class="quality-dock-title"><strong>高画質化 <small class="quality-version">v34</small></strong><output id="val-enhance" for="range-enhance">0</output></div>
+      <div class="quality-dock-title"><strong>高画質化 <small class="quality-version">v37</small></strong><output id="val-enhance" for="range-enhance">0</output></div>
       <input id="range-enhance" class="range quality-range" type="range" min="0" max="100" step="1" value="0" aria-label="高画質化の強さ">
       <div class="quality-scale" aria-hidden="true"><span>補正なし</span><span>自然</span><span>くっきり</span></div>
       <p class="quality-dock-help">スライダーを右へ動かして調整できます。細部は画像を拡大して確認してね。</p>
@@ -364,6 +382,10 @@ const sliderDefs={color:[['brightness','明るさ',-100,100],['contrast','コン
 let image=null,filename='FF14_SS',state={...DEFAULT},crop='original',panX=0,panY=0,frame='none',selectedPreset='original',previewCache=null,previewJob=0,rendering=false,lastLoadedUrl=null;
 let activeTab='presets';
 let logoImage=null,logoURL=null,logoSize=.28,logoOpacity=1,logoX=.80,logoY=.86,logoPointer=null;
+let repairLayer=null,repairCtx=null,repairBase=null,repairBaseCtx=null;
+let repairHistory=[],repairRedo=[],repairStroke=null,erasePointer=null,eraseMode='draw',eraseSize=3;
+const eraseOverlay=$('eraseOverlay'),eraseOverlayCtx=eraseOverlay.getContext('2d');
+let textItems=[],selectedTextId=null,textDrag=null,nextTextId=1;
 let viewZoom=1,viewOffsetX=0,viewOffsetY=0,viewDrag=null;
 const touchPoints=new Map();
 let pinchGesture=null;
@@ -436,7 +458,8 @@ function updateDimensions(){
  $('dimensions').textContent=`${Math.round(orig.sw)} × ${Math.round(orig.sh)}`;
  $('dragTip').hidden=!cropped||zoomed;
  canvas.style.cursor=(zoomed||cropped)?'grab':'default';
- $('photoStatus').textContent=zoomed?'拡大中はドラッグで移動 · 2本指で拡大縮小 · 100%で戻す':(cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'フィルターと色味を調整 · 2本指で拡大縮小');
+ $('photoStatus').textContent=activeTab==='erase'&&eraseMode==='draw'?'指でなぞって不要物を補修 · 2本指で拡大・移動':activeTab==='text'?'文字を選んで写真上でドラッグして移動':zoomed?'拡大中はドラッグで移動 · 2本指で拡大縮小 · 100%で戻す':(cropped?'ドラッグしてトリミング位置を調整 · 長押しで比較':'フィルターと色味を調整 · 2本指で拡大縮小');
+ syncEraseOverlay();
 }
 // ブルーム / ソフトフォーカス用のぼかし処理。
 // CanvasRenderingContext2D.filter は一部の iOS / Safari 環境で
@@ -543,6 +566,126 @@ function applySoftFocus(c,target,power){
  c.drawImage(soft,0,0,target.width,target.height);c.restore();
 }
 
+function prepareRepair(){
+ const scale=Math.min(1,2000/Math.max(image.naturalWidth,image.naturalHeight),Math.sqrt(2500000/(image.naturalWidth*image.naturalHeight)));
+ const w=Math.max(1,Math.round(image.naturalWidth*scale)),h=Math.max(1,Math.round(image.naturalHeight*scale));
+ repairLayer=makeCanvas(w,h);repairCtx=repairLayer.getContext('2d',{willReadFrequently:true});
+ repairBase=makeCanvas(w,h);repairBaseCtx=repairBase.getContext('2d',{willReadFrequently:true});
+ repairBaseCtx.drawImage(image,0,0,w,h);
+ repairHistory=[];repairRedo=[];repairStroke=null;erasePointer=null;updateRepairUI();
+}
+function clearRepairData(){repairLayer=null;repairCtx=null;repairBase=null;repairBaseCtx=null;repairHistory=[];repairRedo=[];repairStroke=null;erasePointer=null;eraseOverlay.hidden=true;updateRepairUI()}
+function hasRepair(){return repairHistory.length>0||repairRedo.length>0}
+function updateRepairUI(){
+ $('eraseUndo').disabled=!repairHistory.length;$('eraseRedo').disabled=!repairRedo.length;$('eraseClear').disabled=!repairHistory.length;
+ $('eraseDrawBtn').classList.toggle('active',eraseMode==='draw');$('eraseMoveBtn').classList.toggle('active',eraseMode==='move');
+ $('eraseDrawBtn').setAttribute('aria-pressed',String(eraseMode==='draw'));$('eraseMoveBtn').setAttribute('aria-pressed',String(eraseMode==='move'));
+ document.body.classList.toggle('erase-active',activeTab==='erase'&&eraseMode==='draw');
+ document.body.classList.toggle('erase-moving',activeTab==='erase'&&eraseMode==='move');
+}
+function sourcePointFromPointer(e){
+ const r=canvas.getBoundingClientRect(),fx=clamp((e.clientX-r.left)/r.width,0,1),fy=clamp((e.clientY-r.top)/r.height,0,1),c=getCrop();
+ return {u:(c.sx+fx*c.sw)/image.naturalWidth,v:(c.sy+fy*c.sh)/image.naturalHeight};
+}
+function syncEraseOverlay(){
+ if(!image||canvas.hidden||activeTab!=='erase'){eraseOverlay.hidden=true;return}
+ const b=canvas.getBoundingClientRect(),r=$('stage').getBoundingClientRect();
+ if(!b.width||!b.height)return;
+ eraseOverlay.hidden=false;eraseOverlay.style.left=(b.left-r.left)+'px';eraseOverlay.style.top=(b.top-r.top)+'px';
+ eraseOverlay.style.width=b.width+'px';eraseOverlay.style.height=b.height+'px';
+ if(eraseOverlay.width!==canvas.width)eraseOverlay.width=canvas.width;
+ if(eraseOverlay.height!==canvas.height)eraseOverlay.height=canvas.height;
+ drawEraseOverlay();
+}
+function erasePointToPreview(p){const c=getCrop();return {x:(p.u*image.naturalWidth-c.sx)*canvas.width/c.sw,y:(p.v*image.naturalHeight-c.sy)*canvas.height/c.sh}}
+function drawEraseOverlay(){
+ eraseOverlayCtx.clearRect(0,0,eraseOverlay.width,eraseOverlay.height);
+ if(!image||activeTab!=='erase'||eraseMode!=='draw')return;
+ const cropRect=getCrop(),radius=Math.min(image.naturalWidth,image.naturalHeight)*eraseSize/200*canvas.width/cropRect.sw;
+ if(repairStroke&&repairStroke.points.length){
+  eraseOverlayCtx.save();eraseOverlayCtx.lineCap='round';eraseOverlayCtx.lineJoin='round';eraseOverlayCtx.strokeStyle='rgba(178,119,180,.46)';eraseOverlayCtx.lineWidth=radius*2;
+  eraseOverlayCtx.beginPath();const first=erasePointToPreview(repairStroke.points[0]);eraseOverlayCtx.moveTo(first.x,first.y);
+  if(repairStroke.points.length===1)eraseOverlayCtx.lineTo(first.x+.01,first.y+.01);
+  for(const p of repairStroke.points.slice(1)){const c=erasePointToPreview(p);eraseOverlayCtx.lineTo(c.x,c.y)}
+  eraseOverlayCtx.stroke();eraseOverlayCtx.restore();
+ }
+ if(erasePointer){const p=erasePointToPreview(erasePointer);eraseOverlayCtx.beginPath();eraseOverlayCtx.arc(p.x,p.y,radius,0,Math.PI*2);eraseOverlayCtx.strokeStyle='#92699e';eraseOverlayCtx.lineWidth=Math.max(1,canvas.width/800);eraseOverlayCtx.stroke()}
+}
+function applyRepairStroke(stroke){
+ if(!image||!repairLayer||!stroke.points.length)return false;
+ const W=repairLayer.width,H=repairLayer.height,rad=Math.max(2,Math.round(Math.min(W,H)*stroke.size/200));
+ const pts=stroke.points.map(p=>({x:p.u*W,y:p.v*H}));
+ const minX=Math.min(...pts.map(p=>p.x)),maxX=Math.max(...pts.map(p=>p.x)),minY=Math.min(...pts.map(p=>p.y)),maxY=Math.max(...pts.map(p=>p.y));
+ const x=Math.max(0,Math.floor(minX-rad-5)),y=Math.max(0,Math.floor(minY-rad-5));
+ const right=Math.min(W,Math.ceil(maxX+rad+5)),bottom=Math.min(H,Math.ceil(maxY+rad+5));
+ const w=right-x,h=bottom-y;if(w<1||h<1)return false;
+ // 処理対象だけのマスク。少し広めの筆で文字全体を覆って使う想定。
+ const maskCanvas=makeCanvas(w,h),m=maskCanvas.getContext('2d',{willReadFrequently:true});
+ m.strokeStyle='#fff';m.fillStyle='#fff';m.lineCap='round';m.lineJoin='round';m.lineWidth=rad*2;
+ m.beginPath();m.moveTo(pts[0].x-x,pts[0].y-y);
+ for(const p of pts.slice(1))m.lineTo(p.x-x,p.y-y);
+ if(pts.length>1)m.stroke();else{m.beginPath();m.arc(pts[0].x-x,pts[0].y-y,rad,0,Math.PI*2);m.fill()}
+ const maskImage=m.getImageData(0,0,w,h).data;
+ const mask=new Uint8Array(w*h);let count=0;
+ for(let i=0;i<mask.length;i++){mask[i]=maskImage[i*4+3]>90?1:0;count+=mask[i]}
+ if(!count)return false;
+ // 色と模様の候補を、筆跡の少し外から探す。元画像+以前の補修が探索対象。
+ const pad=Math.min(220,Math.max(24,rad*5));
+ const bx=Math.max(0,x-pad),by=Math.max(0,y-pad),bw=Math.min(W-bx,x+w+pad-bx),bh=Math.min(H-by,y+h+pad-by);
+ const sample=makeCanvas(bw,bh),g=sample.getContext('2d',{willReadFrequently:true});
+ g.drawImage(repairBase,bx,by,bw,bh,0,0,bw,bh);g.drawImage(repairLayer,bx,by,bw,bh,0,0,bw,bh);
+ const pixels=g.getImageData(0,0,bw,bh).data;
+ const offsets=[];for(const distance of [2.2,3.2,4.3])for(const [ux,uy] of [[1,0],[-1,0],[0,1],[0,-1],[.7,.7],[-.7,.7],[.7,-.7],[-.7,-.7]])offsets.push([Math.round(ux*rad*distance),Math.round(uy*rad*distance)]);
+ const boundary=[];
+ const stride=Math.max(2,Math.ceil(Math.sqrt(count/250)));
+ for(let yy=1;yy<h-1;yy+=stride)for(let xx=1;xx<w-1;xx+=stride){
+  const i=yy*w+xx;if(mask[i]||!(mask[i-1]||mask[i+1]||mask[i-w]||mask[i+w]))continue;
+  boundary.push([xx+x-bx,yy+y-by]);
+ }
+ // 境界が近い候補を優先。候補が少ないときは画像の外を参照しないものを選ぶ。
+ let best=null,bestScore=Infinity;
+ for(const [dx,dy] of offsets){
+  let score=0,n=0;
+  for(const [xx,yy] of boundary){const tx=xx+dx,ty=yy+dy;if(tx<0||ty<0||tx>=bw||ty>=bh)continue;
+   const relX=tx+bx-x,relY=ty+by-y;if(relX>=0&&relX<w&&relY>=0&&relY<h&&mask[relY*w+relX])continue;
+   const a=(yy*bw+xx)*4,b=(ty*bw+tx)*4;
+   const dr=pixels[a]-pixels[b],dg=pixels[a+1]-pixels[b+1],db=pixels[a+2]-pixels[b+2];score+=dr*dr+dg*dg+db*db;n++;
+  }
+  if(n<Math.max(2,boundary.length*.45))continue;
+  const candidate=score/n+Math.hypot(dx,dy)*.03;
+  if(candidate<bestScore){bestScore=candidate;best=[dx,dy]}
+ }
+ const [shiftX,shiftY]=best||[0,-Math.max(2,rad*3)];
+ const before=repairCtx.getImageData(x,y,w,h),out=repairCtx.getImageData(x,y,w,h);
+ const dest=out.data;
+ // 半透明の境界で馴染ませる。すべて元画像上の透明レイヤーにのみ記録。
+ for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){
+  const i=yy*w+xx;if(!mask[i])continue;
+  let px=xx+x-bx+shiftX,py=yy+y-by+shiftY;
+  px=clamp(px,0,bw-1);py=clamp(py,0,bh-1);
+  const j=(py*bw+px)*4,k=i*4;
+  let edge=0;
+  if(xx===0||yy===0||xx===w-1||yy===h-1||!mask[i-1]||!mask[i+1]||!mask[i-w]||!mask[i+w])edge=.62;
+  // 既存のレイヤーは上書きされるため、作業中の色を再合成して保持する。
+  dest[k]=pixels[j];dest[k+1]=pixels[j+1];dest[k+2]=pixels[j+2];dest[k+3]=Math.round(255*(1-edge));
+ }
+ repairCtx.putImageData(out,x,y);
+ repairHistory.push({x,y,before,after:repairCtx.getImageData(x,y,w,h)});
+ if(repairHistory.length>12)repairHistory.shift();repairRedo=[];
+ updateRepairUI();scheduleRender();return true;
+}
+function finishRepairStroke(cancelled=false){
+ if(!repairStroke)return;
+ const stroke=repairStroke;repairStroke=null;erasePointer=null;drawEraseOverlay();
+ if(cancelled)return;
+ $('eraseFeedback').textContent='補修しています…';
+ try{const ok=applyRepairStroke(stroke);$('eraseFeedback').textContent=ok?'補修したよ。気になるところはもう一度なぞってね。':'補修できなかったよ。別の場所を試してね。'}
+ catch(error){console.error(error);$('eraseFeedback').textContent='補修に失敗しました。ブラシを細くしてもう一度試してね。'}
+}
+function undoRepair(){const op=repairHistory.pop();if(!op)return;repairCtx.putImageData(op.before,op.x,op.y);repairRedo.push(op);updateRepairUI();scheduleRender();$('eraseFeedback').textContent='1回戻したよ。'}
+function redoRepair(){const op=repairRedo.pop();if(!op)return;repairCtx.putImageData(op.after,op.x,op.y);repairHistory.push(op);updateRepairUI();scheduleRender();$('eraseFeedback').textContent='やり直したよ。'}
+function clearRepairs(){if(!repairHistory.length)return;if(!confirm('これまでの消しゴム補修をすべて解除しますか？'))return;repairCtx.clearRect(0,0,repairLayer.width,repairLayer.height);repairHistory=[];repairRedo=[];updateRepairUI();scheduleRender();$('eraseFeedback').textContent='すべての補修を解除したよ。'}
+
 function logoRect(w,h){
  if(!logoImage)return null;
  const width=Math.min(w*.8,Math.max(w*.05,w*logoSize));
@@ -615,7 +758,18 @@ function pointerToCanvas(e){
  return {x:(e.clientX-r.left)/r.width*canvas.width,y:(e.clientY-r.top)/r.height*canvas.height};
 }
 
+function fontFamilyForText(font){return ({sans:'-apple-system, BlinkMacSystemFont, Arial, sans-serif',serif:'Georgia, "Hiragino Mincho ProN", serif',rounded:'"Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", sans-serif',mono:'ui-monospace, Menlo, Consolas, monospace'})[font]||'Arial, sans-serif'}
+function selectedText(){return textItems.find(t=>t.id===selectedTextId)||null}
+function drawTextOverlays(c,w,h,selection=false){for(const t of textItems){if(!t.text.trim())continue;const size=Math.max(8,Math.round(Math.min(w,h)*t.size/100));const x=t.x*w,y=t.y*h;c.save();c.globalAlpha=t.opacity;c.font=`600 ${size}px ${fontFamilyForText(t.font)}`;c.textAlign='center';c.textBaseline='middle';c.lineJoin='round';c.strokeStyle='rgba(0,0,0,.42)';c.lineWidth=Math.max(1,size*.07);c.strokeText(t.text,x,y, w*.94);c.fillStyle=t.color;c.shadowColor='rgba(0,0,0,.3)';c.shadowBlur=size*.12;c.fillText(t.text,x,y,w*.94);c.restore();}}
+function textBounds(c,t,w,h){const size=Math.max(8,Math.round(Math.min(w,h)*t.size/100));c.save();c.font=`600 ${size}px ${fontFamilyForText(t.font)}`;const width=Math.min(w*.94,c.measureText(t.text).width+size*.4);c.restore();return{x:t.x*w-width/2,y:t.y*h-size*.8,w:width,h:size*1.6}}
+function drawTextSelection(c,w,h){const t=selectedText();if(!t||activeTab!=='text')return;const r=textBounds(c,t,w,h);c.save();c.strokeStyle='rgba(142,119,166,.95)';c.lineWidth=Math.max(1,w/700);c.setLineDash([Math.max(4,w/160),Math.max(3,w/180)]);c.strokeRect(r.x,r.y,r.w,r.h);c.restore()}
+function refreshTextUI(){const list=$('textList');if(!list)return;list.replaceChildren();for(const t of textItems){const b=document.createElement('button');b.type='button';b.textContent=t.text.length>26?t.text.slice(0,26)+'…':t.text;b.classList.toggle('active',t.id===selectedTextId);b.addEventListener('click',()=>{selectedTextId=t.id;$('textContent').value=t.text;$('textFont').value=t.font;$('textColor').value=t.color;$('textSize').value=String(t.size);$('textOpacity').value=String(Math.round(t.opacity*100));$('textSizeValue').textContent=t.size+'%';$('textOpacityValue').textContent=Math.round(t.opacity*100)+'%';refreshTextUI();if(previewCache)displayResult()});list.append(b)}$('deleteTextBtn').disabled=!selectedText();$('clearTextsBtn').disabled=!textItems.length;}
+function syncSelectedTextFromControls(){const t=selectedText();if(!t)return;t.text=$('textContent').value;t.font=$('textFont').value;t.color=$('textColor').value;t.size=Number($('textSize').value);t.opacity=Number($('textOpacity').value)/100;$('textSizeValue').textContent=t.size+'%';$('textOpacityValue').textContent=Math.round(t.opacity*100)+'%';refreshTextUI();scheduleRender()}
+function addTextItem(){const value=$('textContent').value.trim();if(!value){$('textContent').focus();$('textContent').placeholder='先に文字を入力してね';return}const t={id:nextTextId++,text:value,font:$('textFont').value,color:$('textColor').value,size:Number($('textSize').value),opacity:Number($('textOpacity').value)/100,x:.5,y:.82};textItems.push(t);selectedTextId=t.id;refreshTextUI();scheduleRender()}
+function deleteSelectedText(){textItems=textItems.filter(t=>t.id!==selectedTextId);selectedTextId=textItems.at(-1)?.id??null;const t=selectedText();$('textContent').value=t?.text||'';refreshTextUI();scheduleRender()}
+
 function renderInto(target,maxSide,maxPixels,withLogo=true){if(!image)return;const {sx,sy,sw,sh}=getCrop(),{w,h}=outputSize(maxSide,maxPixels);target.width=w;target.height=h;const c=target.getContext('2d',{willReadFrequently:true});c.clearRect(0,0,w,h);c.imageSmoothingQuality='high';c.drawImage(image,sx,sy,sw,sh,0,0,w,h);
+if(repairLayer&&repairHistory.length){const ratio=repairLayer.width/image.naturalWidth;c.drawImage(repairLayer,sx*ratio,sy*ratio,sw*ratio,sh*ratio,0,0,w,h)}
 const img=c.getImageData(0,0,w,h),pixels=img.data;
 const brightness=state.brightness*.87,contrast=state.contrast*.82,saturation=1+state.saturation/100,warmth=state.warmth*.52,tint=state.tint*.42,fade=state.fade*.0037,shadows=state.shadows*.72,highlights=state.highlights*.72,grain=state.grain*.30,complexion=state.complexion/100;
 const cf=(259*(contrast+255))/(255*(259-contrast));
@@ -637,10 +791,10 @@ if(state.vignette){c.save();c.translate(w/2,h/2);c.scale(w,h);const radial=c.cre
 const widthUnit=Math.max(1,Math.min(w,h)*.005);
 if(frame==='white'){const gap=Math.round(Math.min(w,h)*.023);c.save();c.strokeStyle='#fff';c.lineWidth=Math.max(3,widthUnit*2.6);c.strokeRect(gap,gap,w-2*gap,h-2*gap);c.restore()}
 if(frame==='cinema'){const bar=Math.round(h*.072);c.fillStyle='#09090e';c.fillRect(0,0,w,bar);c.fillRect(0,h-bar,w,bar)}
-if(withLogo)paintLogo(c,w,h);
+drawTextOverlays(c,w,h,false);
 }
 function renderPreview(){if(!image)return;const next=makeCanvas(1,1);try{renderInto(next,1450,1750000,false)}catch(e){console.error(e);setError('画像の加工中にエラーが発生しました。別の画像を試してください。');return}previewCache=next;displayResult();applyViewTransform();updateDimensions();}
-function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0);paintLogo(ctx,canvas.width,canvas.height,true)}
+function displayResult(){if(!image)return;if(canvas.width!==previewCache.width||canvas.height!==previewCache.height){canvas.width=previewCache.width;canvas.height=previewCache.height}ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(previewCache,0,0);drawTextSelection(ctx,canvas.width,canvas.height)}
 function displayOriginal(){if(!image||!previewCache)return;const {sx,sy,sw,sh}=getCrop();ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(image,sx,sy,sw,sh,0,0,canvas.width,canvas.height)}
 function scheduleRender(){if(!image)return;cancelAnimationFrame(previewJob);previewJob=requestAnimationFrame(renderPreview)}
 function selectTab(tab){
@@ -648,22 +802,22 @@ function selectTab(tab){
  allButtons('.tab').forEach(b=>{const selected=b.dataset.tab===tab;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected))});
  // The quality pane is separate from the tab panels: avoid hidden/overflow conflicts on iOS.
  const qualityActive=tab==='quality';
- const logoActive=tab==='logo';
+ const logoActive=false;
  const qualityDock=$('qualityDock');
  qualityDock.hidden=!qualityActive;
- $('logoDock').hidden=!logoActive;
+ if($('logoDock'))$('logoDock').hidden=true;
  allButtons('.tabpanel').forEach(p=>{p.hidden=qualityActive||logoActive||p.id!=='panel-'+tab;if(!p.hidden)p.scrollTop=0});
  if(logoActive){refreshLogoUI();$('logoDock').scrollTop=0}
  if(qualityActive){
    refreshControls();
    qualityDock.scrollTop=0;
  }
- if(image){updateDimensions();repaintWithLogo()}
+ if(image){updateDimensions();repaintWithLogo();syncEraseOverlay()}
 }
 function updateChoices(type,value){allButtons(`[data-${type}]`).forEach(b=>{const active=b.dataset[type]===value;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
 async function uploadFile(file){if(!file)return;if(!$('saveDialog').hidden)closeSaveDialog();setError('');if(!file.type.startsWith('image/')&&!/\.(png|jpe?g|webp|avif|heic|heif)$/i.test(file.name)){setError('画像ファイル（PNG / JPG / WebP など）を選択してください。');return}
 const url=URL.createObjectURL(file);const photo=new Image();try{photo.src=url;await photo.decode();if(!photo.naturalWidth||!photo.naturalHeight)throw new Error('invalid image');}catch(e){URL.revokeObjectURL(url);setError('画像を開けませんでした。PNGかJPGに変換してお試しください。');return}
-if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;clearLogo();image=photo;viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
+if(lastLoadedUrl)URL.revokeObjectURL(lastLoadedUrl);lastLoadedUrl=url;clearLogo();clearRepairData();textItems=[];selectedTextId=null;refreshTextUI();image=photo;prepareRepair();viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;filename=file.name.replace(/\.[^.]+$/,'')||'FF14_SS';$('imageName').textContent=file.name;crop='original';panX=0;panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);$('placeholder').hidden=true;canvas.hidden=false;document.body.classList.add('editor-ready','has-photo');$('homeBtn').hidden=false;$('stageTools').hidden=false;$('beforeBtn').hidden=false;$('saveBtn').disabled=false;$('resetBtn').disabled=false;$('lowerResetBtn').disabled=false;setPreset('original');$('fileInput').value=''}
 let saveFile=null,saveURL=null,saveRequest=0,saveBusy=false;
 function clearSavedImage(){
  saveFile=null;
@@ -749,7 +903,7 @@ function returnHome(){
  resetAll();selectTab('presets');
  window.scrollTo({top:0,behavior:'instant'});
 }
-function resetAll(){clearLogo();viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
+function resetAll(){clearLogo();if(repairCtx){repairCtx.clearRect(0,0,repairLayer.width,repairLayer.height);repairHistory=[];repairRedo=[];updateRepairUI()}textItems=[];selectedTextId=null;refreshTextUI();viewZoom=1;viewOffsetX=0;viewOffsetY=0;touchPoints.clear();pinchGesture=null;viewDrag=null;state={...DEFAULT};selectedPreset='original';crop='original';panX=panY=0;frame='none';updateChoices('aspect',crop);updateChoices('frame',frame);refreshControls();refreshPresetUI();scheduleRender();updateZoomUI()}
 createControls();setupQuickTools();refreshControls();updateZoomUI();refreshLogoUI();
 $('useBuiltInLogoBtn').addEventListener('click',useBuiltInLogo);
 $('chooseLogoBtn').addEventListener('click',()=>$('logoFileInput').click());
@@ -779,6 +933,18 @@ const stage=$('stage');
 if('ResizeObserver' in window){const ro=new ResizeObserver(()=>{if(image){applyViewTransform();updateDimensions()}});ro.observe(canvas);ro.observe(stage)}
 window.addEventListener('resize',()=>{if(image){applyViewTransform();updateDimensions()}});
 allButtons('.tab').forEach(b=>b.addEventListener('click',()=>selectTab(b.dataset.tab)));
+$('logoDock').hidden=true;
+
+// Eraser controls
+$('eraseDrawBtn').addEventListener('click',()=>{eraseMode='draw';repairStroke=null;erasePointer=null;updateRepairUI();updateDimensions();drawEraseOverlay()});
+$('eraseMoveBtn').addEventListener('click',()=>{eraseMode='move';repairStroke=null;erasePointer=null;updateRepairUI();updateDimensions();drawEraseOverlay()});
+$('eraseSize').addEventListener('input',e=>{eraseSize=Number(e.target.value);$('eraseSizeValue').textContent=eraseSize+'%';setSliderVisual(e.target);drawEraseOverlay()});
+$('eraseUndo').addEventListener('click',undoRepair);$('eraseRedo').addEventListener('click',redoRepair);$('eraseClear').addEventListener('click',clearRepairs);setSliderVisual($('eraseSize'));updateRepairUI();
+// Text overlay controls
+$('addTextBtn').addEventListener('click',addTextItem);
+for(const id of ['textContent','textFont','textColor','textSize','textOpacity'])$(id).addEventListener(id==='textContent'?'input':'change',syncSelectedTextFromControls);
+$('textSize').addEventListener('input',syncSelectedTextFromControls);$('textOpacity').addEventListener('input',syncSelectedTextFromControls);
+$('deleteTextBtn').addEventListener('click',deleteSelectedText);$('clearTextsBtn').addEventListener('click',()=>{textItems=[];selectedTextId=null;refreshTextUI();scheduleRender()});
 
 allButtons('[data-aspect]').forEach(b=>b.addEventListener('click',()=>{crop=b.dataset.aspect;panX=panY=0;resetView();updateChoices('aspect',crop);scheduleRender()}));
 allButtons('[data-frame]').forEach(b=>b.addEventListener('click',()=>{frame=b.dataset.frame;updateChoices('frame',frame);scheduleRender()}));
@@ -809,6 +975,14 @@ canvas.addEventListener('pointerdown',e=>{
    e.preventDefault();logoPointer={id:e.pointerId,x:p.x,y:p.y};canvas.setPointerCapture(e.pointerId);return;
   }
  }
+ if(activeTab==='erase'&&eraseMode==='draw'&&touchPoints.size<2){
+  e.preventDefault();const p=sourcePointFromPointer(e);repairStroke={id:e.pointerId,size:eraseSize,points:[p]};erasePointer=p;drawEraseOverlay();canvas.setPointerCapture(e.pointerId);return;
+ }
+ if(activeTab==='text'&&touchPoints.size<2){
+  e.preventDefault();const p=pointerToCanvas(e),t=selectedText();
+  if(t){const r=textBounds(ctx,t,canvas.width,canvas.height);if(p.x>=r.x-12&&p.x<=r.x+r.w+12&&p.y>=r.y-12&&p.y<=r.y+r.h+12){textDrag={id:e.pointerId,textId:t.id};canvas.setPointerCapture(e.pointerId);return}}
+  if(t){t.x=clamp(p.x/canvas.width,0,1);t.y=clamp(p.y/canvas.height,0,1);textDrag={id:e.pointerId,textId:t.id};scheduleRender();canvas.setPointerCapture(e.pointerId);return}
+ }
  if(viewZoom>1.001){pointer={id:e.pointerId,x:e.clientX,y:e.clientY,mode:'view'};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';return}
  if(crop==='original')return;
  pointer={id:e.pointerId,x:e.clientX,y:e.clientY,mode:'crop'};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';
@@ -825,6 +999,8 @@ canvas.addEventListener('pointermove',e=>{
    applyViewTransform();updateDimensions();
   }return;
  }
+ if(repairStroke&&repairStroke.id===e.pointerId){e.preventDefault();const p=sourcePointFromPointer(e),prev=repairStroke.points[repairStroke.points.length-1];if(Math.hypot((p.u-prev.u)*image.naturalWidth,(p.v-prev.v)*image.naturalHeight)>Math.max(1,Math.min(image.naturalWidth,image.naturalHeight)*eraseSize/600))repairStroke.points.push(p);erasePointer=p;drawEraseOverlay();return}
+ if(textDrag&&textDrag.id===e.pointerId){e.preventDefault();const t=textItems.find(x=>x.id===textDrag.textId);if(t){const p=pointerToCanvas(e);t.x=clamp(p.x/canvas.width,0,1);t.y=clamp(p.y/canvas.height,0,1);scheduleRender()}return}
  if(logoPointer&&logoPointer.id===e.pointerId){
   e.preventDefault();const p=pointerToCanvas(e);
   logoX=clamp(logoX+(p.x-logoPointer.x)/canvas.width,0,1);
@@ -842,6 +1018,8 @@ canvas.addEventListener('pointermove',e=>{
  pointer.x=e.clientX;pointer.y=e.clientY;scheduleRender();
 });
 function endPointer(e){
+ if(repairStroke&&repairStroke.id===e.pointerId)finishRepairStroke(e.type==='pointercancel');
+ if(textDrag?.id===e.pointerId)textDrag=null;
  if(logoPointer?.id===e.pointerId)logoPointer=null;
  if(touchPoints.has(e.pointerId)){touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinchGesture=null;}
  if(pointer&&e.pointerId===pointer.id){pointer=null;canvas.style.cursor=(viewZoom>1.001||crop!=='original')?'grab':'default';}
