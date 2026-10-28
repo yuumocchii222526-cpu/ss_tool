@@ -337,6 +337,42 @@ body.erase-moving #preview{cursor:grab}
     <section class="tabpanel" id="panel-color" role="tabpanel" hidden><p class="tab-title">COLOR & TONE</p><div id="colorSliders"></div></section>
     
     <section class="tabpanel" id="panel-finish" role="tabpanel" hidden><p class="tab-title">SOFT LIGHT & FINISH</p><div id="finishSliders"></div><div id="cropControls" class="extra-tool-panel"><p class="tab-title">トリミング</p><div id="aspectOptions" class="aspect-options" role="group" aria-label="画像の比率"><button class="choice active" data-aspect="original">元の比率</button><button class="choice" data-aspect="1">1:1</button><button class="choice" data-aspect="0.8">4:5</button><button class="choice" data-aspect="1.77777778">16:9</button><button class="choice" data-aspect="0.5625">9:16</button></div><p class="tab-note" style="margin-top:11px">切り抜いた画像はドラッグで位置を調整できます。</p></div><div id="frameControls" class="extra-tool-panel"><p class="tab-title">フレーム</p><div id="frameOptions" class="frame-options" role="group" aria-label="フレーム"><button class="choice active" data-frame="none">なし</button><button class="choice" data-frame="white">白枠</button><button class="choice" data-frame="cinema">シネマ</button></div></div></section>
+    <section class="tabpanel" id="panel-erase" role="tabpanel" hidden>
+      <p class="tab-title">消しゴム / 補修</p>
+      <p class="erase-panel-note">消したい部分を指でなぞって補修します。背景が複雑な場合は跡が残ることがあります。</p>
+      <div class="erase-mode-row" role="group" aria-label="消しゴム操作モード">
+        <button id="eraseDrawBtn" class="btn tiny active" type="button" aria-pressed="true">消しゴムでなぞる</button>
+        <button id="eraseMoveBtn" class="btn tiny" type="button" aria-pressed="false">画像を移動</button>
+      </div>
+      <div class="slider-control erase-size-control">
+        <div class="slider-top"><label for="eraseSize">ブラシの太さ</label><output id="eraseSizeValue" for="eraseSize">12%</output></div>
+        <input id="eraseSize" class="range" type="range" min="2" max="35" value="12" step="1" aria-label="ブラシの太さ">
+      </div>
+      <div class="erase-button-row">
+        <button id="eraseUndo" class="btn tiny" type="button" disabled>↶ 元に戻す</button>
+        <button id="eraseRedo" class="btn tiny" type="button" disabled>↷ やり直す</button>
+        <button id="eraseClear" class="btn tiny" type="button" disabled>補修を解除</button>
+      </div>
+      <p id="eraseFeedback" class="text-help" role="status">写真を読み込んでから、消したい部分をなぞってね。</p>
+      <p class="erase-limit">この機能は周囲の画素を使った補修です。文字や複雑な物体を完全に消せるAI機能ではありません。</p>
+    </section>
+    <section class="tabpanel" id="panel-text" role="tabpanel" hidden>
+      <p class="tab-title">文字入れ</p>
+      <div class="text-tool">
+        <label for="textContent">入れたい文字</label>
+        <textarea id="textContent" placeholder="文字を入力してね" rows="2"></textarea>
+        <button id="addTextBtn" class="btn primary" type="button">＋ 文字を追加</button>
+        <div class="text-tool-row">
+          <div><label for="textFont">フォント</label><select id="textFont"><option value="sans">ゴシック</option><option value="serif">明朝</option><option value="rounded">丸ゴシック</option><option value="mono">等幅</option></select></div>
+          <div><label for="textColor">文字色</label><input id="textColor" type="color" value="#ffffff" aria-label="文字色"></div>
+        </div>
+        <div class="slider-control"><div class="slider-top"><label for="textSize">文字の大きさ</label><output id="textSizeValue" for="textSize">8%</output></div><input id="textSize" class="range" type="range" min="2" max="20" value="8" step="1"></div>
+        <div class="slider-control"><div class="slider-top"><label for="textOpacity">透明度</label><output id="textOpacityValue" for="textOpacity">100%</output></div><input id="textOpacity" class="range" type="range" min="10" max="100" value="100" step="1"></div>
+        <p class="text-help">追加した文字は写真上でドラッグして位置を変えられます。</p>
+        <p class="tab-title">追加した文字</p><div id="textList" class="text-list"></div>
+        <div class="text-tool-row"><button id="deleteTextBtn" class="btn tiny" type="button" disabled>選択した文字を削除</button><button id="clearTextsBtn" class="btn tiny" type="button" disabled>すべて削除</button></div>
+      </div>
+    </section>
     <div class="fineprint">画像の加工はブラウザ内で処理されます。アップロードした画像がサーバーに送信されることはありません。</div>
     <nav class="compact-legal" aria-label="サイト情報"><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a></nav>
   </aside>
